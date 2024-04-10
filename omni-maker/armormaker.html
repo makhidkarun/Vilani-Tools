@@ -1,0 +1,140 @@
+<html>
+
+<head>
+<script type="text/javascript" src="maker_utils.js"></script>
+<script type="text/javascript" src="armormaker.js"></script>
+<script type="text/javascript" src="gunmaker.js"></script>
+<script type="text/javascript" src="showhide.js"></script>
+<link rel="stylesheet" type="text/css" href="showhide.css" />
+</head>
+
+<body>
+
+<a href="omni_vehicle_maker.html">-> to Vehicle Maker</a> <br />
+<a href="vilanitools.html">-> to Traveller alien word gen</a> <br />
+
+<div id="wpNav">
+   <ul>
+      <li><a href="#tab_one"    id="wpSelected" class="toggle">ArmorMaker</a></li>
+      <li><a href="#tab_two"    id="unSelected" class="toggle">GunMaker</a></li>
+      <!--li><a href="#tab_three"  id="unSelected" class="toggle">Tab Three</a></li>
+      <li><a href="#tab_four"   id="unSelected" class="toggle">Tab Four</a></li-->
+   </ul>
+</div>
+
+<div id="tab_one" class="show">
+   <h3>ArmorMaker</h3>
+     
+   <form method=post action="../../cgi-bin/processForm.cgi">
+   
+   <select name="stage" onchange="a_recalc(this.form)">
+   <script>
+      a_printOptions( a_stages );
+   </script>
+   </select>
+   
+   <select name="burden" onchange="a_recalc(this.form)">
+   <script>
+      a_printOptions( a_burdens );
+   </script>
+   </select>
+   
+   <!--select name="size" onchange="a_recalc(this.form)">
+   <script>
+      a_printOptions( a_sizes );
+   </script>
+   </select-->		
+   
+   <select name="descriptor" onchange="a_recalc(this.form)">
+   <script>
+      a_printOptions( a_descriptors );
+   </script>
+   </select>
+   
+   
+   <select name="item" onchange="a_recalc(this.form)">
+   <script>
+      a_printOptions( a_items );
+   </script>
+   </select>
+   
+   <br />
+   
+   <textarea name="output" rows="20" cols="100" ></textarea>
+   
+   <br />
+   
+   <input type="button" value="calculate" onclick="a_recalc(this.form)" />
+   Address: <input name="address" length="20" />
+   <input type="hidden" name="builder" value="armor.armor" />
+   <input type="submit" value="Email it" />     
+   </form >
+</div>
+
+<div id="tab_two" class="hide">
+   <h3>GunMaker</h3>
+   
+   <form method=post action="../../cgi-bin/processForm.cgi">
+   
+   <select name="stage" onchange="g_recalc(this.form)">
+   <script>
+      g_printOptions( g_stages );
+   </script>
+   </select>
+   
+   <select name="burden" onchange="g_recalc(this.form)">   
+   <script>
+      g_printOptions( g_burdens );
+   </script>
+   </select>
+   
+   <select name="size" onchange="g_recalc(this.form)">
+   <script>
+      g_printOptions( g_sizes );
+   </script>
+   </select>		
+
+
+   <select name="descriptor" onchange="g_recalc(this.form)">
+   <script>
+      g_printSpecificOptions( g_descriptors );
+   </script>
+   </select>
+   
+   <select name="gun" onchange="g_recalc(this.form)">
+   <script>
+      g_printOptions( g_guns );
+   </script>
+   </select>
+   
+   
+   <br />
+   
+   <textarea name="output" rows="14" cols="108" ></textarea>
+   
+   <br />
+   
+   <input type="button" value="calculate" onclick="g_recalc(this.form)" />
+
+   Address: <input name="address" length="20" />
+   <input type="hidden" name="builder" value="firearm.firearm" />
+   <input type="submit" value="Email it" />
+   </form>
+</div>
+
+<!--div id="tab_three" class="hide">
+   Content for tab three.
+</div>
+
+<div id="tab_four" class="hide">
+   Content for tab four.
+</div-->
+
+
+<script type="text/javascript">
+   toggle_init();
+</script>
+
+<font size=-1>Generated using Perl.</font>
+</body>
+</html>

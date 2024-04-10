@@ -1,0 +1,57 @@
+option {
+   font-size: 16px;
+}
+
+input {
+   height: 32px;
+}
+
+/* tabs */                                                        
+#wpNav {                                                          
+margin: 0 0 20px 0;                                               
+padding: 0;                                                       
+width: 100%;                                                      
+background-color: #fff;                                           
+        }                                                         
+#wpNav ul {                                                       
+padding-bottom: 1px;                                              
+border-bottom: 1px solid #C1BBAB;                                 
+background-color: #fff;                                           
+margin: 3px 0 0 0;                                                
+        }                                                         
+#wpNav li {                                                       
+background-color: #fff;                                           
+display: inline;                                                  
+        }                                                         
+#wpNav a:link, #wpNav a:visited {                                 
+color: #000;                                                      
+margin: 0 -3px 0 0;                                               
+padding: 3px 20px;                                                
+background-color: #D8E5F2;                                        
+font-weight: bold;                                                
+text-decoration: underline;                                       
+border-top: 1px solid #C1BBAB;                                    
+border-left: 1px solid #C1BBAB;                                   
+border-right: 1px solid #C1BBAB;                                  
+        }                                                         
+#wpNav a:hover {                                                  
+color: #000000;                                                   
+text-decoration: underline;                                       
+background-color: #B1CBE5;                                        
+border-top: 1px solid #C1BBAB;                                    
+border-left: 1px solid #C1BBAB;                                   
+border-right: 1px solid #C1BBAB;                                  
+        }                                                         
+#wpNav a:link#wpSelected,                                         
+ #wpNav a:visited#wpSelected {                                    
+color: #11568C;                                                   
+background-color: #FFF;                                           
+text-decoration: none;                                            
+font-weight: bold;                                                
+border-top: 1px solid #C1BBAB;                                    
+border-bottom: 3px solid #ffffff;                                 
+border-left: 1px solid #C1BBAB;                                   
+border-right: 1px solid #C1BBAB;                                  
+outline: none; /* hide focus rectangle */                         
+-moz-outline: none; /* hide focus rectangle on mozilla browsers */
+}                                                                 

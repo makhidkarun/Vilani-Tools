@@ -1,0 +1,640 @@
+<html>
+<head>
+
+<title>Starport Capacity Calculator</title>
+
+<script>
+
+//
+// Jump-4, 2-G transports available:
+//
+// index tonnage   passengers  freight         MCr
+//
+//       100           3       10              48
+//       200           10      30              84
+//       400           20      80              150
+//       600           30      100             220
+//
+//       800           -       300             285
+//       1000          100     -               362
+//
+//       3000          -       1000            1032
+//       3500          300     -               1224
+//       8000          -       3000            2724
+//       10500         1000    -               3646
+//       26000         -       10000           8800
+//       31500         3000    -               10905
+//       76000         -       30000           26000
+//       125000        10000   -               43100
+//
+function init( form )
+{
+   form.h1.value = form.h2.value = form.h4.value
+                 = form.h6.value = form.h8.value
+                 = form.k1.value = form.k3.value
+                 = form.k3p5.value = form.k8.value
+                 = form.k10.value  = form.k26.value
+                 = form.k31.value  = form.k76.value
+                 = form.k125.value = "0";
+
+   form.ppw.value = form.fpw.value = "0";
+}
+
+////////////////////////////////////////////////////////////
+//
+//  Given ship tonnage, calculate passengers per week
+//  and freight per week.
+//
+//  Then pass the work on to the output function.
+//
+////////////////////////////////////////////////////////////
+var pl, po, fl, fo, sl, so
+var h1, h2, h4, h6, h8, k1, k3, k3p5, k8, k10, k26, k31, k76, k125
+
+function reset( form )
+{
+   pl = po = fl = fo = sl = so = 0
+   h1 = h2 = h4 = h6 = h8 = k1 = k3 = k3p5 = k8 = k10 = k26 = k31 = k76 = k125
+   init( form )
+}
+
+function way1( form )
+{
+   h1 =    parseInt( form.h1.value )    || 0
+   h2 =    parseInt( form.h2.value )    || 0
+   h4 =    parseInt( form.h4.value )    || 0
+   h6 =    parseInt( form.h6.value )    || 0
+   h8 =    parseInt( form.h8.value )    || 0
+   k1 =    parseInt( form.k1.value )    || 0
+   k3 =    parseInt( form.k3.value )    || 0
+   k3p5 =  parseInt( form.k3p5.value )  || 0
+   k8 =    parseInt( form.k8.value )    || 0
+   k10 =   parseInt( form.k10.value )   || 0
+   k26 =   parseInt( form.k26.value)    || 0
+   k31 =   parseInt( form.k31.value )   || 0
+   k76 =   parseInt( form.k76.value)    || 0
+   k125 =  parseInt( form.k125.value )  || 0
+
+
+   // people landing
+   pl = h1 * 3
+      + h2 * 10
+      + h4 * 20
+      + h6 * 30 
+      + k1 * 100
+
+   // people orbiting
+   po = k3p5 * 300
+      + k10  * 1000
+      + k31  * 3000
+      + k125 * 10000
+
+   // freight landing
+   fl = h1 * 10
+      + h2 * 30
+      + h4 * 80
+      + h6 * 100
+      + h8 * 300
+
+   // freight orbiting
+   fo = k3 * 1000
+      + k8 * 3000
+      + k26 * 10000
+      + k76 * 30000
+
+   // ships landing
+   sl = h1 + h2 + h4 + h6 + h8 + k1
+
+   // ships orbiting
+   so = k3 + k3p5 + k8 + k10 + k26 + k31 + k76 + k125
+
+   // a few adjustments (some landable ships prefer to orbit)
+// so += parseInt( sl * 0.1 ) || 0
+// sl -= parseInt( sl * 0.9 ) || 0
+// po += parseInt( pl * 0.1 ) || 0
+// pl -= parseInt( pl * 0.9 ) || 0
+// fo += parseInt( fl * 0.1 ) || 0
+// fl -= parseInt( fl * 0.9 ) || 0
+
+   out( form, pl, po, fl, fo, sl, so )
+}
+
+////////////////////////////////////////////////////////////
+//
+//  Given the amount of passenger and freight traffic
+//  per week, calculate the ships of each type arriving.
+//
+//  Then pass the work on to the output function.
+//
+////////////////////////////////////////////////////////////
+var ppw = 0
+var fpw = 0
+function way2( form )
+{
+   ppw = parseInt( form.ppw.value )
+   fpw = parseInt( form.fpw.value )
+
+   form.k125.value  = count( 10000, 0, 2.0 )
+   form.k76.value   = count( 0, 30000, 1.9 )
+   form.k31.value   = count( 3000,  0, 1.8 )
+   form.k26.value   = count( 0, 10000, 1.7 )
+   form.k10.value   = count( 1000,  0, 1.6 )
+   form.k8.value    = count( 0,  3000, 1.5 )
+   form.k3p5.value  = count( 300,   0, 1.4 )
+   form.k3.value    = count( 0,  1000, 1.3 )
+   form.k1.value    = count( 100,   0, 1.2 )
+   form.h8.value    = count( 0,   300, 1.1 )
+   form.h6.value    = count( 30,  100, 1.0 )
+   form.h4.value    = count( 20,   80, 1.05 )
+   form.h2.value    = count( 10,   30, 1.1 )
+   form.h1.value    = count(  3,   10, 1.2 )
+
+   way1( form )
+}
+
+////////////////////////////////////////////////////////////
+//
+//  Determine the number of ships of this capacity.
+//
+////////////////////////////////////////////////////////////
+function count( pCapacity, fCapacity, multiple )
+{
+   var p = parseInt( 0.5 + ppw / (pCapacity * multiple) ) || 0;
+   var f = parseInt( 0.5 + fpw / (fCapacity * multiple) ) || 0;
+   
+   if (p > f) 
+   {
+      ppw -= parseInt( p * pCapacity )
+      fpw -= parseInt( p * fCapacity )
+
+      if (fpw < 0) ppw = 0
+      return p;
+   }
+   ppw -= parseInt( f * pCapacity )
+   fpw -= parseInt( f * fCapacity )
+   if (ppw < 0) ppw = 0
+
+   return f;
+}
+
+function padValue4( value )
+{
+   if (value > 1000)    return value
+   if (value > 100)     return ' '+value
+   if (value > 10)      return '  '+value
+   else                 return '   '+value
+}
+function padValue6( value )
+{
+   if (value > 1000000) return value
+   if (value > 100000)  return ' '+value
+   if (value > 10000)   return '  '+value
+   if (value > 1000)    return '   '+value
+   if (value > 100)     return '    '+value
+   if (value > 10)      return '     '+value
+   else                 return '      '+value
+}
+
+function maybePrint2( label, count, price )
+{
+   if (count)
+   {
+      return label 
+           + padValue6( count ) 
+           + ' MCr ' 
+           + padValue4( price )
+           + "\n"
+   }
+   else
+      return ''
+}
+
+function maybePrint( label, value )
+{
+   if (value)
+      return label + value + "\n"
+   else
+      return ''
+}
+
+////////////////////////////////////////////////////////////
+//
+//  Calculate the starport requirements and print.
+//
+////////////////////////////////////////////////////////////
+function out( form, pl, po, fl, fo, sl, so )
+{
+   // total ships
+   totalShips = sl + so
+
+   // total people
+   form.ppw.value = pl + po
+
+   // total freight
+   form.fpw.value = fl + fo
+
+   var ot = k125 * 125000
+          + k76  * 76000
+          + k31  * 31500
+          + k26  * 26000
+          + k10  * 10500
+          + k8   * 8000
+          + k3p5 * 3500
+          + k3   * 3000
+
+   var lt = k1 * 1000
+          + h8 * 800
+          + h6 * 600
+          + h4 * 400
+          + h2 * 200
+          + h1 * 100
+
+   var tonnage = ot + lt
+
+   if (sl)
+   {
+      form.out.value = "Landing   : " + sl + " ships (" + lt + " t)\n"
+      + maybePrint("  100t    : ", h1)
+      + maybePrint("  200t    : ", h2)
+      + maybePrint("  400t    : ", h4)
+      + maybePrint("  600t    : ", h6)
+      + maybePrint("  800t    : ", h8)
+      + maybePrint("  1000t   : ", k1)
+      + "Passengers: " + pl + "\n"
+      + "Freight   : " + fl + " t\n"
+      + "\n"
+   }
+   else
+      form.out.value = "No ships landing.\n\n";
+
+   if (so)
+   {
+      form.out.value += "Orbiting  : " + so + " ships (" + ot + " t)\n"
+      + maybePrint("  3000t   : ", k3)
+      + maybePrint("  3500t   : ", k3p5)
+      + maybePrint("  8000t   : ", k8)
+      + maybePrint("  10,500t : ", k10)
+      + maybePrint("  26,000t : ", k26)
+      + maybePrint("  31,500t : ", k31)
+      + maybePrint("  76,000t : ", k76)
+      + maybePrint("  125,000t: ", k125)
+      + "Passengers: " + po + "\n"
+      + "Freight   : " + fo + " t\n"
+      + "\n"
+   }
+   else
+      form.out.value += "No ships orbiting.\n\n";
+
+   var shuttle1k = parseInt((po + fo/4) / (168 * 80)) || 0
+   var shuttle1h = parseInt(((po + fo/4) - shuttle1k * 200 ) / (168 * 16)) || 0
+   var shuttles  = shuttle1k + shuttle1h
+
+   if (shuttle1h) shuttle1h++
+
+   shuttleCost = shuttle1h * 40 + shuttle1k * 265
+
+   var alq = parseInt( 0.978 + ( sl/15 + shuttles ) / 15 )
+   var shq = parseInt( 0.5   + shuttles / 2 )
+   var pbq = parseInt( 0.4   + shuttles / 22 + sl / 11 )
+   var lbq = parseInt( ot / 10 )
+   var fgq = parseInt( lt / 2.5 )
+   var foq = parseInt( ot / 4 )
+   var rgq = parseInt( lt / 10 )
+   var roq = ot
+   var cgq = sl * 100
+   var coq = parseInt( ot / 10 )
+  
+   var alc = alq * 0.01
+   var shc = shq * 10
+   var pbc = parseInt( pbq * 100 ) / 1000
+   var lbc = lbq
+   var fgc = parseInt( fgq * 0.1 ) / 10
+   var foc = foq * 0.1
+   var rgc = parseInt( rgq * 100 ) / 1000
+   var roc = roq * 0.1
+   var cgc = cgq * 0.1
+   var coc = coq
+
+   form.out.value += "Downport Components:\n"
+   + maybePrint2( " Airstrips   :", alq, alc )
+   + maybePrint2( " Parkbays    :", pbq, pbc )
+   + maybePrint2( " Fuel   (T)  :", fgq, fgc )
+   + maybePrint2( " Repair (T/y):", rgq, rgc )
+   + maybePrint2( " Build  (T/y):", cgq, cgc )
+   + "\n"
+
+   form.out.value += "Shuttles (MCr " + shuttleCost + "): " 
+                   + shuttle1h + ' x 100t, '
+                   + shuttle1k + ' x 1000t ' + "\n\n" 
+
+   if (so)
+   {
+      form.out.value += "Ortibal Components:\n"
+      + maybePrint2( " Shuttleports:", shq, shc )
+      + maybePrint2( " Berths (T)  :", lbq, lbc )
+      + maybePrint2( " Fuel   (T)  :", foq, foc )
+      + maybePrint2( " Repair (T/y):", roq, roc )
+      + maybePrint2( " Build  (T/y):", coq, coc )
+      + "\n"
+   }
+ 
+}
+
+function allAboard( passengers, capacity )
+{
+   if (passengers > capacity)
+      return parseInt( passengers / (capacity + 1) )
+   else
+      return 0
+}
+
+function calc ( form )
+{
+   calcTraffic( form )
+   calcDownport( form )
+}
+
+var liner400k, liner60k, liner9k, liner1400, liner600, traders, couriers;
+var liner600l, tradersl, couriersl;
+
+var orbitTonnage, shipsLanding, shipsTotal, tonnage
+var peopleOrbiting, peopleLanding
+
+
+function calcTraffic( form )
+{
+      var passengers = parseInt( form.ppw.value )
+
+   liner400k   = allAboard( passengers, 200000 )
+   passengers -= liner400k * 100000
+
+   liner60k    = allAboard( passengers, 15000 )
+   passengers -= liner60k * 10000
+
+   liner9k     = allAboard( passengers, 2000 )
+   passengers -= liner9k * 1000
+
+   liner1400   = allAboard( passengers, 200 )
+   passengers -= liner1400 * 100
+
+   liner600    = allAboard( passengers, 40 )
+   passengers -= liner600 * 30
+
+   traders     = allAboard( passengers, 12 )
+   passengers -= traders * 10
+
+   couriers  = parseInt( passengers/3 + 0.7 )
+
+   //
+   //  Only ships under 1000 tons will land.
+   //  90% of those ships will land.
+   //
+   liner600l = parseInt( liner600 * 0.9 )
+   tradersl  = parseInt( traders  * 0.9 )
+   couriersl = parseInt( couriers * 0.9 )
+
+   shipsLanding = liner600l + tradersl + couriersl
+
+   if ( liner400k + liner60k + liner9k + liner1400 == 0 )
+   {
+      liner600l = liner600
+      tradersl  = traders 
+      couriersl = couriers 
+   }
+
+   shipsTotal    = couriers + traders  + liner600  + liner1400
+                            + liner9k  + liner60k  + liner400k
+
+   tonnage       = couriers   * 100
+                 + traders    * 300
+                 + liner600   * 600
+                 + liner1400  * 1400
+                 + liner9k    * 9000
+                 + liner60k   * 60000
+                 + liner400k  * 400000
+
+   orbitTonnage  = tonnage
+                 - liner600l  * 600
+                 - tradersl   * 300
+                 - couriersl  * 100
+
+   peopleLanding = liner600l * 30
+                 + tradersl  * 10
+                 + couriersl * 3
+
+   peopleOrbiting = parseInt( form.ppw.value ) - peopleLanding
+
+   form.out.value = "Ships arriving (landing) weekly: " + shipsTotal 
+                         + " (" + shipsLanding + ")\n"
+                         + "Tonnage: " + tonnage + " (" 
+                                       + (tonnage - orbitTonnage) + ")"
+                                       + "\n"
+                         + "Passengers: " + form.ppw.value + " (" + peopleLanding + ")\n"
+                         + "\n"
+                         + shipConfigLine( liner400k, 0, " x 400ktd ", 100000 )
+                         + shipConfigLine( liner60k,  0,  " x  60ktd ",  10000 )
+                         + shipConfigLine( liner9k,   0,   " x   9ktd ",   1000 )
+                         + shipConfigLine( liner1400, 0, " x 1400td ",    100 )
+                         + shipConfigLine( liner600,  liner600l, " x  600td ",     30 )
+                         + shipConfigLine( traders,   tradersl,  " x  300td ",     10 )
+                         + shipConfigLine( couriers,  couriersl, " x  100td ",      3 )
+  
+}
+
+function shipConfigLine( arrive, land, name, passengers ) 
+{
+      var z1 = ''
+      var z2 = ''
+
+   if (arrive == 0) return ''
+
+   if (arrive < 10)  z1 = '00'
+   if (arrive < 100) z1 = '0'
+   if (land   < 10)  z2 = '00'
+   if (land   < 100) z2 = '0'
+
+   return z1 + arrive + " (" + z2 + land + ") " + name + ':  ' + (arrive * passengers) + " passengers\n"
+}
+
+function spaces( num )
+{
+   if (num < 10) return '        ' + num
+   if (num < 100) return '       ' + num
+   if (num < 1000) return '      ' + num
+   if (num < 10000) return '     ' + num
+   if (num < 100000) return '    ' + num
+   if (num < 1000000) return '   ' + num
+   if (num < 10000000) return '  ' + num
+   if (num < 100000000) return ' ' + num
+   return num
+}
+
+function calcDownport( form )
+{
+      var shuttle1k = 0
+      var shuttle1h = 0
+
+   if (peopleOrbiting > 168 * 80)
+      shuttle1k = parseInt( peopleOrbiting / (168 * 80) )
+
+   shuttle1h = parseInt(1+(peopleOrbiting - shuttle1k * 200) / (168 * 16))
+
+      var shuttles   = shuttle1h + shuttle1k   
+      var sc         = shuttle1h * 40 + shuttle1k * 265
+
+   alq = parseInt( 1 + (shipsLanding/15 + shuttles) / 15 );
+   shq = parseInt( 1 + shuttles / 2 );
+   pbq = parseInt( 1 + (shuttles/22) + shipsLanding / 11 );
+
+   lbq = parseInt( orbitTonnage / 10    );
+   fgq = parseInt( (tonnage - orbitTonnage) /2.5   );
+   foq = parseInt( orbitTonnage / 4     );
+   rgq = parseInt( (tonnage - orbitTonnage) / 10 );
+   roq = parseInt( orbitTonnage         );
+   cgq = parseInt( shipsLanding * 100   );
+   coq = parseInt( orbitTonnage / 10    );
+
+   alc = alq * 0.01
+   shc = shq * 10.0
+   pbc = parseInt(pbq * 100)/1000
+   lbc = lbq * 1.0
+   fgc = fgq * 0.01
+   foc = foq * 0.1
+   rgc = parseInt(rgq * 100)/1000
+   roc = roq * 0.1
+   cgc = cgq * 0.1
+   coc = coq * 1
+
+   groundTotal = ( parseFloat( alc )
+                 + parseFloat( pbc )
+                 + parseFloat( fgc )
+                 + parseFloat( rgc )
+                 + parseFloat( cgc )
+                 + parseInt( sc ))            // MCr
+
+   orbitTotal  = ( parseFloat( shc )
+                 + parseFloat( lbc )
+                 + parseFloat( foc )
+                 + parseFloat( roc )
+                 + parseFloat( coc)) / 1000      // BCr
+
+   form.out.value += "\nDownport Components\n"
+        + "Airstrips:     " + spaces( alq ) + " (MCr " + alc + ")\n"
+        + "Shuttles:      " + spaces( shuttles ) + " (MCr " + sc + ") 100t:" + shuttle1h + " 1kt:" + shuttle1k  + "\n"
+        + "Parkbays:      " + spaces( pbq ) + " (MCr " + pbc + ")\n" 
+        + "Fuel(td):      " + spaces( fgq ) + " (MCr " + fgc + ")\n" 
+        + "Repair(td/yr): " + spaces( rgq ) + " (MCr " + rgc + ")\n"
+        + "Build(td/yr):  " + spaces( cgq ) + " (MCr " + cgc + ")\n"
+        + "Admin/Tower:             (MCr " + parseInt(groundTotal * 100 + 1.5)/100 + ")\n"
+        + "Groundport cost:          MCr " + parseInt(groundTotal * 200 + 1.5)/100 + 
+          "   Upkeep: MCr " + parseInt(groundTotal * 200 + 1.5)/1000 + "\n"
+        + "\n"
+        + "Orbital Components\n"
+        + "Shuttle ports:      " + spaces( shq ) + " (MCr " + shc + ")\n"
+        + "Berth capacity(td): " + spaces( lbq ) + " (MCr " + lbc + ")\n" 
+        + "Fuel(td):           " + spaces( foq ) + " (MCr " + foc + ")\n" 
+        + "Repair(td/year):    " + spaces( roq ) + " (MCr " + roc + ")\n"
+        + "Build(td/year):     " + spaces( coq ) + " (MCr " + coc + ")\n"
+        + "Admin/Tower:                  (BCr " + parseInt(orbitTotal * 150 + 1.5)/100 + ")\n"
+        + "Orbital cost:                  BCr " + parseInt(orbitTotal * 250 + 1.5)/100 + 
+          "   Upkeep: BCr " + parseInt(orbitTotal * 250 + 1.5)/1000 + "\n"
+        + "\n"
+        + "Total Cost: BCr " 
+        + parseInt(2500 * (groundTotal/1000 + orbitTotal) + 0.5)/1000
+}
+
+</script>
+</head>
+
+
+<body background=../img/backgrounds/marble5.gif>
+<a name=top>
+<h1>Starport Capacity Calculator</h1>
+<!--98.07.24-->
+<!--98.08.25-->
+<h4>98.09.25</h4>
+<form>
+
+<table cellspacing=0 cellpadding=0>
+<h2> Way 1: <a href=#broadsheet>ship</a> capacity per week</h2>
+<tr>
+ <td> 125k: </td><td> <input name=k125 size=2> </td>
+ <td>  76k: </td><td> <input name=k76  size=2> </td>
+ <td>  31k: </td><td> <input name=k31  size=2> </td>
+ <td>  26k: </td><td> <input name=k26  size=2> </td>
+ <td>  10k: </td><td> <input name=k10  size=2> </td>
+ <td>  8k:  </td><td> <input name=k8   size=2> </td>
+ <td>  3.5k:</td><td> <input name=k3p5 size=2> </td>
+</tr>
+<tr>
+ <td>  3k: </td><td> <input name=k3 size=2></td>
+ <td>  1k: </td><td> <input name=k1 size=2></td>
+ <td>  800:</td><td> <input name=h8 size=2></td>
+ <td>  600:</td><td> <input name=h6 size=2></td>
+ <td>  400:</td><td> <input name=h4 size=2></td>
+ <td>  200:</td><td> <input name=h2 size=2></td>
+ <td>  100:</td><td> <input name=h1 size=2></td>
+</tr>
+</table>
+
+ <br>
+ <input type=button name=b1 value="Calculate" onClick=way1(this.form)>
+ <input type=reset value="Reset" onClick=reset( this.form )>
+ <hr>
+
+<h2> Way 2: passenger and freight capacity per week </h2>
+
+ Passengers per week:   <input size=8 name=ppw>
+ Freight (Td) per week: <input size=8 name=fpw>
+ <br>
+ <input type=button name=b2 value="Calculate" onClick=way2(this.form)>
+ <input type=reset value="Reset" onClick=reset( this.form )>
+ <hr>
+
+ <br>
+ <br>
+
+ <textarea rows=32 cols=45 name=out wrap=physical></textarea>
+
+ <script> 
+   init( this.form ) 
+ </script>
+
+</form>
+
+<a name=broadsheet>
+<h3>Ship Broadsheet</h3>
+<pre>
+<font face="new century schoolbook">
+Fourteen transports have been chosen to represent all regular 
+trade route shipping for interstellar travel. Please note that
+ships 1,000 tons and smaller may land on atmosphere worlds, 
+while ships larger than 1,000 tons must remain in orbit.  Also
+note that ships 600 tons and smaller carry both passengers and
+freight, while ships larger than 600 tons tend to be dedicated
+passenger liners or cargo haulers. There are always exceptions,
+of course, and the referee may see fit to change these rules as
+much or as little as possible.  After all, this is only IMTU.
+</font>
+<a href=#top>Top</a>
+<font face=courier>
+ Index  Ship type          Passengers  Freight (tons)
+ =====  ===============    ==========  ==============
+ 100    100-ton Courier    3           10
+ 200    200-ton Trader     10          30
+ 400    400-ton Merchant   20          80
+ 600    600-ton Liner      30          100
+ 800    800-ton Freighter  -           300
+ 1k     1000-ton Liner     100         -
+ 3k     3000-ton Freighter -           1000
+ 3.5k   3500-ton Liner     300         -
+ 8k     8000-ton Fr.       -           3000
+ 10k    10500-ton Liner    1000        -
+ 26k    26000-ton Fr.      -           10000
+ 31k    31500-ton Liner    3000        -
+ 76k    76000-ton Fr.      -           30000
+ 125k   125000-ton Liner   10000       -
+</pre>
+</font>
+</body>
+</html>

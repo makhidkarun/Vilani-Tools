@@ -1,0 +1,447 @@
+<html>
+
+<head>
+
+<script>
+
+/////////////////////////////////////////////////////
+//
+// Random Number Generation Functions
+//
+/////////////////////////////////////////////////////
+RandNum = new randomNumberGenerator()
+
+function nextRandomNumber()
+{
+      var Hi   = this.seed / this.Q;
+      var Lo   = this.seed % this.Q;
+      var Test = this.A * Lo - this.R * Hi;
+
+   if (Test > 0)
+      this.seed = Test
+   else
+      this.seed = Test + this.M;
+
+   return (this.seed * this.oneOverM);
+}
+
+function randomNumberGenerator()
+{
+      var D=new Date();
+
+   this.seed = 2345678901 
+             + (D.getSeconds() * 0xFFFFFF) 
+             + (D.getMinutes() * 0xFFFF);
+
+   this.A = 48271;
+   this.M = 2147483647;
+   this.Q = this.M / this.A;
+   this.R = this.M % this.A;
+   this.oneOverM = 1.0 / this.M;
+   this.next = nextRandomNumber;
+   this.dice = nextRandomDice;
+}
+
+function nextRandomDice()
+{
+   return parseInt( this.next() * 6 + 1 ) 
+        + parseInt( this.next() * 6 + 1 )
+}
+/////////////////////////////////////////////////////
+//
+// End (Random Number Generation Functions)
+//
+/////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////
+//
+// Adventure Hook Material
+//
+/////////////////////////////////////////////////////
+var advHead = new Array
+(
+   'This person',
+   'An associate', 
+   'A wealthy friend',
+   'A crime boss',
+   'A ship\'s owner',
+   'A ship\'s captain'
+)
+var advBody = new Array
+(
+   ' is looking for',
+   ' wants to locate',
+   ' wants to recover',
+   ' wants to \'borrow\'',
+   ' wants to kill/destroy',
+   ' has plans for',
+   ' knows all about',
+   ' has custody of',
+   ' needs security for'
+)
+var advTail = new Array
+(
+   ' a weapon prototype',
+   ' an engine prototype',
+   ' a friend',
+   ' a local official',
+   ' an Imperial official',
+   ' a sector crime boss',
+   ' a small ship', 
+   ' a corsair',
+   ' an emissary',
+   ' an emissary\'s ship',
+   ' a liner',
+   ' a mercenary group',
+   ' a megacorporation'
+)
+/////////////////////////////////////////////////////
+//
+//  End (Adventure Hook Material)
+//
+/////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////
+//
+//  The Ship's Locker
+//
+/////////////////////////////////////////////////////
+var garage = new Array
+(
+   'Helicopter', 'Air Raft', 'Speeder', 'Wheeled ATV', 
+   'Tracked ATV', 'Tracked AFV', 'GCarrier', 'Hovercraft',
+   'Ship\'s Boat', 'Launch', 'Slow Boat', 'Pinnace', 
+   'Modular Cutter', 'Gig', 'Light Fighter'
+)
+
+var protectiveGear = new Array(
+	'Artificial gill-9',
+	'Cold weather clothing-10',
+	'Combo mask-9',
+	'Desert survival suit-11',
+	'Filter mask-8',
+	'Goggles-8',
+	'Oxy Tanks-9',
+	'Respirator-8',
+	'Space parka-9',
+	'Survival bubble-9',
+	'Vac suit-10',
+	'EVA-11',
+	'Diplo-11',
+	'Flex-11',
+	'Psi-shield helmet-12'
+);
+
+var locker      = new Array(
+	'Blur',
+	'Slow drug',
+	'Fast drug',
+	'Combat drug',
+	'Medical drug',
+	'Pocket lamp',
+	'Imperial ID',
+	'Cr10',
+	'Cr100',
+	'Dry rations',
+	'1L water',
+	'Comm relay',
+	'Compass',
+	'Amaze natives kit',
+	'Atmosphere tester-8',
+	'Backpack-11',
+	'Binoculars-11',
+	'Bioscanner-13',
+	'Breaching charge-11',
+	'Compressor-10',
+	'Cutting torch-8',
+	'Electonic tools-11',
+	'Emergency beacon-10',
+	'Entry cutter-10',
+	'Flare gun-8',
+	'Flashlight-11',
+	'Generator-10',
+	'Grapnel gun-10',
+	'Inertial locator-9',
+	'Intrusion tools-8',
+	'Cold lantern-6',
+	'Med microscan-11',
+	'Med scanner-11',
+	'Multiscanner-10',
+	'Night glasses-9',
+	'Paramedic kit-11',
+	'Piton-9',
+	'Personal datalog-11',
+	'Radiation counter-10',
+	'Retroreflector-8',
+	'Rope-6',
+	'Slaplock-8',
+	'Sleeping bag-11',
+	'Tarp-8',
+	'Translator-11',
+	'Wall patch-10',
+	'Climbing shoes-9',
+	'Hiking boots-9',
+	'Combat boot-9',
+	'Survival still-11',
+	'Survival tent-11',
+	'Water filter-7',
+	'Comm'
+);
+
+var lockerWeapons  = new Array(
+	'Plastique', 'Cutlass',
+        'Anagathics', 'Grenade', 'Body Pistol', 'Laser Pistol',
+        'Magnum Revolver', 'cP003', 'Staple Gun', 'Thud Gun',
+        'Bullpup', 'Laser Rifle', 'cR776', 'pR903', 'Shotgun',
+        'SMG', 'Telescopic Sight', 'Electronic Sight', 'Silencer'
+);
+
+var lockerMachines = new Array(
+	'Iris valve opener-10',
+	'Laser cutter-10',
+	'Tent-11',
+	'Portable airlock-10',
+	'Grav belt-12',
+	'Sursat-11',
+	'Survey shield-11',
+	'Parawing-10',
+	'Re-entry kit-10',
+	'Thruster pack-9'
+);
+
+var commercialGoods = new Array(
+	'Anagathics',
+	'Slow drug',
+	'Fast drug',
+	'Combat drug',
+	'Medical drug',
+	'Med microscan-11',
+	'Med scanner-11',
+	'Multiscanner-10',
+	'Backpack-11',
+	'Binoculars-11',
+	'Translator-11',
+	'Climbing shoes-9',
+	'Hiking boots-9',
+	'Stretch cloth',
+	'Chameleon cloth',
+	'Video cloth',
+	'Flashtray',
+	'Flobee',
+	'Fractal heat sinks',
+	'One-way',
+	'Personal HUD',
+	'Plascrete',
+	'Cerastic',
+	'Reference Comp-11',
+	'Solar verifier',
+	'Space watch-12',
+	'Spray paint-11',
+	'Structurecomp',
+	'Synthetic diamond',
+	'Aide',
+	'Business ring',
+	'Comm',	
+	'Personal computer',
+	'Bugs-12',
+	'Vacuum unit-10'
+);
+
+/////////////////////////////////////////////////////
+//
+//  End (Ship's Locker)
+//
+/////////////////////////////////////////////////////
+
+var career = new Array
+(
+   'Noble', 'Rogue', 'Scholar', 'Army', 'Marine', 'Merchant',
+   'Navy', 'Scout', 'Agent'
+)
+
+var skill = new Array
+( 
+   'Acting', 'Admin', 'Art', 'Astro', 'Athl', 
+   'BattleD', 'Blade', 'Bow', 'Brawl', 'Bribe', 'Broker',
+   'Camouf', 'Carous', 'Chem', 'Comms', 'Comp', 'Craft',
+   'Demol', 'Diplo', 'Disg', 
+   'Elect', 'Eng', 'Eques', 'Fast', 'Fence', '1stAid',
+   'Forge', 'Fwd', 'Gambl', 'Grav', 'GunCbt', 'Gunnery',
+   'Heli', 'His', 'Instr', 'Interr', 'Intimi', 'Intrus', 
+   'JoT', 'Jet', 'Lang', 'Law', 'Leadr', 'Mech', 'Medic',
+   'Nav', 'Percpt', 'Physic', 'Pilot', 'Pistol', 'Rifle',
+   'Sensor', 'Boat', 'Shgun', 'Spacecraft', 'Stealth',
+   'SMG', 'Survival', 'Tactics', 'Trader', 'Vac', 'Writing' 
+)
+
+function pickSkill()
+{
+   var ix = parseInt( 1 + RandNum.next() * skill.length )
+   
+   var sk = skill[ ix-1 ]
+
+   if (RandNum.next() > 0.7)
+      sk += '-2'
+   else
+   if (RandNum.next() > 0.875)
+      sk += '-3'
+   else
+   if (RandNum.next() > 0.97)
+      sk += '-4'
+
+   return sk
+}
+
+function d2h( d )
+{
+   if (d == 10) return 'A'
+   if (d == 11) return 'B'
+   if (d == 12) return 'C'
+   if (d == 13) return 'D'
+   if (d == 14) return 'E'
+   if (d == 15) return 'F'
+   if (d == 16) return 'G'
+   if (d == 17) return 'H'
+   if (d == 18) return 'I'
+   if (d == 19) return 'J'
+   return d
+}
+
+function character()
+{
+   var out = ""
+   var k
+   var j
+   var cash = 'Cr' + parseInt( RandNum.next() * 100 ) // typical bum
+
+   if ( RandNum.next() > 0.7 )
+      cash = cash + '0'
+
+   if ( RandNum.next() > 0.875 )
+      cash = "K" + cash
+
+   this.age   = parseInt(18 + RandNum.next() * 20 + RandNum.next() * 20)
+   this.terms = "0"
+   if (this.age > 21)
+      this.terms = parseInt( (this.age - 18) / 4)
+
+   this.upp   = d2h( RandNum.dice() ) + ''
+              + d2h( RandNum.dice() ) + ''
+              + d2h( RandNum.dice() ) + ''
+              + d2h( RandNum.dice() ) + ''
+              + d2h( RandNum.dice() ) + ''
+              + d2h( RandNum.dice() ) + ''
+
+   out = this.upp  + " " + this.age + "  " + this.terms + ": " + cash + "  "
+
+   for(k=0; k< parseInt( RandNum.next() * 6 + 1); k++)
+      out += pickSkill() + " "
+ 
+   return out + "\n"
+}
+
+function generate( form )
+{
+   var i
+  
+   form.detail.value = "UPP    Age Terms: cash, skills, etc\n"
+   for (i=0; i<10; i++)
+   {
+      form.detail.value += character()
+   }
+}
+
+function hookEm( form )
+{
+   form.hook.value = ''
+   for (i=0; i<5; i++)
+   {
+      var headIndex = parseInt( 1 + RandNum.next() * advHead.length )
+      var bodyIndex = parseInt( 1 + RandNum.next() * advBody.length )
+      var tailIndex = parseInt( 1 + RandNum.next() * advTail.length )
+
+      form.hook.value += advHead[ headIndex-1 ]
+      form.hook.value += advBody[ bodyIndex-1 ]
+      form.hook.value += advTail[ tailIndex-1 ]
+      form.hook.value += ".\n"
+   }
+}
+
+function toys()
+{
+   var extra = ''
+   var index
+
+   index = parseInt( 1 + RandNum.next() * protectiveGear.length )
+   if (RandNum.dice() < 6)
+      extra += RandNum.dice() + ' x ' + protectiveGear[ index-1 ] + "\n"
+
+
+   index = parseInt( 1 + RandNum.next() * lockerWeapons.length )
+   if (RandNum.dice() < 7)
+      extra += RandNum.dice() + ' x ' + lockerWeapons[ index-1 ] + "\n"
+
+
+   index = parseInt( 1 + RandNum.next() * lockerMachines.length )
+   if (RandNum.dice() < 5)
+      extra += '1 x ' + lockerMachines[ index-1 ] + "\n"
+
+   return extra
+}
+
+function lockEm( form )
+{
+   var i
+   var index
+  
+   form.locker1.value = ""
+   form.locker2.value = ""
+   form.locker3.value = ""
+
+   var count = RandNum.dice() - 3
+   for (i=0; i<count; i++)
+   {
+      index = parseInt( 1 + RandNum.next() * locker.length )
+      form.locker1.value += RandNum.dice() + ' x ' + locker[ index-1 ] + "\n"
+   }
+
+   var count = RandNum.dice() - 4
+   for (i=0; i<count; i++)
+   {
+      index = parseInt( 1 + RandNum.next() * locker.length )
+      form.locker2.value += RandNum.dice() + ' x ' + locker[ index-1 ] + "\n"
+   }
+   form.locker2.value += toys()
+
+   var count = RandNum.dice() - 5
+   for (i=0; i<count; i++)
+   {
+      index = parseInt( 1 + RandNum.next() * locker.length )
+      form.locker3.value += RandNum.dice() + ' x ' + locker[ index-1 ] + "\n"
+   }
+   form.locker3.value += toys() + toys()
+}
+
+</script>
+
+</head>
+
+<body background=../img/backgrounds/marble5.gif>
+<h1>Rob's Random Traveller Resource Generator</h1>
+<form>
+<input type=button onClick=generate(this.form) value="Make random people">
+<br>
+<textarea name=detail rows=12 cols=69 wrap=physical></textarea>
+<br>
+<input type=button onClick=hookEm(this.form) value="Make random adventure hooks">
+<br>
+<textarea name=hook rows=6 cols=69 wrap=physical></textarea>
+<br>
+<input type=button onClick=lockEm(this.form) value="Make ship lockers">
+<br>
+<textarea name=locker1 rows=12 cols=22 wrap=physical></textarea>
+<textarea name=locker2 rows=12 cols=22 wrap=physical></textarea>
+<textarea name=locker3 rows=12 cols=22 wrap=physical></textarea>
+</form>
+</body>
+</html>

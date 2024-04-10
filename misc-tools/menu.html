@@ -1,0 +1,158 @@
+<HTML>
+
+<HEAD>
+
+<TITLE>OnLine</TITLE>
+
+<script>
+<!--  Activate Cloaking Device
+
+//
+// Identify browser - not all browsers handle focus() the same.
+//
+var browser=navigator.appName + " " + navigator.appVersion;
+
+////////////////////////////////////////////////////////////
+// 
+//  Handy scripts
+//
+////////////////////////////////////////////////////////////
+left1     = new Image(45,45)
+left1.src = "OnLineimg/PaperLeft.jpg"
+left2     = new Image(45,45)
+left2.src = "OnLineimg/PaperLeft2.jpg"
+
+//
+// Swap images
+//
+function hilite( imgId, imgName ) 
+{
+   document.images[ imgId ].src = eval( imgName, ".src" ) 
+}
+
+//
+// Write a link
+//
+function link( name, alias )
+{
+   document.writeln( "<a href=" + name + ">" + alias + "</a><br>" );
+}
+
+//
+// Write a file link
+//
+function file( name )
+{
+   link( name + ".html" , name );
+}
+
+//
+// Write a directory link
+//
+function door( name )
+{
+   link( name + "/menu.html", name );
+}
+
+//
+// Write a subdirectory link
+//
+function door2( path, name )
+{
+   document.writeln( '<li>' );
+   link( path + "/menu.html", name );
+}
+
+// Deactivate Cloaking -->
+</script>
+</HEAD>
+
+<BODY background="OnLineimg/swgold.jpg" vlink=550000>
+
+<table cellspacing=0 cellpadding=0>
+<tr>
+   <td width=128></td>
+   <td width=512></td>
+</tr>
+<tr>
+<td valign=top>
+
+<a href=../menu.html target=_top 
+   onMouseOver="foo.src=left2.src"
+   onMouseOut="foo.src=left1.src">
+   <img name=foo src="OnLineimg/PaperLeft.jpg"></a>
+
+<br>
+
+<hr>
+
+<br>
+
+99.7.24
+<br>
+<img src="OnLineimg/doc2.gif"> <br>
+<script>
+file("CSC")
+file("CargoLiners")
+file("DownportMapper")
+file("FleetMaker")
+file("FleetMaker2")
+file("Med2")
+file("Medmar")
+file("PocketEmpires")
+file("RSDS")
+file("RSDSv2")
+file("RSSG")
+file("SDC")
+file("StarportCapacity")
+file("StarportCosts")
+file("StarportTrade")
+file("StarportTrade3")
+file("T4ResourceGen")
+file("UWP")
+file("index")
+file("view")
+file("vilanigen")
+</script>
+<hr>
+<img src="OnLineimg/yrgb.gif"> <br>
+<form>
+<select onChange=window.open(this.options[this.options.selectedIndex].value,this.options[this.options.selectedIndex].name,"menubar=no,scrollbars=yes,resizable=yes,width=300,height=200")>
+<option name= value=""></option>
+<option name=FREE_TRADER_small value="FREE_TRADER_small.gif">FREE_TRADER_small.gif</option>
+</select>
+</form>
+</td><td valign=top>
+<center>
+
+<b><font size=+2 face=lucida>OnLine</font></b>
+</center>
+
+<br>
+<br>
+
+This directory contains all my JavaScript Traveller aids.<br>
+
+
+
+<br>
+<br>
+<li> CSC (unfinished): Vehicle design using the Central Supply Catalog rules.
+<br>
+<li> PocketEmpires: a budget calculation page in JavaScript.
+<br>
+<br>
+<li> RSDS (unfinished): A quick TL12 ship design system in JavaScript.
+<br>
+<br>
+<li> SDC: The "Book 2" Ship design system.
+<br>
+<br>
+<li> Starport9806: A JavaScript program to calculate trade traffic to a world, given its stats and its neighbors stats.
+
+
+
+<br>
+<br>
+</tr></table>
+</body>

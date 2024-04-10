@@ -1,0 +1,471 @@
+<html>
+
+<head>
+<title>USP</title>
+
+<script type="text/javascript">
+
+function pad( string, len )
+{
+   for ( i=string.length; i<len; i++ )  // len > 0: pad right
+      string += ' ';
+ 
+   for ( i=string.length; i<-len; i++ ) // len < 0: pad left
+      string = ' ' + string;
+       
+   return string;
+}
+
+var tohex = new Array( 0,1,2,3,4,5,6,7,8,9,
+                       'A','B','C','D','E','F','G','H','J','K',
+                       'L','M','N','P','Q','R','S','T','U','V',
+                       'W','X','Y','Z' );
+
+function tolog( num )
+{
+   if ( !num ) return 0;
+   if ( num >= 100000 ) return 5;
+   if ( num >= 10000  ) return 4;
+   if ( num >= 1000   ) return 3; 
+   if ( num >= 100    ) return 2;
+   if ( num >= 10     ) return 1;
+   return 0;
+}
+
+function Statblock()
+{
+	 this.payload = 0;
+	 this.tl      = 0;
+   this.jn      = 0;
+   this.mn      = 0;
+   this.pn      = 0;
+   this.av      = 0;
+   this.vol     = 0;
+   this.crew    = 0;
+   this.cpu     = 0;
+   this.marines = 0;
+   
+   this.setPayload = function(pl) { this.payload = pl }
+   this.setTL = function(tl) { this.tl = tl }
+   this.setJN = function(jn) { this.jn = jn }
+   this.setMN = function(mn) { this.mn = mn }
+   this.setPN = function(pn) { this.pn = pn }
+   this.setAV = function(av) { this.av = av }
+   this.setCrew = function(c) { this.crew = crew }
+   this.setCPU = function(cpu) { this.cpu = cpu }
+   this.setMarines = function(m) { this.marines = marines }
+   
+   this.recalc  = function(form)
+   {
+      var perc = 0;
+            
+      if (this.jn) perc += this.jn * 11 + 1;
+      if (this.mn) perc += this.mn * 3 - 1;
+
+      this.pn = Math.max( this.pn, this.jn ); 
+      this.pn = Math.max( this.pn, this.mn );
+      form.pn.value = this.pn;
+      
+      if ( this.tl > 14 ) perc += this.pn;
+      else if ( this.tl > 12 ) perc += 2 * this.pn;
+      else if ( this.tl > 8  ) perc += 3 * this.pn;
+      else perc += 4 * this.pn;
+      
+      if ( this.av > 0 )
+      {
+      	 var avp = 1 + parseInt(this.av);
+         if ( this.tl > 13 ) perc += avp;
+         else if ( this.tl > 11 ) perc += 2 * avp;
+         else if ( this.tl > 9  ) perc += 3 * avp;
+         else perc += 4 * avp;    
+      }
+      
+      var complement = 100 - perc;
+      
+      this.vol = this.payload * 100 / complement;
+      
+      var ep      = parseInt(this.pn * this.vol / 50)/2;
+      var fuel    = parseInt(this.jn * this.vol / 5)/2 + ep;
+      var agility = this.mn;
+      
+      form.usp.value = 
+        pad( form.name.value, 22 )
+      + form.type.value
+      + '?'
+      + '?'
+      + this.jn
+      + this.mn
+      + tohex[this.pn]
+      + tohex[this.cpu]
+      + tolog(this.crew)
+      + '-'
+      + tohex[this.av]
+      + tohex[sand.factor]
+      + tohex[screens.factor]
+      + tohex[dampers.factor]
+      + tohex[globe.factor]
+      + tohex[repulsor.factor]
+      + '-'
+      + tohex[lasers.factor]
+      + tohex[energy.factor]
+      + tohex[pa.factor]
+      + tohex[meson.factor]
+      + tohex[missile.factor]
+      + '-'
+      + 'Q' // fighter squadrons
+      + pad( 'BCr9999.99', -11 )
+      + pad( parseInt( this.vol + 0.5 ) + ' tons', -10 ) + "\n"
+      + pad( 'batteries bearing', -22 )
+      + pad( '', 17 )
+      + '.....'
+      + pad( 'Crew: ' + this.crew, -23 ) + "\n"
+      + pad( 'batteries', -22 )
+      + pad( '', 17 )
+      + '.....'
+      + pad( 'TL-' + tohex[ this.tl ], -23 ) + "\n"
+      + 'Fuel=' + fuel + '  EP=' + ep + '  Marines=' + this.marines + '  Agility-' + agility;
+//      + 'Pass=0  Low=0  Cargo=63  Fuel=587.5  EP=87.5  Marines=35  Agility-1';
+   }
+
+   return this;
+}
+
+function Payload( volumeArray, 
+                  costArray,   // turret, bay50, bay100, spine
+                  energyArray, // turret, bay50, bay100, spine
+                  tl1, tl2 )
+{
+   this.type     = '';
+   this.factor   = 0;
+   this.count    = 0;
+   this.mode     = 'turret';
+
+   this.volumeArray = volumeArray;
+   this.costArray   = costArray;
+   this.energyArray = energyArray;
+   this.tl1         = tl1;
+   this.tl2         = tl2;
+
+   this.setFactor   = function(f) { this.factor = f; if ( this.count == 0 ) this.count = 1; }
+   this.setCount    = function(c) { this.count  = c }
+
+   this.setTurret   = function()  { this.mode = 'turret' }
+   this.setBarbette = function() { this.mode = 'barbette' }
+   this.setBay50    = function() { this.mode = 'bay50'    }
+   this.setBay100   = function() { this.mode = 'bay100'   }
+   
+   this.getVolume = function()  
+   { 
+      if ( this.mode == 'bay50' )   return 50 * this.count;
+      if ( this.mode == 'bay100' )  return 100 * this.count;
+
+      var tfactor = this.factor;
+
+      if (stats.tl >= tl1) tfactor-- ; // treat it as 1 factor lower for volume
+      if (stats.tl >= tl2) tfactor--; // treat it as 2 factors lower for volume
+
+      if ( tfactor < 1 ) return 0;
+      return this.count * this.volumeArray[ tfactor ];
+   } 
+
+   return this;
+}
+
+var stats = new Statblock();
+
+var sand  = new Payload( 
+   new Array( 0,1,1,2,3,4,7,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ),
+   new Array( 0.25, 0, 0, 0 ),
+   new Array( 0,0,0,0  ),
+   8, 10
+);
+
+var screens = new Payload(
+   new Array( 0,3,6,9,12,15,18,21,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ),
+   new Array( 0, 0, 0, 0 ),
+   new Array( 0, 0, 0, 0 ),
+   8, 10
+);	   
+
+var dampers = new Payload(
+   new Array( 0,3,6,9,12,15,18,21,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ),
+   new Array( 0, 0, 0, 0 ),
+   new Array( 0, 0, 0, 0 ),
+   8, 10
+);
+
+var globe = new Payload(
+   new Array( 0,3,6,9,12,15,18,21,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ),
+   new Array( 0, 0, 0, 0 ),
+   new Array( 0, 0, 0, 0 ),
+   8, 10
+);
+
+var repulsor = new Payload(
+   new Array( 0,3,6,9,12,15,18,21,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ),
+   new Array( 0, 0, 0, 0 ),
+   new Array( 0, 0, 0, 0 ),
+   8, 10
+);
+
+var lasers = new Payload(
+   new Array( 0,3,6,9,12,15,18,21,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ),
+   new Array( 0, 0, 0, 0 ),
+   new Array( 0, 0, 0, 0 ),
+   8, 10
+);
+
+var energy = new Payload(
+   new Array( 0,3,6,9,12,15,18,21,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ),
+   new Array( 0, 0, 0, 0 ),
+   new Array( 0, 0, 0, 0 ),
+   8, 10
+);
+
+var pa = new Payload(
+   new Array( 0,3,6,9,12,15,18,21,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ),
+   new Array( 0, 0, 0, 0 ),
+   new Array( 0, 0, 0, 0 ),
+   8, 10
+);
+
+var meson = new Payload(
+   new Array( 0,3,6,9,12,15,18,21,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ),
+   new Array( 0, 0, 0, 0 ),
+   new Array( 0, 0, 0, 0 ),
+   8, 10
+);
+
+var missile = new Payload(
+   new Array( 0,3,6,9,12,15,18,21,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ),
+   new Array( 0, 0, 0, 0 ),
+   new Array( 0, 0, 0, 0 ),
+   8, 10
+);
+
+
+function recalc( form ) { stats.recalc( form ); }
+
+function setPayload( pl, form ) { stats.setPayload( pl ); stats.recalc( form ); }
+function setTL( tl, form )      
+{ 
+   if ( tl < 7 )
+   {
+      tl = 7;
+      form.tl.value = 7;
+   }
+   stats.setTL( tl );      
+   stats.recalc( form ); 
+}
+function setJN( jn, form )      { stats.setJN( jn );      stats.recalc( form ); }
+function setMN( mn, form )      { stats.setMN( mn );      stats.recalc( form ); }
+function setPN( pn, form )      { stats.setPN( pn );      stats.recalc( form ); }
+function setAV( av, form )      { stats.setAV( av );      stats.recalc( form ); }
+function setCrew( c, form )     { stats.setCrew( c );     stats.recalc( form ); }
+function setCPU( cpu, form )    { stats.setCPU( cpu );    stats.recalc( form ); }
+
+function setSand( factor, form )
+{
+   sand.setFactor( factor );
+   stats.recalc( form );
+}
+
+function setScreen( factor, form )
+{
+	 screens.setFactor( factor );
+	 stats.recalc( form );
+}
+
+function setDamper( factor, form )
+{
+	 dampers.setFactor( factor );
+	 stats.recalc( form );
+}
+
+function setGlobe( factor, form )
+{
+	 globe.setFactor( factor );
+	 stats.recalc( form );
+}
+
+function setRepuls( factor, form )
+{
+	 repulsor.setFactor( factor );
+	 stats.recalc( form );
+}
+
+function setLaser( factor, form )
+{
+	 lasers.setFactor( factor );
+	 stats.recalc( form );
+}
+
+function setEnergy( factor, form )
+{
+	 energy.setFactor( factor );
+	 stats.recalc( form );
+}
+
+function setPA( factor, form )
+{
+	 pa.setFactor( factor );
+	 stats.recalc( form );
+}
+
+function setMeson( factor, form )
+{
+	 meson.setFactor( factor );
+	 stats.recalc( form );
+}
+
+function setMissile( factor, form )
+{
+	 missile.setFactor( factor );
+	 stats.recalc( form );
+}
+
+
+
+//function setSandCount( count, form )
+//{
+//   sand.setCount( count );
+//   alert( sand.getVolume() );
+//}
+
+function setMeson( type, count, form )
+{
+   var t    = new Array();
+   var b    = new Array();
+   var b50  = new Array();
+   var b100 = new Array();
+	 
+   if ( type == 'turret'   ) 
+   if ( type == 'barbette' )
+   if ( type == 'bay50'    )
+   if ( type == 'bay100'   )
+   stats.recalc( form );
+}
+
+</script>
+	
+</head>
+
+<body bgcolor=black text=lightgrey >
+
+<div align=right>
+<font size=+1 face=optima><i>USP Form</i></font>
+<hr color=red>
+<font size=+3 color=red face=optima><i>Traveller</i></font>
+</div>
+
+<form id="uspform">
+
+<textarea rows=4 cols=75 name=usp style='font-family: courier, overflow: hidden'>
+BC-9514 Kinunir       BC-A2447G2-000510-50202-0  MCr1336.63   1250 tons
+             batt bear                  2 2 2                 Crew=45.
+                  batt                  2 2 2                   TL=15.
+Pass=0. Low=0. Cargo=63. Fuel=587.5. EP=87.5. Marines=35.       Agi=1.
+</textarea>
+
+
+<table border=0>
+
+<tr>
+<td> Name: </td>
+<td>
+<input size=15 name=name value="BC-9514 Kinunir" />
+<td> Type: <input size=2 name=type value="BC" />
+ TL: <input size=2 name=tl value="15" onchange="setTL( this.value, this.form )" /> (7-15) </td>
+</tr>
+
+<tr><td>Jn</td>
+    <td>
+       0<input type=radio name=jn onchange="setJN( 0, this.form )" />    
+       1<input type=radio name=jn onchange="setJN( 1, this.form )" />    
+       2<input type=radio name=jn onchange="setJN( 2, this.form )" />    
+       3<input type=radio name=jn onchange="setJN( 3, this.form )" />    
+       4<input type=radio name=jn onchange="setJN( 4, this.form )" checked=checked />    
+       5<input type=radio name=jn onchange="setJN( 5, this.form )" />    
+       6<input type=radio name=jn onchange="setJN( 6, this.form )" />    
+    </td>
+</tr>
+
+<tr><td>Mn</td>
+    <td>
+       0<input type=radio name=mn onchange="setMN( 0, this.form )" />    
+       1<input type=radio name=mn onchange="setMN( 1, this.form )" />    
+       2<input type=radio name=mn onchange="setMN( 2, this.form )" />    
+       3<input type=radio name=mn onchange="setMN( 3, this.form )" />    
+       4<input type=radio name=mn onchange="setMN( 4, this.form )"  checked=checked />    
+       5<input type=radio name=mn onchange="setMN( 5, this.form )" />    
+       6<input type=radio name=mn onchange="setMN( 6, this.form )" />    
+    </td>
+</tr>
+
+<tr><td>Pn</td>
+    <td>
+    	 <input size=1 name=pn value="7" onchange="setPN( this.value, this.form )" /> (1-35)
+    </td>
+</tr>
+
+<tr><td>Computer        </td><td><input onchange="setCPU(this.value, this.form)" size=1 name=cpu      value=1 /></td></tr>
+<tr><td>Crew</td><td><input readonly="readonly" name="crew" value="0" size=4 /></td>
+</tr>
+<tr><td>-</td></tr>
+<tr><td>Hull Armor      </td><td><input onchange="setAV( this.value, this.form )" size=1 name=armor value=0 /> (1-20)</td></tr>
+<tr><td>Sandcasters     </td><td><input onchange="setSand( this.value, this.form )" size=1 name=sand     value=0 />
+          <!--Count <input onchange="setSandCount( this.value, this.form )" size=2 value=0 /-->
+</td>
+	  <td>Payload: <input onchange="setPayload(this.value,this.form)" size=5 value="287" /></td>
+</tr>
+<tr><td>Meson screen    </td><td><input onchange="setScreen( this.value, this.form) " size=1 name=screen   value=0 /></td></tr>
+<tr><td>Nuclear dampers </td><td><input onchange="setDamper( this.value, this.form) " size=1 name=damper   value=0 /></td></tr>
+<tr><td>Force field     </td><td><input onchange="setGlobe( this.value, this.form) " size=1 name=globe    value=0 /></td></tr>
+<tr><td>Repulsors       </td><td><input onchange="setRepuls( this.value, this.form) " size=1 name=repulsor value=0 /></td></tr>
+<tr><td>-</td></tr>
+<tr><td>Laser factor</td><td><input onchange="setLaser(this.value, this.form)" size=1 name=laser value=0 />
+	      Count <input onchange="" size=2 name=laser_count value=0 />
+	      Beam<input  type=radio onchange="" value=beam   name=laser_type checked=checked />
+        Pulse<input type=radio onchange="" value=pulse  name=laser_type />
+</td></tr>
+<tr><td>Energy weapon factor</td><td><input onchange="setEnergy(this.value, this.form)" size=1 name=plasma value=0 />
+	      Count <input onchange="" size=2 name=energy_count value=0 />
+        Fusion<input type=checkbox onchange="" value=fusion name=energy_type />
+    <!--    Turret<input  type=radio   onchange="" value=turret  name=plasma_type checked=checked />
+        50t Bay<input type=radio   onchange="" value=bay50   name=plasma_type /> -->
+</td></tr>
+<tr><td>Particle accelerator factor</td><td colspan=2><input onchange="setPA(this.value,this.form)" size=1 name=particle value=0 />
+	      Count <input onchange="" size=2 name=particle_count value=0 />
+        Turret<input   type=radio onchange="" value=turret   name=pa_type checked=checked />
+        Barbette<input type=radio onchange="" value=barbette name=pa_type />
+   <!--     50t Bay<input  type=radio onchange="" value=bay50    name=pa_type />
+        100t Bay<input type=radio onchange="" value=bay100   name=pa_type />
+        Spine<input    type=radio onchange="" value=spine    name=pa_type /> -->
+</td></tr>
+<tr><td>Meson gun factor</td><td colspan=2><input onchange="setMeson(this.value,this.form)" size=1 name=meson value=0 />
+	      Count <input onchange="" size=2 name=meson_count value=0 />
+     <!--   Turret<input   type=radio onchange="" value=turret   name=meson_type checked=checked />
+        Barbette<input type=radio onchange="" value=barbette name=meson_type />
+        50t Bay<input  type=radio onchange="" value=bay50    name=meson_type />
+        100t Bay<input type=radio onchange="" value=bay100   name=meson_type />
+        Spine<input    type=radio onchange="" value=spine    name=meson_type /> -->
+</td></tr>
+<tr><td>Missile factor</td><td><input onchange="setMissile(this.count, this.form)" size=1 name=missile value=0 />
+	      Count <input onchange="" size=2 name=missile_count value=0 />
+</td></tr>
+
+</form>
+
+</body>
+
+<script>
+	 var f = document.getElementById( 'uspform' );
+   stats.setTL( 15, f );
+   stats.setJN( 4, f );
+   stats.setMN( 4, f );
+   stats.setPN( 7, f );
+   stats.setCPU( 4, f );
+   stats.setPayload( 462, f );
+   recalc( f );
+</script>
+</html>

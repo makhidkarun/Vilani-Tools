@@ -1,0 +1,123 @@
+<html><title>Medmar Orbital Arrivals and Departures</title>
+
+
+<head>
+<script>
+
+
+var year  = 0,
+    month = 0,
+    day   = 0,
+    seed1 = 0,
+    seed2 = 0,
+    seed3 = 0
+
+function arrival()
+{
+   return (year*month)%(this.seed1) + (year*month)%(this.seed1-2) + (month-1)*30
+}
+function unload()
+{
+   return (this.arrival() + (year-1) * (month-1)) % this.seed2 + 1
+}
+function maintenence()
+{
+   return (this.unload() + (year-2) * (month+2)) % (this.seed2-2)
+}
+function load()
+{
+   return (this.maintenence() + (year-1) * (month+2)) % (this.seed2+2) + 1
+}
+
+function traveller(name, registry, tons, seed1, seed2, seed3)
+{
+   this.name      = name
+   this.registry  = registry
+   this.tons      = tons
+   this.arrival   = arrival
+   this.unload    = unload
+   this.maintenence = maintenence
+   this.seed1     = seed1
+   this.seed2     = seed2
+   this.seed3     = seed3
+}
+solpugida = new traveller("Solpugida", "Free Trader", 200, arrival, 19, 2, 2)
+grendel   = new traveller("Grendel",   "Corsair",     400, arrival, 17, 4, 4)
+
+var date     = new Date  // (96, 5, 10);
+    year     = parseInt(date.getYear()) + 1000
+    month    = parseInt(date.getMonth())
+    day      = parseInt(date.getDate() + month*31)
+
+function myStat(form)
+{
+      var hour     = parseInt(date.getHours())
+      var min      = parseInt(date.getMinutes())
+
+      var arrival  = (year * month) % 19 + (year * month) % 17 + (month-1)*30
+      var wait1    = arrival + (year-1 * month+1) % 5 + 1
+      var wait2    = wait1 + (year-2 * month+2) % 3 + 1 
+      var wait3    = wait2 + (year-3 * month+3) % 2
+      var wait4    = wait3 + (year-4 * month+4) % 5 + 1
+      var wait5    = wait4 + (year-3 * month+3) % 5 + 1
+
+   form.date.value = year + ':' + day + ':' + hour + ':' + min
+
+   form.status.value = 
+      (day < arrival)? 'free' :
+      (day < wait1)? 'Arriving'    :
+      (day < wait2)? 'Unloading'   :
+      (day < wait3)? 'Maintenence' :
+      (day < wait4)? 'Loading'     :
+      (day < wait5)? 'Departing' : 'free'
+
+      var changeTime =
+      (day < arrival)? '' :
+      (day < wait1)? wait1 :
+      (day < wait2)? wait2 :
+      (day < wait3)? wait3 : 
+      (day < wait4)? wait4 : 
+      (day < wait5)? wait5 : ''
+      
+
+   form.ship.value = (changeTime)? 'Solpugida'   : 'free'
+
+   form.change.value = (changeTime)? 
+      year + ':' + changeTime : 'n/a'
+
+   if (stat == 10) stat = 0
+}
+var stat = 0
+
+document.writeln( year  + '-' + day )
+
+</script>
+</head>
+
+<body bgcolor=#7f00ff>
+
+<center>
+<h2> Ships Docked at Medmar Orbital </h2>
+<form name=foobar>
+   Date: <input name=date size=14 onFocus="myStat(this.form)">
+   <table>
+      <th>Port
+      <th>Ship
+      <th>Status
+      <th>Completion
+      <tr><td><hr><td><hr><td><hr><td><hr><tr>
+      <td> 0
+      <td><input name=ship   size=12 onFocus="myStat(this.form)">
+      <td><input name=status size=12 onFocus="myStat(this.form)">
+      <td><input name=change size=9  onFocus="myStat(this.form)">
+      <tr>
+      <tr>
+   </table>
+</form>
+
+</body>
+<hr>
+<center>
+<a href=tas.htm><img src=img/left.gif></a>
+
+</html>

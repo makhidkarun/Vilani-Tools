@@ -1,0 +1,68 @@
+<html>
+
+<head>
+<script type="text/javascript" src="omni_maker.js"></script>
+<script type="text/javascript" src="bcs_common.js"></script>
+<script type="text/javascript" src="showhide.js"></script>
+<link rel="stylesheet" type="text/css" href="showhide.css" />
+</head>
+
+<body>
+
+<a href="armormaker.html">-> to Gun-maker and Armor-maker</a> <br />
+<a href="vehiclemaker.html">-> to Vehicle maker</a> <br />
+<a href="vilanitools.html">-> to Traveller alien word gen</a> <br />
+
+<div id="wpNav">
+   <ul>
+      <li><a href="#tab_one"    id="wpSelected" class="toggle">Battle-Class Ships</a></li>
+      <li><a href="#tab_two"    id="unSelected" class="toggle">BCS Weapons</a></li>
+      <li><a href="#tab_three"  id="unSelected" class="toggle">BCS Troops</a></li>
+   </ul>
+</div>
+
+<div id="tab_one" class="show">
+   <h3>Battle-Class Ships</h3>
+
+   <form>   
+   <script>
+   bcs_printOptions();
+   </script>
+   <br /><textarea name="output" rows="20" cols="120" ></textarea><br />   
+   <input type="button" value="calculate" onclick="bcs_recalc(this.form)" />
+   </form>
+
+</div>
+
+<div id="tab_two" class="hide">
+   <h3>BCS Weapons</h3>
+
+   <!--form>   
+   <script>
+   bcs_weapons_printOptions();
+   </script>
+   <br /><textarea name="output" rows="20" cols="120" ></textarea><br />   
+   <input type="button" value="calculate" onclick="bcs_weapons_recalc(this.form)" />
+   </form-->
+
+</div>
+
+<div id="tab_three" class="hide">
+   <h3>BCS Troops</h3>
+
+   <!--form>   
+   <script>
+   bcs_troops_printOptions();
+   </script>
+   <br /><textarea name="output" rows="20" cols="120" ></textarea><br />   
+   <input type="button" value="calculate" onclick="bcs_troops_recalc(this.form)" />
+   </form-->
+   
+</div>
+
+<script type="text/javascript">
+   toggle_init();
+</script>
+
+</body>
+</html>

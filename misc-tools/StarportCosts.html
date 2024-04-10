@@ -1,0 +1,366 @@
+<html>
+
+<head>
+
+<title>Starport Cost Calculator</title>
+
+<script>
+
+function setPph( form ) 
+{ 
+   form.ppw.value = parseInt( form.pph.value ) * 168 
+   calc( form );
+}
+function setPpw( form ) 
+{ 
+   form.pph.value = parseInt( parseInt( form.ppw.value ) / 168) 
+   calc( form );
+}
+function allAboard( passengers, capacity )
+{
+   if (passengers > capacity)
+      return parseInt( passengers / (capacity + 1) )
+   else
+      return 0
+}
+function shipForm ( size, name )
+{
+   document.writeln( '<tr>' )
+   document.writeln(  '<td> '
+                    + size
+                    + ' '
+                    + name
+                    + ' </td>' )
+   document.writeln(  '<td> '
+                    + ' <input name='
+                    + name
+                    + size
+                    + 'p size=10> </td>' )
+   document.writeln(  '<td> '
+                    + ' <input name='
+                    + name
+                    + size
+                    + 'c size=4> </td>' )
+   document.writeln(  '<td> '
+                    + ' <input name='
+                    + name
+                    + size
+                    + 'l size=4> </td>' )
+   document.writeln(  '<td> '
+                    + ' <input name='
+                    + name
+                    + size
+                    + 't size=10> </td>' )
+   document.writeln( '</tr>' )
+}
+
+
+function calc ( form )
+{
+   calcTraffic( form )
+   calcDownport( form )
+}
+
+function calcTraffic( form )
+{
+      var passengers = parseInt( form.ppw.value )
+
+   var liner400k = allAboard( passengers, 200000 )
+   passengers   -= liner400k * 100000
+
+   var liner60k  = allAboard( passengers, 15000 )
+   passengers   -= liner60k * 10000
+
+   var liner9k   = allAboard( passengers, 2000 )
+   passengers   -= liner9k * 1000
+
+   var liner1400 = allAboard( passengers, 200 )
+   passengers   -= liner1400 * 100
+
+   var liner600  = allAboard( passengers, 40 )
+   passengers   -= liner600 * 30
+
+   var traders   = allAboard( passengers, 12 )
+   passengers   -= traders * 10
+
+   var couriers  = parseInt( passengers/3 + 0.7 )
+
+   //
+   //  Only ships under 1000 tons will land.
+   //  Only 5% of those ships will land.
+   //
+   var liner600l = parseInt( liner600 * 0.9 )
+   var tradersl  = parseInt( traders  * 0.9 )
+   var couriersl = parseInt( couriers * 0.9 )
+
+   if ( liner400k + liner60k + liner9k + liner1400 == 0 )
+   {
+      liner600l = liner600
+      tradersl  = traders 
+      couriersl = couriers 
+   }
+
+   form.Liner400ktp.value   = 100000
+   form.Liner400ktc.value   = liner400k
+   form.Liner400ktl.value   = 0 
+   form.Liner400ktt.value   = liner400k * 100000
+
+   form.Liner60ktp.value    = 10000
+   form.Liner60ktc.value    = liner60k
+   form.Liner60ktl.value    = 0
+   form.Liner60ktt.value    = liner60k * 10000
+
+   form.Liner9ktp.value     = 1000
+   form.Liner9ktc.value     = liner9k
+   form.Liner9ktl.value     = 0
+   form.Liner9ktt.value     = liner9k * 1000
+
+   form.Liner1400tp.value   = 100
+   form.Liner1400tc.value   = liner1400
+   form.Liner1400tl.value   = 0
+   form.Liner1400tt.value   = liner1400 * 100
+
+   form.Liner600tp.value    = 30
+   form.Liner600tc.value    = liner600
+   form.Liner600tl.value    = liner600l
+   form.Liner600tt.value    = liner600 * 30
+
+   form.Trader200tp.value   = 10
+   form.Trader200tc.value   = traders
+   form.Trader200tl.value   = tradersl
+   form.Trader200tt.value   = traders * 10
+
+   form.Courier100tp.value  = 3
+   form.Courier100tc.value  = couriers
+   form.Courier100tl.value  = couriersl
+   form.Courier100tt.value  = passengers
+
+   form.ShipsTotal.value    = couriers + traders  + liner600  + liner1400
+                            + liner9k  + liner60k + liner400k
+
+   form.Tonnage.value       = couriers   * 100
+                            + traders    * 300
+                            + liner600   * 600
+                            + liner1400  * 1400
+                            + liner9k    * 9000
+                            + liner60k   * 60000
+                            + liner400k  * 400000
+
+   form.OrbitTonnage.value  = form.Tonnage.value
+                            - liner600l  * 600
+                            - tradersl   * 300
+                            - couriersl  * 100
+
+   form.pl.value = liner600l 
+                 + tradersl
+                 + couriersl
+
+   form.po.value = parseInt( form.ppw.value ) - form.pl.value
+   
+   form.shipConfig.value = "Ships arriving (landing) per week: " + form.ShipsTotal.value 
+                         + " (" + (liner600l + tradersl + couriersl) + ")\n"
+                         + shipConfigLine( liner400k, 0, " x 400kt ", 100000 )
+                         + shipConfigLine( liner60k,  0,  " x  60kt ",  10000 )
+                         + shipConfigLine( liner9k,   0,   " x   9kt ",   1000 )
+                         + shipConfigLine( liner1400, 0, " x 1400t ",    100 )
+                         + shipConfigLine( liner600,  liner600l, " x  600t ",     30 )
+                         + shipConfigLine( traders,   tradersl,  " x  300t ",     10 )
+                         + shipConfigLine( couriers,  couriersl, " x  100t ",      3 )
+                         + "Tonnage: " + form.Tonnage.value + " (" 
+                                       + (form.Tonnage.value - form.OrbitTonnage.value) + ")\n"
+                         + "Passengers: " + form.ppw.value + "\n"
+  
+}
+
+function shipConfigLine( arrive, land, name, passengers ) 
+{
+      var z1 = ''
+      var z2 = ''
+
+   if (arrive < 10) z1 = '0'
+   if (land   < 10) z2 = '0'
+
+   if (arrive == 0) return ''
+   return z1 + arrive + " (" + z2 + land + ") " + name + (arrive * passengers) + " passengers\n"
+}
+
+
+function calcDownport( form )
+{
+      var shipsLanding    = parseInt( form.Liner600tl.value )
+                          + parseInt( form.Trader200tl.value )
+                          + parseInt( form.Courier100tl.value )
+
+      var tonnageOrbiting = parseInt( form.OrbitTonnage.value )
+
+      var peopleOrbiting  = parseInt(form.po.value)
+
+      var shuttles        = parseInt(1 + peopleOrbiting / (100 * 168 ) ); 
+                            // 1 shuttle per 110 people, roughly
+
+   form.sl.value = shipsLanding;
+   form.shuttles.value = shuttles;
+
+   form.alq.value = parseInt( 1 + (shipsLanding/15 + shuttles) / 15 );
+   form.shq.value = parseInt( 1 + shuttles / 2 );
+   form.pbq.value = parseInt( 1 + (shuttles/22) + shipsLanding / 11 );
+
+   form.lbq.value = parseInt( tonnageOrbiting / 10    );
+   form.fgq.value = parseInt( shipsLanding    * 100   );
+   form.foq.value = parseInt( tonnageOrbiting / 4     );
+   form.rgq.value = parseInt( shipsLanding            );
+   form.roq.value = parseInt( tonnageOrbiting         );
+   form.cgq.value = parseInt( shipsLanding    * 100   );
+   form.coq.value = parseInt( tonnageOrbiting / 10    );
+
+   form.alc.value = form.alq.value * 0.01
+   form.shc.value = form.shq.value * 2.0
+   form.pbc.value = form.pbq.value * 0.09
+   form.lbc.value = form.lbq.value * 10.0
+   form.fgc.value = form.fgq.value * 0.001
+   form.foc.value = form.foq.value * 0.01
+   form.rgc.value = form.rgq.value * 0.01
+   form.roc.value = form.roq.value * 0.1
+   form.cgc.value = form.cgq.value * 0.1
+   form.coc.value = form.coq.value * 1
+
+   form.groundTotal.value = ( parseInt( form.alc.value )
+                            + parseInt( form.pbc.value )
+                            + parseInt( form.fgc.value )
+                            + parseInt( form.rgc.value )
+                            + parseInt( form.cgc.value )) / 1000       // BCr
+
+   form.orbitTotal.value  = ( parseInt( form.shc.value )
+                            + parseInt( form.lbc.value )
+                            + parseInt( form.foc.value )
+                            + parseInt( form.roc.value )
+                            + parseInt( form.coc.value)) / 1000      // BCr
+}
+
+</script>
+</head>
+
+
+<body background=../img/backgrounds/marble5.gif>
+<h1>Starport Cost Calculator</h1>
+<h4>98.06.25</h4>
+<form>
+<table border=1 cellspacing=0 cellpadding=0>
+
+<tr> <th> Passengers per hour:    </th>
+     <td> <input size=8 name=pph onChange=setPph(this.form)>  </td> </tr>
+
+<tr> <th> Passengers per week:    </th> 
+     <td> <input size=8 name=ppw onChange=setPpw(this.form)>  </td> </tr>
+
+<tr> <th colspan=6> <hr> </th> </tr>
+
+<tr>
+   <th> Ship Configuration          </th>
+   <th> Passenger Count per ship    </th>
+   <th> Num Ships arriving per week </th>
+   <th> Ships Landing per week      </th>
+   <th> Total Passengers per week   </th>
+</tr>
+
+<script>
+   shipForm( '400kt', 'Liner'   )
+   shipForm( '60kt',  'Liner'   )
+   shipForm( '9kt',   'Liner'   )
+   shipForm( '1400t', 'Liner'   )
+   shipForm( '600t',  'Liner'   )
+   shipForm( '200t',  'Trader'  )
+   shipForm( '100t',  'Courier' )
+</script>
+
+<tr>
+     <td> </td>
+     <td> Total Ships per week: </td>
+     <td> <input name=ShipsTotal size=4> </td>
+     <td> Total Tonnage per week: </td>
+     <td> <input name=Tonnage  size=8> </td>
+</tr>
+
+
+<tr> <th colspan=6> <hr> </th> </tr>
+
+<tr> <th> Ground Port          </th> 
+     <th> Amount               </th>
+     <th>                      </th> 
+     <th> Orbital Port         </th> 
+     <th> Amount               </th>
+     <th>                      </th> </tr>
+
+<tr> <td> Ships Landing per week</td>
+     <td> <input size=6 name=sl>                          </td>
+     <td> </td>
+     <td> Tonnage in Orbit per week </td>
+     <td> <input size=8 name=OrbitTonnage>                </td>
+     <td> </td> </tr>
+<tr> <td> People Landing per week </td>
+     <td> <input size=6 name=pl>                          </td>
+     <td> </td>
+     <td> People in Orbit per week </td>
+     <td> <input size=8 name=po>                          </td>
+     <td> </td> </tr>
+<tr> <td> Shuttles needed      </td> 
+     <td> <input size=6 name=shuttles>                    </td> 
+     <td> </td> </tr>
+
+<tr> <th colspan=6> <hr> </th> </tr>
+
+<tr> <th> Ground Port Element  </th> 
+     <th> Quantity/Size        </th>
+     <th> Cost (MCr)           </th> 
+     <th> Orbital Port Element </th> 
+     <th> Quantity/Size        </th>
+     <th> Cost (MCr)           </th> </tr>
+
+<tr> <td> Airstrips:              </td> 
+     <td> <input size=8 name=alq> </td> 
+     <td> <input size=8 name=alc> </td> 
+
+     <td> Shuttle hangars:        </td> 
+     <td> <input size=8 name=shq> </td> 
+     <td> <input size=8 name=shc> </td> </tr>
+
+<tr> <td> Parkbays:               </td> 
+     <td> <input size=8 name=pbq> </td>
+     <td> <input size=8 name=pbc> </td>
+     <td> Landing bay tonnage:    </td> 
+     <td> <input size=8 name=lbq> </td>
+     <td> <input size=8 name=lbc> </td> </tr>
+
+<tr> <td> Fuel Depots (tons):     </td> 
+     <td> <input size=8 name=fgq> </td>
+     <td> <input size=8 name=fgc> </td>
+     <td> Fuel Depots (tons):     </td>
+     <td> <input size=8 name=foq> </td>
+     <td> <input size=8 name=foc> </td> </tr>
+
+<tr> <td> Repair Fac (t/wk):      </td> 
+     <td> <input size=8 name=rgq> </td>
+     <td> <input size=8 name=rgc> </td> 
+     <td> Repair Fac (t/wk):      </td> 
+     <td> <input size=8 name=roq> </td> 
+     <td> <input size=8 name=roc> </td> </tr>
+
+<tr> <td> Construction (t/yr):    </td> 
+     <td> <input size=8 name=cgq> </td>
+     <td> <input size=8 name=cgc> </td> 
+     <td> Construction (t/yr):    </td> 
+     <td> <input size=8 name=coq> </td> 
+     <td> <input size=8 name=coc> </td> </tr>
+
+<tr> <td colspan=2> Total Cost (BCr)      </td>
+     <td> <input size=8 name=groundTotal> </td>
+     <td colspan=2> Total Cost (BCr)      </td>
+     <td> <input size=8 name=orbitTotal>  </td>  </tr>
+
+</table>
+
+<textarea rows=10 cols=60 name=shipConfig></textarea>
+
+</form>
+</body>
+</html>

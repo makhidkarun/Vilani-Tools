@@ -1,0 +1,212 @@
+<html>
+<title> Rob's Quick Star System Generator </title>
+
+<head>
+<script>
+/////////////////////////////////////////////////////
+//
+// Random Number Generation Functions
+//
+/////////////////////////////////////////////////////
+RandNum = new randomNumberGenerator()
+
+function nextRandomNumber()
+{
+      var Hi   = this.seed / this.Q;
+      var Lo   = this.seed % this.Q;
+      var Test = this.A * Lo - this.R * Hi;
+
+   if (Test > 0)
+      this.seed = Test
+   else
+      this.seed = Test + this.M;
+
+   return (this.seed * this.oneOverM);
+}
+
+function randomNumberGenerator()
+{
+      var D=new Date();
+
+   this.seed = 2345678901 
+             + (D.getSeconds() * 0xFFFFFF) 
+             + (D.getMinutes() * 0xFFFF);
+
+   this.A = 48271;
+   this.M = 2147483647;
+   this.Q = this.M / this.A;
+   this.R = this.M % this.A;
+   this.oneOverM = 1.0 / this.M;
+   this.next = nextRandomNumber;
+   this.dice = nextRandomDice;
+}
+
+function nextRandomDice()
+{
+   return parseInt( this.next() * 6 + 1 ) 
+        + parseInt( this.next() * 6 + 1 )
+}
+/////////////////////////////////////////////////////
+//
+// End (Random Number Generation Functions)
+//
+/////////////////////////////////////////////////////
+
+function planet( pop, d )
+{
+   if (RandNum.dice() > 9)
+      return "Empty";
+
+   pop = parseInt( pop )
+
+   var base  = 'Y'
+   var size  = RandNum.dice() - 2
+   var atmo  = RandNum.dice() + size - 7
+   if (atmo  < 0 || size == 0)   atmo  =  0
+   if (atmo  > 10) atmo = 10
+   var hydro = RandNum.dice() + atmo - 7
+   if (hydro < 0)   hydro =  0 
+   if (hydro > 9) hydro  = 'A'
+   var popul = RandNum.dice() - 4
+   var gov   = 6
+   var ll    = RandNum.dice() + gov - 7
+
+   if (size > 9)    size  = 'A'
+   if (atmo > 9)    atmo  = 'A'
+   if (popul < 0)   popul =  0 
+   if (popul > pop) popul--
+   if (popul > 3)   base  = 'H'
+   if (popul > 4)   base  = 'G'
+   if (popul > 5)   base  = 'F'
+   if (gov < 0)     gov   =  0
+   if (ll  < 0)     ll    =  0
+   if (ll  > 9)     ll    = 'A'
+
+   var moons = RandNum.dice() - 7
+   if (moons < 0) moons = 0
+
+   var purpose = ' '
+   
+   if (popul > 0)
+   {
+      if (popul > 4)
+         purpose = " colony "
+      else if (d < -1 || d > 1)
+      {
+         if (RandNum.dice() > 7)
+            purpose = " research "
+         else
+            purpose = " mining "
+      }
+      else
+         purpose = " farming "
+   }
+   
+   return base + size + atmo + hydro + popul + gov + ll  
+        + "   " + moons + " satellites"
+        + "   " + purpose
+}
+
+function gg()
+{
+   var gg = 'LGG'
+   if (RandNum.dice() > 3) gg = 'SGG'
+   
+   return gg + "   " + (RandNum.dice()-2) + " satellites"
+}
+
+function planetoid( pop )
+{
+   pop = parseInt( pop )
+
+   var popul = RandNum.dice() - 2
+   if (popul >= pop) popul = pop - 1
+
+   var purpose = ': mining '
+   if (RandNum.dice() > 7) purpose = ': industry '
+   if (popul > 4) purpose = ': colony '
+
+   return 'Planetoid Belt: pop=' + popul + purpose
+}
+
+function doit( form )
+{
+   var count = parseInt(RandNum.dice()/2)
+   var i
+   var orbits = 0
+   var out
+   var pop = 6
+
+   form.sys.value = "System: "
+   if (form.sname.value) form.sys.value += form.sname.value
+   form.sys.value += "\n"
+
+   if (!form.uwp.value) form.uwp.value = planet( RandNum.dice() - 2)
+   else
+   {
+      pop = form.uwp.value
+      pop = parseInt(pop.charAt( 4 ))
+   }
+ 
+   for (i=0; i<count; i++)
+   {
+      var sel = RandNum.dice()-2
+
+      form.sys.value += orbits + ': '
+      if ( count == orbits )
+      {
+         form.sys.value +=  form.uwp.value + " *\n   "
+         orbits++
+      }
+      var d = ( orbits - count )
+
+      if (sel == 0) 
+         form.sys.value +=  planet( pop, d ) + "\n   " + planet( pop, d ) + "\n"
+      if (sel == 1) 
+         form.sys.value +=  planet( pop, d ) + "\n   " + planet( pop, d ) + "\n"
+      if (sel == 2) 
+         form.sys.value +=  planet( pop, d ) + "\n   " + planetoid( pop ) + "\n"
+      if (sel == 3)  
+         form.sys.value +=  planet( pop, d ) + "\n   " + planetoid( pop ) + "\n"
+      if (sel == 4) 
+         form.sys.value +=  planet( pop, d ) + "\n   " + planet( pop, d )+ "\n"
+      if (sel == 5) 
+         form.sys.value +=  planet( pop, d ) + "\n   " + planet( pop, d )    + "\n"
+      if (sel == 6) 
+         form.sys.value +=  "Empty\n   "            + planet( pop, d ) + "\n"
+      if (sel == 7) 
+         form.sys.value +=  gg() + "\n   "          + planet( pop, d ) + "\n"
+      if (sel == 8) 
+         form.sys.value +=  planet( pop, d ) + "\n   " + "Empty" + "\n"
+      if (sel == 9) 
+         form.sys.value +=  gg() + "\n   "          + planet( pop, d ) + "\n"
+      orbits += 2
+   }
+   if (count < parseInt( orbits / 2 ))
+      form.sys.value += orbits + ': ' + form.uwp.value + "*\n"
+}
+
+</script>
+</head>
+<body background=../img/backgrounds/marble5.gif>
+<h1> Rob's Quick Star System Generator </h1>
+9.4.98
+<br>
+<form>
+<input type=button value=Create onClick=doit(this.form)>
+<input type=reset> <br>
+
+<table>
+<tr>
+<td> System Name: </td><td> <input name=sname size=40> </td>
+</tr>
+<tr>
+<td> Mainworld UWP: </td><td> <input name=uwp size=40 > </td>
+</tr>
+</table>
+
+System Description: <br>
+<textarea rows=20 cols=60 name=sys wrap=physical></textarea>
+</form>
+</body>
+</html>

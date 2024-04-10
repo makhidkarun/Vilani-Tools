@@ -1,0 +1,321 @@
+<html>
+
+<head>
+
+<script>
+/*
+ *  All objects will support the following policies:
+ *
+ *  (object.parent    : the owning object)
+ *  object.species    : its type
+ *  object.td         : its tonnage
+ *  object.MCr        : its cost
+ *  object.[member]   : subunits attached here
+ *
+ *  These objects shall be indexed by their official name, i.e.
+ *  "Lurenti" for a division of Lurenti carriers, or "154th_BatRon"
+ *  for the squadron of that name, or "Spinward_Marches_Fleet" for
+ *  the sector fleet (sometimes called an armada).
+ *
+ *  EXAMPLE 1:
+ *  
+ *  lurenti.species    = "Battle_Carrier"
+ *  lurenti.td         = 300000
+ *  lurenti.MCr        = 23056
+ *
+ *  EXAMPLE 2:
+ *
+ *  BatRon154.species             = "Squadron"
+ *  BatRon154.td                  = 475000
+ *  BatRon154.MCr                 = 111270
+ *  BatRon154.member.Lurenti      = lurenti
+ *  BatRon154.member.Nolikian     = nolikian
+ *  BatRon154.member.Sloan        = sloan
+ *
+ *  EXAMPLE 3:
+ *
+ *  fleet.species                 = "Fleet"
+ *  fleet.td                      = 767700000
+ *  fleet.MCr                     = 378507612
+ *  fleet.member.154th_BatRon     = BatRon154
+ *
+ *  EXAMPLE 4:
+ *
+ *  forces.species                = "All Forces"
+ *  forces.td                     = HUGE_NUM
+ *  forces.MCr                    = HUGE_NUM
+ *  forces.Fleet                  = fleet
+ *
+ */
+
+function addMember( nameIndex, unit )
+{
+   this.member[nameIndex] = unit
+}
+
+function Member()
+{
+   return this
+}
+
+function Unit( species, tonnage, MCr )
+{
+   this.species    = species
+   this.tonnage    = tonnage
+   this.MCr        = MCr
+   this.member     = new Member()
+
+   this.addMember  = addMember 
+
+   return this
+}
+
+///////////////////////////////////////////////////////////////////
+//
+//  Ship information here
+//
+///////////////////////////////////////////////////////////////////
+var lurenti       = new Unit( "Battle_Carrier", 300000,  23056 )
+var nolikian      = new Unit( "Battle_Rider",    20000,   9268 )
+var sloan         = new Unit( "Fleet_Escort",     5000,   3334 )
+var midu          = new Unit( "Destroyer",        3000,   2188 )
+var gionetti      = new Unit( "Light_Cruiser",   30000,  18306 ) 
+var seh           = new Unit( "Light_Cruiser",   30000,  15732 )
+var arakoine      = new Unit( "Strike_Cruiser",  50000,  28060 )
+var ghalalk       = new Unit( "Armored_Cruiser", 50000,  27927 )
+var atlantic      = new Unit( "Heavy_Cruiser",   75000,  47544 )
+var planet        = new Unit( "Heavy_Cruiser",   75000,  27228 )
+var skimkish      = new Unit( "Light_Carrier",   29000,  15839 )
+var wind          = new Unit( "Strike_Carrier",  75000,  46437 )
+var antiama       = new Unit( "Fleet_Carrier",  100000,  51922 )
+var tigress       = new Unit( "Dreadnaught",    500000, 362721 )
+var plankwell     = new Unit( "Dreadnaught",    200000, 120494 )
+var kokirrak      = new Unit( "Dreadnaught",    200000, 135102 )
+var voroshilef    = new Unit( "Battleship",     200000,  82577 )
+
+var group      = new Unit( "holder", 0, 0, 0 )
+
+group.addMember( "Midu_Agashaam", midu          )
+group.addMember( "Sloan",         sloan         )
+group.addMember( "Nolikian",      nolikian      )
+group.addMember( "Skimkish",      skimkish      )
+group.addMember( "Gionetti",      gionetti      )
+group.addMember( "Seh",           seh           )
+group.addMember( "Arakoine",      arakoine      )
+group.addMember( "Ghalalk",       ghalalk       )
+group.addMember( "Atlantic",      atlantic      )
+group.addMember( "Planet",        planet        )
+group.addMember( "Wind",          wind          )
+group.addMember( "Antiama",       antiama       )
+group.addMember( "Plankwell",     plankwell     )
+group.addMember( "Kokirrak",      kokirrak      )
+group.addMember( "Voroshilef",    voroshilef    )
+group.addMember( "Lurenti",       lurenti       )
+group.addMember( "Tigress",       tigress       )
+
+
+///////////////////////////////////////////////////////////////////
+//
+//  Squadron information here
+//
+///////////////////////////////////////////////////////////////////
+var batRon154  = new Unit( "Battle Squadron",   475000,   111270 ) 
+var batRonTig  = new Unit( "Battle Squadron",  3000000,  2176326 )
+var batRonPlk  = new Unit( "Battle Squadron",  1200000,   722964 )
+var batRonKok  = new Unit( "Battle Squadron",  1200000,   810612 )
+var batRonCru  = new Unit( "Battle Squadron",   940000,   506564 )
+var cruRonGlk  = new Unit( "Cruiser Squadron",  300000,   167562 )
+var cruRonAtl  = new Unit( "Cruiser Squadron",  300000,   190176 )
+var cruRonGio  = new Unit( "Cruiser Squadron",  240000,   146448 )
+var desRonMid  = new Unit( "Destroyer Squadron", 21000,    15848 )
+
+batRon154.addMember( "1 x Lurenti",   lurenti   )
+batRon154.addMember( "7 x Nolikian",  nolikian  )
+batRon154.addMember( "7 x Sloan",     sloan     )
+
+batRonTig.addMember( "6 x Tigress",   tigress   )
+batRonPlk.addMember( "6 x Plankwell", plankwell )
+batRonKok.addMember( "6 x Kokirrak",  kokirrak  )
+
+batRonCru.addMember( "8 x Sloan",     sloan     )
+batRonCru.addMember( "6 x Seh",       seh       )
+batRonCru.addMember( "6 x Wind",      wind      )
+
+cruRonGlk.addMember( "6 x Ghalalk",   ghalalk   )
+cruRonAtl.addMember( "4 x Atlantic",  atlantic  )
+cruRonGio.addMember( "8 x Gionetti",  gionetti  )
+desRonMid.addMember( "7 x Midu_Agashaam", midu  )
+
+// var squad = new Unit( "Squadron Holder", 0, 0, 0 )
+
+group.addMember( "154th_BatRon",     batRon154 )
+group.addMember( "Tigress_BatRon",   batRonTig )
+group.addMember( "Plankwell_BatRon", batRonPlk )
+group.addMember( "Kokirrak_BatRon",  batRonKok )
+group.addMember( "CruRon",           batRonCru )
+group.addMember( "Ghalalk_CruRon",   cruRonGlk )
+group.addMember( "Atlantic_CruRon",  cruRonAtl )
+group.addMember( "Gionetti_CruRon",  cruRonGio )
+group.addMember( "Midu_Agashaam_DesRon", desRonMid )
+
+///////////////////////////////////////////////////////////////////
+//
+//  Fleet holder here
+//
+///////////////////////////////////////////////////////////////////
+var f214 = new Unit( "Fleet", 2661000, 1428765 )
+
+f214.addMember( "1 x 154th BatRon",        batRon154 )
+f214.addMember( "4 x Plankwell BatRon",    batRonPlk )
+f214.addMember( "1 x Wind",                wind      )
+f214.addMember( "1 x Arakoine",            arakoine  )
+f214.addMember( "6 x Ghalalk",             cruRonGlk )
+f214.addMember( "4 x Atlantic",            cruRonAtl )
+f214.addMember( "8 x Gionetti",            cruRonGio )
+f214.addMember( "7 x Midu Agashaam",       desRonMid )
+f214.addMember( "11 x Sloan",              sloan     )
+
+group.addMember( "214th_Fleet", f214 )
+
+var fleet = new Unit( "Fleet", 767700000, 378507612 ) // , 942 )
+
+fleet.addMember( "1 x Tigress BatRon",    batRonTig  )
+fleet.addMember( "2 x Plankwell BatRon",  batRonPlk  )
+fleet.addMember( "4 x Kokirrak BatRon",   batRonKok  )
+fleet.addMember( "20 x 154th BatRon",     batRon154  )
+fleet.addMember( "30 x CruRon",           batRonCru  )
+
+group.addMember( "Spinward_Marches", fleet )
+
+
+function doit( form )
+{
+      var index   = form.Nomen.value
+      var species = form.Species.value
+      var tonnage = form.Tons.value
+      var cost    = form.MCr.value
+      var count   = form.Count.value
+
+      var out
+
+   if (index && species && tonnage && cost && count) 
+   {  
+      group.addMember( index, new Unit( species, tonnage, cost, count ) )
+      showit( form )
+   }
+   else
+   {
+      form.field.value = "Please enter all values."
+   }
+}
+
+function showit( form, name )
+{
+   if (name != null)
+   {
+      if (group.member[name] != null)
+         form.field.value = recurse( name, group.member[name], " " )
+      else
+         form.field.value = "No entry for >" + name + "<."
+   }
+   else
+      form.field.value = recurse( group.species, group, " " )
+}
+
+var countRegExp = /^(\d+)x(\w+)$/
+
+function recurse( name, obj, indent )
+{
+      var out = " " 
+      var myArray
+
+   if ( obj == null ) return ''
+
+   out = out + name        + " "         + obj.species 
+
+   myArray = countRegExp.exec( name )
+// if ( countRegExp.test( name ) )
+//    out = out + " (" + myArray[1] + ")"
+// else
+//    out = out + " (1)"
+
+   out = out + "\n"
+             + indent      + obj.tonnage + " tons, "
+             + "MCr "      + obj.MCr     + "\n\n"
+
+   if (obj.member)
+   {
+      indent = indent + "    "
+      for ( i in obj.member )
+         out = out + indent + recurse( i, obj.member[i], indent )
+   }
+
+   return out
+}
+
+function select( parent )
+{
+   document.writeln( "<select size=7 name=db onChange=readDb(this.form)>" )
+   for (i in parent.member)
+   {
+      document.writeln( "   <option name=" + i + " value=" + i + "> " + i )
+   }
+   document.writeln( "</select>" )
+}
+
+function readDb( form )
+{
+      var name = form.db.options[form.db.selectedIndex].value
+
+   form.Nomen.value = name
+   showit( form, name )
+}
+
+</script>
+
+</head>
+
+<body>
+<form>
+
+<table>
+<tr>
+   <td rowspan=5>
+   Group List:
+   <br>
+      <script> select(group) </script>
+   </td>
+   <th>Name: </th> 
+   <td> <input size=25 name=Nomen> </td>
+</tr>
+<tr>
+   <td>Class:</td> 
+   <td> <input size=25 name=Species> </td>
+</tr>
+<tr>
+   <td>Tonnage:</td> 
+   <td> <input size=25 name=Tons> </td>
+</tr>
+<tr>
+   <td>MCr:</td> 
+   <td> <input size=25 name=MCr> </td>
+</tr>
+<tr>
+   <td>Count:</td> 
+   <td> <input size=25 name=Count> </td>
+</tr>
+<tr>
+   <!----
+   <td> <input type=checkbox onClick=showit(this.form,this.form.Nomen.value)> Show </td>
+   --->
+
+   <td colspan=5> <input type=checkbox onClick=doit(this.form)> Add/Change Member </td>
+</tr>
+</table>
+
+<textarea rows=40 cols=60 name=field wrap=physical></textarea>
+
+</form>
+</body>
+
+</html>

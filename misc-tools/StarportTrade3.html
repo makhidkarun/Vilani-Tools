@@ -1,0 +1,644 @@
+<BASE HREF="http://www.metronet.com/~washi/Tas/Starports/">
+<html>
+
+<title>StarPort: R&J Starport Trade Worksheet</title>
+
+<head>
+
+<script>
+<!-- Hide script contents from old browsers.
+
+function writeForm ( index )
+{
+      var i;
+
+   document.writeln( '<tr> <th> '
+                   + '<select onChange=setDist(this[this.selectedIndex].value,'
+                   + index
+                   + ')>' )
+
+   document.writeln( '<OPTION value=100 selected>')
+
+   for (i=1; i<12; i++)
+      document.writeln( '<OPTION value=' + i + '>' + i )
+
+   document.writeln( '</select>' )
+   document.writeln( '<TH>' )
+   document.writeln( '<INPUT size=9 name=uwp'
+                   + index  
+                   + ' onChange=setUwp(this.value,'
+                   + index
+                   + ')>' )
+
+   document.writeln( '<TH>' )
+   document.writeln( '<INPUT type=checkbox name=n'
+                   + index
+                   + ' onClick=toggleNavy('  
+                   + index
+                   + ')>' )
+   document.writeln( '<INPUT type=checkbox name=x'
+                   + index 
+                   + ' onClick=toggleXboat('
+                   + index
+                   + ')>' )
+   document.writeln( '<TH>' )
+   document.writeln( '<INPUT type=checkbox name=g'
+                   + index
+                   + ' onClick=toggleGG('
+                   + index
+                   + ')>' )
+   document.writeln( '<INPUT type=checkbox name=a'
+                   + index
+                   + ' onClick=toggleAster('
+                   + index
+                   + ')>' )
+   document.writeln( '<TH>' )
+   document.writeln( '<INPUT size=2 name=vol' + index + '>' )
+   document.writeln( '<TH>' )
+   document.writeln( '<INPUT size=2 name=adj' + index + '>' )
+   document.writeln( '<TH>' )
+   document.writeln( '<INPUT size=2 name=degree' + index + '>' )
+}
+
+/////////////////////////////////////////////////////////////////////////////
+//
+//  Make a World
+//
+/////////////////////////////////////////////////////////////////////////////
+function world()
+{
+   this.uwp   = new String('X000000-0');
+   this.navy  = 0; 
+   this.xboat = 0;
+   this.gg    = 0;
+   this.aster = 0;
+   this.stat  = 0;
+   this.dist  = 100;
+   this.vol   = 0;
+   this.adj   = 0;
+   this.cap   = 0;
+
+   return this;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+//
+//  Array for handling a whole gaggle of worlds
+//
+/////////////////////////////////////////////////////////////////////////////
+function makeWorldArray( n )
+{
+   this.length = n;
+   for (i=0; i<n; i++)
+   {
+      this[i] = new world();
+   }
+   return this;
+}
+
+System = new makeWorldArray( 10 );
+
+function setUwp( uwp, i ) { System[i].uwp    = uwp; }
+function toggleNavy( i )  { System[i].navy   = 1 - parseInt(System[i].navy); }
+function toggleXboat( i ) { System[i].xboat  = 1 - parseInt(System[i].xboat); }
+function toggleGG( i )    { System[i].gg     = 1 - parseInt(System[i].gg);    }
+function toggleAster( i ) { System[i].aster  = 1 - parseInt(System[i].aster); }
+function setStat( stat, i ) { System[i].stat = stat; }
+function setDist( d, i )  { System[i].dist   = d; }
+
+//////////////////////////////////////////////////////////////////////////////
+//
+//  Hexadecimal to Decimal
+//
+//////////////////////////////////////////////////////////////////////////////
+function h2d( val )
+{
+   if (val == 'A') return 10;
+   if (val == 'B') return 11;
+   if (val == 'C') return 12;
+   if (val == 'D') return 13;
+   if (val == 'E') return 14;
+   if (val == 'F' || val == 'X') return 15;
+   if (val == 'G') return 16;
+   if (val == 'H') return 17;
+   return parseInt(val);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//
+//  UWP Operations
+//
+//////////////////////////////////////////////////////////////////////////////
+function port( UWP ) { return h2d( UWP.charAt(0) ); }  
+function size( UWP ) { return h2d( UWP.charAt(1) ); }
+function atm(  UWP ) { return h2d( UWP.charAt(2) ); }
+function hyd(  UWP ) { return h2d( UWP.charAt(3) ); }
+function pop(  UWP ) { return h2d( UWP.charAt(4) ); }
+function gov(  UWP ) { return UWP.charAt(5); }
+function law(  UWP ) { return h2d( UWP.charAt(6) ); }
+function tl(   UWP ) { return h2d( UWP.charAt(8) ); }
+
+function portTrade( port ) { return 15 - port;      }
+function popTrade(  pop  ) { return (pop/4.5) - 1;    }
+function tlTrade(   tl   ) { return (tl - 1)/4.0 - 1;   }
+
+//////////////////////////////////////////////////////////////////////////////
+//
+//  Calculate surface transport needs
+//
+//////////////////////////////////////////////////////////////////////////////
+function doTransport( form )
+{
+   ppw = parseInt( System[0].cap );      // people per week
+   pph = 0;                              // people per hour
+   if (ppw > 83)                         // people per hour is useful
+      pph = parseInt( 0.5 + ppw / 168 ); //   only if ppw > threshold
+
+   form.ppw.value = ppw;                 // write it to the form
+   form.pph.value = pph;
+
+   form.strips.value     = 0;            // initialize the other values
+   form.parkbays.value   = 0;
+   form.publicBays.value = 0;
+   form.tradersPH.value  = 0;
+
+   if (ppw < 200) form.traders.value = 0 // no traders to surface unless...
+   else 
+   {
+      form.traders.value    = parseInt( ppw / 200 );
+      form.publicBays.value = parseInt( form.traders.value / 11 );
+      if (form.traders.value > 168)
+         form.tradersPH.value = parseInt( form.traders.value/168 );
+   }
+
+   shuttled = parseInt( ppw * 0.95 / 168  ); // 95% in shuttles
+
+   form.kt.value = 0;                    // 1000kt shuttles
+   form.ht.value = 0;                    // 100t shuttles
+   form.vip.value = 0;                   // 100t VIP shuttles
+
+   if (shuttled > 0)                     // put people in shuttles
+   {
+      form.ht.value = parseInt( 0.98 
+                              + (shuttled / 1800) 
+                              + ( shuttled % 200 ) / 16 );
+
+      if (shuttled > 198) form.kt.value  = parseInt( 0.5  + shuttled / 199 );
+      if (shuttled > 498) form.vip.value = parseInt( 0.5  + shuttled * 0.001 );
+
+      shuttles = parseInt(form.kt.value) 
+               + parseInt(form.ht.value)
+               + parseInt(form.vip.value);
+
+      //
+      //  The number of ships per hour a landing strip can serve  
+      //  may be anywhere from 6 (1 per 10 min) to 9 (1 per 6.5 min)
+      //  to 12 (1 per 5 min) to 60 (1 per min).  I used to think
+      //  9 was a good average; however, it looks like D/FW can handle
+      //  more than 1 airplane per minute, sooo I will raise the
+      //  conservative estimate to 15: 1 per 4 minutes.
+      //
+      form.strips.value   = 1 + parseInt( shuttles/15 );
+      form.parkbays.value = 1 + parseInt( shuttles/11 );
+   }
+}
+
+/////////////////////////////////////////////////////////////////////////////
+//
+//  Log
+//
+/////////////////////////////////////////////////////////////////////////////
+function log ( n )
+{
+   if (n > 9) return 1;
+   if (n > 99) return 2;
+   if (n > 999) return 3;
+   if (n > 9999) return 4;
+   if (n > 99999) return 5;
+   if (n > 999999) return 6;
+   if (n > 9999999) return 7;
+   if (n > 99999999) return 8;
+   if (n > 999999999) return 9;
+   if (n > 9999999999) return 10;
+   return 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+//
+//  Invert Log 
+//
+/////////////////////////////////////////////////////////////////////////////
+function alog( i )
+{
+   return Math.pow( 10, i );
+}
+
+/////////////////////////////////////////////////////////////////////////////
+//
+//  Calculate the trade indices
+//
+/////////////////////////////////////////////////////////////////////////////
+function calcIndex( i )
+{
+   return parseInt(portTrade( port( System[i].uwp ) )
+        + popTrade(  pop(  System[i].uwp ) )
+        + tlTrade(   tl(   System[i].uwp ) )
+        + System[i].stat
+        + System[i].navy
+        + System[i].xboat
+        + System[i].gg
+        + System[i].aster);
+}
+
+function adjustedIndex( i, j )
+{
+   adj =  parseInt( System[i].vol ) - parseInt( System[j].dist );
+   if (adj < 0) adj = 0;  
+   return adj;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+//
+//  Drive all calculation
+//
+/////////////////////////////////////////////////////////////////////////////
+function calc( form )
+{
+   if (System[0].uwp)
+   {
+      System[0].vol   = form.vol0.value = vol = calcIndex( 0 );
+      System[0].adj   = 0;
+
+      if (System[7].uwp)
+      {
+         System[7].vol      = form.vol7.value    = calcIndex( 7 );
+         System[7].adj      = form.adj7.value    = adjustedIndex( 7, 7 );
+         adj0               = adjustedIndex( 0, 7 );
+         System[7].cap      = parseFloat( Math.pow( (adj0 * form.adj7.value), 0.39 ) );
+         form.degree7.value = parseInt( System[7].cap );
+         System[7].cap      = Math.pow( 10, System[7].cap ) - 1;
+      }
+
+      if (System[6].uwp)
+      {
+         System[6].vol      = form.vol6.value    = calcIndex( 6 );
+         System[6].adj      = form.adj6.value    = adjustedIndex( 6, 6 );
+         adj0               = adjustedIndex( 0, 6 );
+         System[6].cap      = parseFloat( Math.pow( (adj0 * form.adj6.value), 0.39 ) );
+         form.degree6.value = parseInt( System[6].cap );
+         System[6].cap      = Math.pow( 10, System[6].cap ) - 1;
+      }
+
+      if (System[5].uwp)
+      {
+         System[5].vol      = form.vol5.value    = calcIndex( 5 );
+         System[5].adj      = form.adj5.value    = adjustedIndex( 5, 5 );
+         adj0               = adjustedIndex( 0, 5 );
+         System[5].cap      = parseFloat( Math.pow( (adj0 * form.adj5.value), 0.39 ) );
+         form.degree5.value = parseInt( System[5].cap );
+         System[5].cap      = Math.pow( 10, System[5].cap ) - 1;
+      }
+
+      if (System[4].uwp)
+      {
+         System[4].vol      = form.vol4.value    = calcIndex( 4 );
+         System[4].adj      = form.adj4.value    = adjustedIndex( 4, 4 );
+         adj0               = adjustedIndex( 0, 4 );
+         System[4].cap      = parseFloat( Math.pow( (adj0 * form.adj4.value), 0.39 ) );
+         form.degree4.value = parseInt( System[4].cap );
+         System[4].cap      = Math.pow( 10, System[4].cap ) - 1;
+      }
+   
+      if (System[3].uwp)
+      {
+         System[3].vol      = form.vol3.value    = calcIndex( 3 );
+         System[3].adj      = form.adj3.value    = adjustedIndex( 3, 3 );
+         adj0               = adjustedIndex( 0, 3 );
+         System[3].cap      = parseFloat( Math.pow( (adj0 * form.adj3.value), 0.39 ) );
+         form.degree3.value = parseInt( System[3].cap );
+         System[3].cap      = Math.pow( 10, System[3].cap ) - 1;
+      }
+   
+      if (System[2].uwp)
+      {
+         System[2].vol      = form.vol2.value    = calcIndex( 2 );
+         System[2].adj      = form.adj2.value    = adjustedIndex( 2, 2 );
+         adj0               = adjustedIndex( 0, 2 );
+         System[2].cap      = parseFloat( Math.pow( (adj0 * form.adj2.value), 0.39 ) );
+         form.degree2.value = parseInt( System[2].cap );
+         System[2].cap      = Math.pow( 10, System[2].cap ) - 1;
+      }
+   
+      if (System[1].uwp)
+      {
+         System[1].vol      = form.vol1.value    = calcIndex( 1 );
+         System[1].adj      = form.adj1.value    = adjustedIndex( 1, 1 );
+         adj0               = adjustedIndex( 0, 1 );
+         System[1].cap      = parseFloat( Math.pow( (adj0 * form.adj1.value), 0.39 ) );
+         form.degree1.value = parseInt( System[1].cap );
+         System[1].cap      = Math.pow( 10, System[1].cap ) - 1;
+      }
+
+      System[0].cap = parseInt( System[1].cap + System[2].cap + System[3].cap + System[4].cap );
+      doTransport( form );
+   }
+}
+
+// End hide -->
+</script>
+
+</head>
+
+<body bgcolor=000000 text=c0c0c0>
+
+<form>
+
+<h1>R&J Starport Trade Worksheet</h1>
+
+<table border=0 cellspacing=0 cellpadding=0>
+
+   <tr> <th colspan=2> v. 98.6.12 (pessimist version)
+
+        <th> <font color=ffff00> <input type=checkbox onClick=calc(this.form)> Calculate
+
+   <tr> <th colspan=8> <hr>
+
+   <tr> <th> <font color=ffff00> Dist (parsecs)
+        <th> <font color=ffff00> UWP
+        <th> <font color=ffff00> Navy; XBoat
+        <th> <font color=ffff00> GG; Belt
+        <th> Volume<br>Index
+        <th> Adjusted<br>Index
+        <th> <font color=00ffff> Trade Index
+
+   <tr> <th> (Main World)
+
+        <th> <input size=9 name=uwp0 onChange=setUwp(this.value,0)>
+        <th> <input type=checkbox name=n0 onClick=toggleNavy(0)>
+             <input type=checkbox name=x0 onClick=toggleXboat(0)>
+        <th> <input type=checkbox name=g0 onClick=toggleGG(0)>
+             <input type=checkbox name=a0 onClick=toggleAster(0)>
+        <th> <input size=2 name=vol0>
+        <th> 
+        <th> 
+
+
+
+   <tr> <th> <select onChange=setDist(this[this.selectedIndex].value,1)>
+             <OPTION value=100 selected> 
+<OPTION value=1> 1
+<OPTION value=2> 2
+<OPTION value=3> 3
+<OPTION value=4> 4
+<OPTION value=5> 5
+<OPTION value=6> 6
+<OPTION value=7> 7
+<OPTION value=8> 8
+<OPTION value=9> 9
+<OPTION value=10> 10
+<OPTION value=11> 11
+<OPTION value=12> 12
+
+             </SELECT>
+        <TH> <INPUT size=9 name=uwp1 onChange=setUwp(this.value,1)>
+        <TH> <INPUT type=checkbox name=n1 onClick=toggleNavy(1)>
+             <INPUT type=checkbox name=x1 onClick=toggleXboat(1)>
+        <TH> <INPUT type=checkbox name=g1 onClick=toggleGG(1)>
+             <INPUT type=checkbox name=a1 onClick=toggleAster(1)>
+        <TH> <INPUT size=2 name=vol1>
+        <TH> <INPUT size=2 name=adj1>
+        <TH> <INPUT size=2 name=degree1>
+
+
+   <TR> <TH> <SELECT onChange=setDist(this[this.selectedIndex].value,2)>
+             <OPTION value=100 selected> 
+<OPTION value=1> 1
+<OPTION value=2> 2
+<OPTION value=3> 3
+<OPTION value=4> 4
+<OPTION value=5> 5
+<OPTION value=6> 6
+<OPTION value=7> 7
+<OPTION value=8> 8
+<OPTION value=9> 9
+<OPTION value=10> 10
+<OPTION value=11> 11
+<OPTION value=12> 12
+<OPTION value=13> 13
+<OPTION value=14> 14
+<OPTION value=15> 15
+<OPTION value=16> 16
+
+             </SELECT>
+        <TH> <INPUT size=9 name=uwp2 onChange=setUwp(this.value,2)>
+        <TH> <INPUT type=checkbox name=n2 onClick=toggleNavy(2)>
+             <INPUT type=checkbox name=x2 onClick=toggleXboat(2)>
+        <TH> <INPUT type=checkbox name=g2 onClick=toggleGG(2)>
+             <INPUT type=checkbox name=a2 onClick=toggleAster(2)>
+        <TH> <INPUT size=2 name=vol2>
+        <TH> <INPUT size=2 name=adj2>
+        <TH> <INPUT size=2 name=degree2>
+
+
+   <TR> <TH> <SELECT onChange=setDist(this[this.selectedIndex].value,3)>
+             <OPTION value=100 selected> 
+<OPTION value=1> 1
+<OPTION value=2> 2
+<OPTION value=3> 3
+<OPTION value=4> 4
+<OPTION value=5> 5
+<OPTION value=6> 6
+<OPTION value=7> 7
+<OPTION value=8> 8
+<OPTION value=9> 9
+<OPTION value=10> 10
+<OPTION value=11> 11
+<OPTION value=12> 12
+<OPTION value=13> 13
+<OPTION value=14> 14
+<OPTION value=15> 15
+<OPTION value=16> 16
+
+             </SELECT>
+        <TH> <INPUT size=9 name=uwp3 onChange=setUwp(this.value,3)>
+        <TH> <INPUT type=checkbox name=n3 onClick=toggleNavy(3)>
+             <INPUT type=checkbox name=x3 onClick=toggleXboat(3)>
+        <TH> <INPUT type=checkbox name=g3 onClick=toggleGG(3)>
+             <INPUT type=checkbox name=a3 onClick=toggleAster(3)>
+        <TH> <INPUT size=2 name=vol3>
+        <TH> <INPUT size=2 name=adj3>
+        <TH> <INPUT size=2 name=degree3>
+
+
+   <TR> <TH> <SELECT onChange=setDist(this[this.selectedIndex].value,4)>
+             <OPTION value=100 selected> 
+<OPTION value=1> 1
+<OPTION value=2> 2
+<OPTION value=3> 3
+<OPTION value=4> 4
+<OPTION value=5> 5
+<OPTION value=6> 6
+<OPTION value=7> 7
+<OPTION value=8> 8
+<OPTION value=9> 9
+<OPTION value=10> 10
+<OPTION value=11> 11
+<OPTION value=12> 12
+<OPTION value=13> 13
+<OPTION value=14> 14
+<OPTION value=15> 15
+<OPTION value=16> 16
+
+             </SELECT>
+        <TH> <INPUT size=9 name=uwp4 onChange=setUwp(this.value,4)>
+        <TH> <INPUT type=checkbox name=n4 onClick=toggleNavy(4)>
+             <INPUT type=checkbox name=x4 onClick=toggleXboat(4)>
+        <TH> <INPUT type=checkbox name=g4 onClick=toggleGG(4)>
+             <INPUT type=checkbox name=a4 onClick=toggleAster(4)>
+        <TH> <INPUT size=2 name=vol4>
+        <TH> <INPUT size=2 name=adj4>
+        <TH> <INPUT size=2 name=degree4>
+
+   <TR> <TH> <SELECT onChange=setDist(this[this.selectedIndex].value,5)>
+             <OPTION value=100 selected> 
+<OPTION value=1> 1
+<OPTION value=2> 2
+<OPTION value=3> 3
+<OPTION value=4> 4
+<OPTION value=5> 5
+<OPTION value=6> 6
+<OPTION value=7> 7
+<OPTION value=8> 8
+<OPTION value=9> 9
+<OPTION value=10> 10
+<OPTION value=11> 11
+<OPTION value=12> 12
+<OPTION value=13> 13
+<OPTION value=14> 14
+<OPTION value=15> 15
+<OPTION value=16> 16
+
+             </SELECT>
+        <TH> <INPUT size=9 name=uwp5 onChange=setUwp(this.value,5)>
+        <TH> <INPUT type=checkbox name=n5 onClick=toggleNavy(5)>
+             <INPUT type=checkbox name=x5 onClick=toggleXboat(5)>
+        <TH> <INPUT type=checkbox name=g5 onClick=toggleGG(5)>
+             <INPUT type=checkbox name=a5 onClick=toggleAster(5)>
+        <TH> <INPUT size=2 name=vol5>
+        <TH> <INPUT size=2 name=adj5>
+        <TH> <INPUT size=2 name=degree5>
+
+   <TR> <TH> <SELECT onChange=setDist(this[this.selectedIndex].value,6)>
+             <OPTION value=100 selected> 
+<OPTION value=1> 1
+<OPTION value=2> 2
+<OPTION value=3> 3
+<OPTION value=4> 4
+<OPTION value=5> 5
+<OPTION value=6> 6
+<OPTION value=7> 7
+<OPTION value=8> 8
+<OPTION value=9> 9
+<OPTION value=10> 10
+<OPTION value=11> 11
+<OPTION value=12> 12
+<OPTION value=13> 13
+<OPTION value=14> 14
+<OPTION value=15> 15
+<OPTION value=16> 16
+
+             </SELECT>
+        <TH> <INPUT size=9 name=uwp6 onChange=setUwp(this.value,6)>
+        <TH> <INPUT type=checkbox name=n6 onClick=toggleNavy(6)>
+             <INPUT type=checkbox name=x6 onClick=toggleXboat(6)>
+        <TH> <INPUT type=checkbox name=g6 onClick=toggleGG(6)>
+             <INPUT type=checkbox name=a6 onClick=toggleAster(6)>
+        <TH> <INPUT size=2 name=vol6>
+        <TH> <INPUT size=2 name=adj6>
+        <TH> <INPUT size=2 name=degree6>
+
+   <TR> <TH> <SELECT onChange=setDist(this[this.selectedIndex].value,7)>
+             <OPTION value=100 selected> 
+<OPTION value=1> 1
+<OPTION value=2> 2
+<OPTION value=3> 3
+<OPTION value=4> 4
+<OPTION value=5> 5
+<OPTION value=6> 6
+<OPTION value=7> 7
+<OPTION value=8> 8
+<OPTION value=9> 9
+<OPTION value=10> 10
+<OPTION value=11> 11
+<OPTION value=12> 12
+<OPTION value=13> 13
+<OPTION value=14> 14
+<OPTION value=15> 15
+<OPTION value=16> 16
+
+             </SELECT>
+        <TH> <INPUT size=9 name=uwp7 onChange=setUwp(this.value,7)>
+        <TH> <INPUT type=checkbox name=n7 onClick=toggleNavy(7)>
+             <INPUT type=checkbox name=x7 onClick=toggleXboat(7)>
+        <TH> <INPUT type=checkbox name=g7 onClick=toggleGG(7)>
+             <INPUT type=checkbox name=a7 onClick=toggleAster(7)>
+        <TH> <INPUT size=2 name=vol7>
+        <TH> <INPUT size=2 name=adj7>
+        <TH> <INPUT size=2 name=degree7>
+
+<script>
+   writeForm( 1 )
+   writeForm( 2 )
+   writeForm( 3 )
+   writeForm( 4 )
+   writeForm( 5 )
+   writeForm( 6 )
+   writeForm( 7 )
+   writeForm( 8 )
+</script>
+
+   <TR> <TH colspan=8> <HR>
+
+   <TR>
+        <TH> Passengers<BR>Per Week
+        <TH> <FONT color=ff8800> Per Hour
+        <TH> Landing Strips
+        <TH> Parkbays (Shuttle & Public)
+        <TH> 1kt & 100t Shuttles
+        <TH> VIP Shuttles
+        <TH> Traders Landing per Week (5%) <br> per Hour
+
+   <TR> 
+        <TH> <INPUT size=9 name=ppw>
+        <TH> <INPUT size=7 name=pph onChange="System[0].cap=168*parseInt(this.value);doTransport(this.form)">
+        <TH> <INPUT size=4 name=strips>
+        <TH> <INPUT size=4 name=parkbays>
+             <INPUT size=5 name=publicBays>
+        <TH> <INPUT size=4 name=kt>
+             <INPUT size=3 name=ht>
+        <TH> <INPUT size=3 name=vip>
+        <TH> <INPUT size=6 name=traders> <br>
+             <INPUT size=6 name=tradersPH>
+
+</TABLE>
+</FORM>
+
+   <FONT color=ffffff>
+   <H2> Instructions </H2>
+   Select the appropriate values for any two starports, then click "calculate". <BR>
+   The optimal traffic handling for trade between the two starports is then calculated
+   and displayed.
+   <H2> Finding the Total Capacity for a Starport </H2>
+   Sum up the traffic, in <FONT color=ff8800>Passengers per Hour</FONT>, between the
+   target starport and all of its significant neighbors.  <BR> Enter this value directly
+   in the <FONT color=ff8800>Per Hour</FONT> field and hit the TAB key. <BR>
+   The row of fields will update themselves.
+
+<BR>
+<BR>
+
+   <FONT color=00ffaa>
+   <LI> Freight is 4x passenger traffic, though it may vary from 0.1x to 10x.
+   <LI> 1000t shuttles carry 200 passengers and 760t freight.
+   <LI> 100t shuttles carry 16 passengers and 72t freight.
+   <LI> 100t VIP shuttles have 5 large staterooms, 10 small staterooms, and carry 20t freight.

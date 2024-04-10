@@ -1,0 +1,244 @@
+<html><title>Engra Shipyards</title>
+
+<head><script>
+function setHull(mod, form)
+{
+   priceMod = mod
+   update(form)
+   setPrice(form)
+}
+function setPlant(form)
+{
+   plant = (jump > manu)? jump : manu
+   plant += compep
+
+   if (ppwr == 1) plant++
+   
+   fuel = form.fuel.value = hullSize * jump / 10.0 + plant
+   update(form)
+   setPrice(form)
+}
+function setManu(num, form)
+{
+   manu = num
+   setPlant(form)
+   setPrice(form)
+}
+function setJump(num, form)
+{
+   jump = num
+   if (jump && compmodel == 0)
+   {
+      alert("You must have a computer to operate the jump drive.")
+   }
+   setPlant(form)
+   setPrice(form)
+}
+function setComp(model, price, tons, ep, form)
+{
+   compmodel = model
+   compprice = price
+   comptons = tons
+   compep = ep
+   setPlant(form)
+   setPrice(form)
+}
+function update(form)
+{
+      var hullIndex = form.hullSize.selectedIndex
+
+   hullSize = parseInt(form.hullSize[hullIndex].text)
+   if (priceMod == 0.01) hullSize *= 0.75
+   if (priceMod == 0.011) hullSize *= 0.65
+
+   bridge   = 0.2 * hullSize
+   fuel       = parseInt(form.fuel.value)
+   scoop   = form.scoop.checked
+   refine    = form.refine.checked
+   ppwr     = form.ppwr.checked
+   pbak     = form.pbak.checked
+
+   room    = parseInt(form.rooms.value)
+   if (hullSize > 1000)
+   {
+         var crew = 10 + hullSize/100 + hullSize/333
+
+      room = (room > crew)? room : crew 
+      form.rooms.value = room
+   }
+   else
+   {
+          var crew = 1
+   
+      if (hullSize > 200)  crew += parseInt(hullSize/35+0.5) + 2
+      room = (room > crew)? room : crew
+      form.rooms.value = room
+   }
+   berth    = parseInt(form.berths.value)
+   elb        = parseInt(form.elb.value)
+   fib         = form.fib.checked
+   bis        = form.bis.checked
+   if (fibonce && (fib || bis))
+   {
+      fibonce = 0
+      alert("Engra Shipyards offers /fib and /bis versions of all 7 computer models.");
+   }
+   setPrice(form)
+}
+function setPrice(form)
+{
+   var price = hullSize * priceMod/100.0 + 4*jump + 3*plant +
+              room * 0.5 + berth * 0.05 + elb * 0.01 + 
+              bridge * 0.05 + compprice
+
+   price += (manu == 1)? 1.5 * manu :
+                (manu == 2)? 0.7 * manu :  0.5 * manu
+
+   if (ppwr) price += 3
+   if (scoop) price += 0.001 * hullSize
+   if (refine) price += 0.15
+   if (pbak) price += (plant > 1)? 3 * (plant-1) : 3 * plant
+   if (fib) price += parseInt(compprice * 40)/100
+   if (bis) price += compprice
+
+   var space = hullSize - comptons - room*4 - berth*0.5 - elb*0.1 -
+                     (hullSize * ((jump+1) + (manu-1)*3)/100)  -
+                     hullSize * 0.2 - fuel - plant
+       
+   if (pbak)  space -= (plant > 1)? plant - 1 : 1
+   if (manu) space -= 2 // a little overhead
+   if (refine) space -= 15
+
+   space = parseInt(space)
+
+   form.price.value = parseInt(price+0.5)/10
+   form.space.value = space
+}
+var jump = 0
+var manu = 0
+var hullSize = 0
+var fuel = 0
+var priceMod = 100
+var plant = 0
+var ppwr = 0
+var pbak = 0
+var scoop = 0
+var refine = 0
+var room = 0
+var berth = 0
+var elb = 0
+var bridge = 0
+var compmodel = 0
+var compprice = 0
+var comptons = 0
+var compep = 0
+var fibonce = 1
+var fib = 0
+var bis = 0
+</script></head>
+
+<body bgcolor=66ff88>
+
+<H1>Book 2 Ship Design System</H1>
+<h4>95.07.27</h4>
+<form name=design>
+
+<table>
+<td>Hull type:
+<td><input type=radio name=hullType onClick="setHull(120, this.form)">Needle/Wedge
+<td><input type=radio name=hullType onClick="setHull(110, this.form)">Cone
+<td><input type=radio name=hullType onClick="setHull(100, this.form)">Cylinder
+<td><input type=radio name=hullType onClick="setHull(60, this.form)">Close Structure
+<td><input type=radio name=hullType onClick="setHull(70, this.form)">Sphere
+<tr><td>
+<td><input type=radio name=hullType onClick="setHull(80, this.form)">Flattened Sphere
+<td><input type=radio name=hullType onClick="setHull(50, this.form)">Dispersed
+<td><input type=radio name=hullType onClick="setHull(0.01, this.form)">Planetoid
+<td><input type=radio name=hullType onClick="setHull(0.011, this.form)">Buffered Planetoid
+<tr>
+
+<td>
+   <select size=5 name=hullSize onChange="update(this.form)">
+   
+   <option> 100
+   <option> 150
+   <option> 200
+   <option> 250
+   <option> 300
+   <option> 400
+   <option> 500
+   <option> 600
+   <option> 800
+   <option> 1000
+   <option> 1200
+   <option> 1600
+   <option> 2000
+   <option> 2500
+   <option> 3000
+   <option> 4000
+   <option> 5000
+   <option> 7500
+   <option> 10000
+   </select>
+   
+<td>Hull Displacement
+<td><input name=fuel size=8 onBlur="update(this.form)"><td>Min. Fuel
+<td><input type=checkbox name=scoop onClick="update(this.form)">Fuel Scoops
+<td><input type=checkbox name=refine onClick="update(this.form)">Refinery
+<tr>
+</table>
+
+<table>
+<td>Manuever Drive:
+<script>
+   for(var i=0; i<7; i++)
+   {
+      document.write("<td><input type=radio name=manu onClick=")
+      document.writeln("\"setManu("+i+", this.form)\""+">"+i)
+   }
+</script>
+<td><td>
+<td><input type=checkbox name=ppwr onClick="update(this.form)">Power Plant +1
+<tr>
+
+<td>Jump Drive:
+<script>
+   for (var i=0; i<7; i++)
+   {
+      document.write("<td><input type=radio name=jump onClick=")
+      document.writeln("\"setJump("+i+", this.form)\""+">"+i)
+   }
+</script>
+<td><td>
+<td><input type=checkbox name=pbak onClick="update(this.form)">Backup Power Plant
+<tr>
+
+<td>Computer:
+<td><input type=radio name=comp onClick="setComp(0, 0, 0, 0, this.form)">0
+<td><input type=radio name=comp onClick="setComp(1, 2, 1, 0, this.form)">1
+<td><input type=radio name=comp onClick="setComp(2, 9, 2, 0, this.form)">2
+<td><input type=radio name=comp onClick="setComp(3, 18, 3, 1, this.form)">3
+<td><input type=radio name=comp onClick="setComp(4, 30, 4, 2, this.form)">4
+<td><input type=radio name=comp onClick="setComp(5, 45, 5, 3, this.form)">5
+<td><input type=radio name=comp onClick="setComp(6, 55, 7, 5, this.form)">6
+<td><input type=radio name=comp onClick="setComp(7, 80, 9, 7, this.form)">7
+<td>
+<td><input type=checkbox name=fib onClick="update(this.form)">fib 
+       <input type=checkbox name=bis onClick="update(this.form)">bis
+</table>
+
+<table>
+<td><input name=rooms size=8 value=0 onBlur="update(this.form)"> Staterooms
+<td><input name=berths size=8 value=0 onBlur="update(this.form)"> Low Berths
+<td><input name=elb size=8 value=0 onBlur="update(this.form)"> Emergency
+<tr><td colspan=3><hr><tr>
+<td><input name=price size=8 onFocus="update(this.form)"> MCr
+<td><input name=space size=8 onFocus="update(this.form)"> Tons free
+<tr>
+</table>
+
+</form>
+<hr>
+<center>
+<!--a href=tas.htm><img src=img\left.gif></a-->
+</body></html>

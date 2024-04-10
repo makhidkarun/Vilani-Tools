@@ -1,0 +1,278 @@
+<html>
+               <title> Medmar Orbital Port Status </title>
+<head>
+<script>
+
+////////////////////////////////////////////////////////
+//
+//  alterShip
+//
+//  changes the stats of a ship
+// 
+////////////////////////////////////////////////////////
+function alterShip( ship, name, seed1, seed2, seed3, id )
+{
+   ship.name   = name
+   ship.seed1  = seed1
+   ship.seed2  = seed2
+   ship.seed3  = seed3
+   ship.id     = id
+   ship.portId = -1
+   ship.status = 0
+   ship.id     = id
+}
+
+////////////////////////////////////////////////////////
+//
+//  makeship
+//
+//  returns a filled-out ship object
+//
+////////////////////////////////////////////////////////
+function makeship( name, seed1, seed2, seed3, id )
+{
+   this.name   = name
+   this.seed1  = seed1
+   this.seed2  = seed2
+   this.seed3  = seed3
+   this.portId = -1
+   this.status = 0
+   this.id     = id
+//
+// Status:
+//
+// 0 space
+// 1 arrival
+// 2 inspection
+// 3 unload
+// 4 mtc
+// 5 load
+// 6 departure
+//
+   return this
+}
+
+////////////////////////////////////////////////////////
+//
+//  shipArray
+//
+//  returns an array of empty ships
+//
+////////////////////////////////////////////////////////
+function shipArray( n )
+{
+   this.length = n
+   for (var i=0; i<n; i++)
+   {
+      this[i] = new makeship( 'None', 0, 0, 0, i )
+   }
+   return this
+}
+
+////////////////////////////////////////////////////////
+//
+//  makeTrafficControl
+//
+//  returns a traffic control object with a name
+//  and an array of empty ship ports.
+//
+//  a ship port is simply a ship pointer.  if it's
+//  zero, there's no ship there.
+//
+////////////////////////////////////////////////////////
+function makeTrafficControl( name, ports )
+{
+   this.name  = name
+   this.port  = new shipArray( ports )
+   return this
+}
+
+////////////////////////////////////////////////////////
+//
+//  updateShip
+//
+//  check ship's status:
+//  if in space, whether or not it should try to dock
+//  if docked, whether or not it should increment its
+//     progress (including departure)
+//
+////////////////////////////////////////////////////////
+function updateShip( ship )
+{
+      var arrival = ( year * month ) % 19
+                  + ( year * month ) % 17
+                  + ( month - 1 )    * 30
+
+      var inspect = arrival + ( year - 1 ) * ( month + 1 ) % 5 + 1
+      var unload  = inspect + ( year - 2 ) * ( month + 2 ) % 3 + 1
+      var maint   = unload  + ( year - 3 ) * ( month + 3 ) % 2 
+      var load    = maint   + ( year - 4 ) * ( month + 4 ) % 5 + 1
+      var depart  = load    + ( year - 3 ) * ( month + 3 ) % 5 + 1
+      var gone    = depart  + ( year - 1 ) * ( month + 1 ) % 3 + 1
+
+   ship.status = 
+      ( day < arrival )? 0 :
+      ( day < inspect )? 1 :
+      ( day < unload  )? 2 :
+      ( day < maint   )? 3 :
+      ( day < load    )? 4 :
+      ( day < depart  )? 5 : 
+      ( day < gone    )? 6 : 0
+
+   if (ship.status == 1 && ship.portId == -1)
+   {
+      contactTower( ship, trafficControl.port )
+   }
+   else if (ship.status == 6)
+   {
+      depart( ship, trafficControl.port[ship.portId] )
+   }
+}
+
+////////////////////////////////////////////////////////
+//
+//  nextStep
+//
+//  increments the given ship's status, and returns
+//  the string corresponding to that status
+//
+////////////////////////////////////////////////////////
+function nextStep( ship )
+{
+   ship.status = (ship.status + 1) % 7
+   if (ship.status == 0) return "Travelling"
+   if (ship.status == 1) return "Arrival"
+   if (ship.status == 2) return "Inspection"
+   if (ship.status == 3) return "Unload"
+   if (ship.status == 4) return "Maintenance"
+   if (ship.status == 5) return "Load"
+   if (ship.status == 6) return "Departure"
+   return "Unknown"
+}
+
+////////////////////////////////////////////////////////
+//
+//  arrive
+//
+//  registers a ship with a port, and vice versa
+//
+////////////////////////////////////////////////////////
+function arrive( ship, port )
+{
+   port        = ship
+   ship.portId = port.id
+}
+
+////////////////////////////////////////////////////////
+//
+//  depart
+//
+//  deregisters a ship with a port, and v.v.
+//
+////////////////////////////////////////////////////////
+function depart( ship, port )
+{
+   port        = -1
+   ship.portId = -1
+}
+
+////////////////////////////////////////////////////////
+//
+//  emptyPort
+//
+//  checks the port array for an empty slot, and
+//  returns the slot number if so; otherwise -1
+//
+////////////////////////////////////////////////////////
+function emptyPort( ship, portArray )
+{
+   for (var i=0; i<portArray.length; i++)
+   {
+      if (portArray[i].ship == -1)
+      {
+         return i
+      }
+   }
+   return -1
+}
+
+////////////////////////////////////////////////////////
+//
+//  contactTower
+//
+//  docks a ship with the starport if possible
+//
+////////////////////////////////////////////////////////
+function contactTower( ship, portArray )
+{
+   var id = emptyPort( ship, portArray )
+
+   if (avail != -1)
+   {
+      arrive( ship, portArray[id] )
+      nextStep( ship );
+   }
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+
+var ship    = new shipArray( 4 )
+    ship[0] = new makeship( "Solpugida",  1,  2,  3 )
+    ship[1] = new makeship( "Sunbane",    2,  3,  4 )
+    ship[2] = new makeship( "Grendel",    3,  4,  5 )
+    ship[3] = new makeship( "Tukul",      4,  5,  6 )
+
+var trafficControl = new makeTrafficControl( "Medmar Port Authority", 8 )
+
+var date  = new Date
+var year  = parseInt(date.getYear()) + 1000
+var month = parseInt(date.getMonth())
+var day   = parseInt(date.getDate() + month * 31)
+
+
+for (var i=0; i<ship.length; i++)
+{
+   updateShip( ship[i] )
+}
+
+alterShip( trafficControl.port[0], "Solpugida ", 1, 2, 3, 475844 )
+alterShip( trafficControl.port[1], "Tukul     ", 4, 5, 6, 882934 )
+alterShip( trafficControl.port[2], "Marleener ", 7, 8, 9, 938457 )
+alterShip( trafficControl.port[3], "Sunbane   ",11,12,13, 342456 )
+alterShip( trafficControl.port[4], "Kaddish   ", 4, 5, 6, 487464 )
+alterShip( trafficControl.port[5], "Chunnel   ", 4, 5, 6, 583957 )
+alterShip( trafficControl.port[6], "Lintula   ", 4, 5, 6, 356476 )
+alterShip( trafficControl.port[7], "Frederick ", 4, 5, 6, 734931 )
+
+</script>
+</head>
+
+<body bgcolor=6f00ef>
+
+<center>
+<h2> Ships Docked at Medmar Orbital </h2>
+
+<script>
+   document.writeln( 'Date: ' + day + '-' + year + '<br><br>')
+
+   document.writeln( '<pre>')
+   document.writeln('Port   Ship Name   Status   Port Id   Id')
+   for (var i=0; i<trafficControl.port.length; i++)
+   {
+         var port = trafficControl.port[i]
+
+      if (port != 0)
+      {
+         document.writeln( '      ' + i + '     '
+                          + port.name   + '   '
+                          + port.status + '        '
+                          + port.portId + '      '
+                          + port.id     + '<br>' )
+      }
+   }
+</script>
+
+</body>
+
+</html>

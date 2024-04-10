@@ -1,0 +1,496 @@
+<html>
+
+<title>Rob's Pocket Empires Worksheet</title>
+
+<head>
+
+<script>
+<!-- Hide script contents from old browsers.
+
+function zot( form )
+{
+   form.milit.value = form.civ.value
+                    = form.surplus.value
+                    = form.save.value
+                    = form.tax.value
+                    = 0.0;
+
+   calc( form );
+}
+
+function zap( form )
+{
+   form.sp.value = form.worlds.value
+                 = form.pop.value
+                 = form.gov.value
+                 = form.law.value
+                 = form.tl.value
+                 = form.ra.value
+                 = form.i.value
+                 = form.c.value
+                 = form.pm.value
+                 = form.belt.value
+                 = form.gg.value
+                 = form.milMaint.value
+                 = form.year.value
+                 = form.realPop.value
+                 = form.vat.value
+                 = 0;
+
+   form.empire.value = '';
+   calc( form );
+}
+
+function roll ()
+{
+   r1 = parseInt( Math.random() * 6 + 1);
+   r2 = parseInt( Math.random() * 6 + 1);
+
+   return r1 + r2;
+}
+
+function getBelts()
+{
+   num = roll();
+  
+   if (num == 12) return 3;
+   if (num == 11) return 2;
+   if (num  > 7)  return 1;
+
+   return 0;
+}
+
+function getGGs()
+{
+   num = roll();
+
+   if (num > 11) return 5;
+   if (num > 9)  return 4;
+   if (num > 8)  return 3;
+   if (num > 6)  return 2;
+   if (num > 5)  return 1;
+
+   return 0;
+}
+
+function sample( form )
+{
+      name = form.empire.value;
+
+   zap( form );
+
+   if (name == "Sylea")
+   {
+      form.worlds.value  = 50;
+      form.pm.value      = 5;
+      form.belt.value    = 1;
+      form.gg.value      = 2;
+      form.sp.value      = 'A';
+      form.pop.value     = 10;
+      form.gov.value     = 9;
+      form.law.value     = 8;
+      form.tl.value      = 12;
+      form.ra.value      = 12;
+      form.i.value       = 11;
+      form.c.value       = 6;
+      form.realPop.value = 55000000000;
+   }
+   else
+   {
+      form.empire.value  = "Suzannes_World"
+      form.worlds.value  = 1;
+      form.pm.value      = 2;
+      form.belt.value    = 1;
+      form.gg.value      = 5;
+      form.sp.value      = 'X';
+      form.pop.value     = 8;
+      form.gov.value     = 8;
+      form.law.value     = 3;
+      form.tl.value      = 6;
+      form.ra.value      = 7;
+      form.i.value       = 6;
+      form.c.value       = 7;
+      form.realPop.value = 250000000;
+   }
+  
+   popul( form, 1 );
+}
+
+function calc( form )
+{
+   validate( form );
+   gwp( form );
+   finishedGoods( form );
+   taxRate( form );
+   governmentBudget( form );
+   expenses( form );
+   governmentSurplus( form );
+   credits( form );
+}
+
+function validate( form )
+{
+   if (form.year.value<  0) form.year.value = 0;
+   if (form.tl.value  <  0) form.tl.value = 0;
+   if (form.pm.value  <  0) form.pm.value = 0;
+   if (form.law.value <  0) form.law.value = 0;
+   if (form.pop.value <  0) form.pop.value = 0;
+   if (form.ra.value  <  0) form.ra.value = 0;
+   if (form.belt.value  <  0) form.belt.value = 0;
+   if (form.gg.value  <  0) form.gg.value = 0;
+   if (form.i.value   <  0) form.i.value  = 0;
+   if (form.c.value   <= 0) form.c.value  = 1;
+   if (form.tax.value   <= 0) form.tax.value  = 0;
+   if (form.vat.value   <= 0) form.vat.value  = 0;
+   if (form.worlds.value <= 0) form.worlds.value  = 1;
+   if (form.milMaint.value <= 0) form.milMaint.value  = 0;
+   if (form.save.value <= 0) form.save.value = 0;
+   if (form.realPop.value <= 0) form.realPop.value = 0;
+}
+
+function getResources( form )
+{
+   res   = parseInt( form.ra.value );
+   tl    = parseInt( form.tl.value );
+   
+   if (tl > 7) res += parseInt( form.belt.value )
+                    + parseInt( form.gg.value );
+
+   return res;
+}
+
+function gwp( form )
+{
+   labor = laborFactor( form );
+   res   = getResources( form );
+   tl    = parseInt( form.tl.value );
+   
+   mygwp =  tl    *
+            res   *
+            0.1   *
+            labor *
+            parseInt( form.pm.value ) *
+            parseInt( form.i.value )  /
+            (parseInt( form.c.value )+1);
+
+   form.gwp.value = parseInt( 10000 * mygwp + 0.5 ) / 10000.0;
+
+   if (parseFloat( form.save.value ) > parseFloat( form.gwp.value ))
+      form.save.value = form.gwp.value;
+}
+
+function laborFactor( form )
+{
+   val = parseInt( form.pop.value ) - 1;
+
+   if (val <= 0)  val = 0.0;
+   if (val == 1)  val = 0.000001 ;
+   if (val == 2)  val = 0.00001 ;
+   if (val == 3)  val = 0.0001 ;
+   if (val == 4)  val = 0.001 ;
+   if (val == 5)  val = 0.01 ;
+   if (val == 6)  val = 0.1 ;
+   if (val == 7)  val = 1.0;
+   if (val == 9)  val = 100.0 ;
+   if (val == 10) val = 1000.0 ;
+   if (val == 11) val = 10000.0 ;
+   if (val == 12) val = 100000.0 ;
+   if (val == 13) val = 1000000.0 ;
+   if (val == 14) val = 10000000.0 ;
+   if (val == 15) val = 100000000.0 ;
+   if (val == 8)  val = 10.0 ;
+
+   return val;
+}
+
+function finishedGoods( form )
+{
+   val = form.sp.value;
+   num = parseInt( form.worlds.value );
+
+   if (val == 'A') form.gwp.value *= 2    - (2    / Math.sqrt( num + 3 ) );
+   if (val == 'B') form.gwp.value *= 1.7  - (1.7  / Math.sqrt( num + 4.89796 ) );
+   if (val == 'C') form.gwp.value *= 1.4  - (1.4  / Math.sqrt( num + 11.25 ) );
+   if (val == 'D') form.gwp.value *= 1.1  - (1.1  / Math.sqrt( num + 120 ) );
+   if (val == 'E') form.gwp.value *= 1.01 - (1.01 / Math.sqrt( num + 10200 ) );
+}
+
+function taxRate( form )
+{
+   val = parseInt( form.gov.value );
+
+   if (val == 0)   val = 0.05;
+   if (val == 1)   val = 0.2;
+   if (val == 2)   val = 0.3;
+   if (val == 3)   val = 0.2;
+   if (val == 4)   val = 0.25;
+   if (val == 5)   val = 0.25;
+   if (val == 6)   val = 0.1;
+   if (val == 7)   val = 0.1;
+   if (val == 8)   val = 0.4;
+   if (val == 9)   val = 0.35;
+   if (val == 10)  val = 0.3;
+   if (val == 11)  val = 0.25;
+   if (val == 12)  val = 0.3;
+   if (val == 13)  val = 0.4;
+   if (val == 14)  val = 0.35;
+   if (val == 15)  val = 0.35;
+
+   val += ( parseInt(form.law.value) 
+           + parseInt(form.c.value) ) / 100;
+       
+   form.tax.value = parseInt( val * 1000 + 0.5 ) / 1000.0;
+}
+
+function governmentBudget( form )
+{
+   myBudget = ( parseFloat( form.tax.value )
+              + parseFloat( form.vat.value ) )
+            * parseFloat( form.gwp.value );
+
+   form.budget.value = parseInt( myBudget * 1000 + 0.5 ) / 1000.0;
+}
+
+function expenses( form )
+{
+   expense = govtExpense( form );
+
+   civ = ( ( parseInt( form.c.value )
+         + parseInt( form.i.value )
+         + parseInt( form.law.value ) )
+         / 100 )
+         * 1.1
+         * expense
+         * parseFloat( form.budget.value );
+
+   MM = parseFloat( form.milMaint.value );
+   if (isNaN( MM ) ) MM = 0;
+   else
+      MM = MM * 1.1 * expense;
+
+   if (MM > 0) MM = parseInt( MM * 1000 + 0.5 ) / 1000.0;
+
+   form.civ.value   = parseInt( civ * 1000 + 0.5 ) / 1000.0;
+   form.milit.value = MM;
+}
+
+function govtExpense( form )
+{
+   val = parseInt( form.gov.value );
+
+   if (val == 0)  val = 0.95;
+   if (val == 1)  val = 1.10;
+   if (val == 2)  val = 1.40;
+   if (val == 3)  val = 1.30;
+   if (val == 4)  val = 1.15;
+   if (val == 5)  val = 1.35;
+   if (val == 6)  val = 1.00;
+   if (val == 7)  val = 1.00;
+   if (val == 8)  val = 1.30;
+   if (val == 9)  val = 1.35;
+   if (val == 10) val = 1.05;
+   if (val == 11) val = 1.00;
+   if (val == 12) val = 1.25;
+   if (val == 13) val = 1.05;
+   if (val == 14) val = 1.10;
+   if (val == 15) val = 1.20;
+
+   return val;
+}
+
+function governmentSurplus( form )
+{
+   mySurplus = parseFloat( form.budget.value )
+             - parseFloat( form.civ.value )
+             - parseFloat( form.milit.value );
+
+   myTotal   = mySurplus 
+             + parseFloat( form.save.value );
+
+   form.surplus.value = parseInt( mySurplus * 1000 + 0.5) / 1000.0;
+   form.total.value   = parseInt( myTotal   * 1000 + 0.5) / 1000.0;
+}
+
+function credits( form )
+{
+   form.cr.value = 4919.3
+                 * parseInt(   form.tl.value )
+                 * 0.1
+                 * getResources( form )
+                 * parseInt( form.i.value )
+                 / 1000000;
+}
+
+function popChangeTable( factor )
+{
+   if (factor <  1) return -0.02;
+   if (factor <  2) return -0.01;
+   if (factor <  3) return -0.005;
+   if (factor <  4) return 0.0;
+   if (factor <  5) return 0.01;
+   if (factor <  6) return 0.02;
+   if (factor <  7) return 0.03;
+   if (factor <  8) return 0.06;
+   if (factor <  9) return 0.12;
+   if (factor < 12) return 0.25;
+   if (factor < 16) return 0.50;
+   if (factor < 21) return 1.25;
+   if (factor < 26) return 2.50;
+   if (factor < 31) return 5.00;
+   if (factor < 36) return 10.0;
+   if (factor < 41) return 20.0;
+   return 40.0; // > 40
+}
+
+function popul( form, years )
+{
+      starport = 1; // 'C' and 'X'
+
+   if ( form.sp.value == 'A' ) starport = 4;
+   if ( form.sp.value == 'B' ) starport = 2;
+   if ( form.sp.value == 'D' ) starport = 0.5;
+   if ( form.sp.value == 'E' ) starport = 0.5;
+
+   for (i=0; i<years; i++)
+   {
+         myPop  = parseInt( form.pop.value );
+         factor = (( Math.random() * 6 ) + 1
+                   + getResources( form )
+                   + parseInt( form.i.value )
+                   + parseInt( form.tl.value ))
+                  / myPop;
+
+      form.realPop.value *= ( 1 +  starport * popChangeTable( factor ) );
+
+         popString = form.realPop.value;
+         realPop   = parseFloat( form.realPop.value );
+         popDig    = parseInt( Math.log( realPop ) / Math.log(10) );
+
+      form.realPop.value = Math.round( realPop );
+      form.pop.value     = popDig;
+      form.pm.value      = parseInt( popString.charAt(0) );
+
+      form.year.value    = parseInt( form.year.value ) + 1;
+
+      if (parseInt( form.year.value ) % 10 == 9)
+         culturalDrift( form );
+
+   }
+   calc( form );
+}
+
+function culturalDrift( form )
+{
+      cult = parseInt( form.c.value );
+      well = roll();
+
+   if (well != 2 && well != 12)
+   {
+      if (cult < 5)  well++;
+      if (cult > 10) well--;
+   }
+
+   if      (well == 2) cult -= 2;
+   else if (well == 3) cult -= 1;
+   else if (well == 4) cult -= 1;
+   else if (well == 5) cult -= 1;
+   else if (well == 9)  cult += 1;
+   else if (well == 10) cult += 1;
+   else if (well == 11) cult += 1;
+   else if (well == 12) cult += 2;
+
+   if (cult < 0)  cult = -cult;
+   if (cult > 15) cult = 30 - cult;
+
+   form.c.value = cult;
+}
+
+// End hide -->
+</script>
+
+</head>
+
+<body background=../img/backgrounds/marble5.gif >
+
+
+<form>
+
+<h1>Rob's Pocket Empires Worksheet</h1>
+<h4>97.10.22</h4>
+<input name=empire size=20>
+<input type=checkbox onClick=sample(this.form)> World Name
+<input type=checkbox onClick=zot(this.form)> Re-Calculate 
+<input type=checkbox onClick=zap(this.form)> Clear
+<table border>
+
+   <tr>
+   <th><font color=AAAA00> # Worlds
+   <th><font color=AAAA00> PopM:Belt:GG
+   <th><font color=AAAA00> StarPort...Pop:Gov:Law:TL
+   <th><font color=AAAA00> Res:(L):Inf:Culture
+
+
+   <tr>
+   <th> <input name=worlds  size=2 type=int onChange=calc(this.form)>
+   <th> <input name=pm      size=2 type=int onChange=calc(this.form)>
+        <input name=belt    size=2 type=int>
+        <input name=gg      size=2 type=int>
+   <th> <input name=sp      size=2 type=string onChange=calc(this.form)>...
+        <input name=pop     size=2 type=int onChange=calc(this.form)>
+        <input name=gov     size=2 type=int onChange=calc(this.form)>
+        <input name=law     size=2 type=int onChange=calc(this.form)>-
+        <input name=tl      size=2 type=int onChange=calc(this.form)> 
+   <th> <input name=ra      size=2 type=int>(L)
+        <input name=i       size=2 type=int onChange=calc(this.form)>
+        <input name=c       size=2 type=int onChange=calc(this.form)>
+
+   <tr>
+   <tr>
+
+   <tr>
+   <th> <font  color=CC0000> GWP:
+   <th> <input name=gwp size=10 type=float>
+   <th> <font  color=0066CC> Civ + Mil Expenses:
+   <th> <input name=civ   size=4 type=float>
+      + <input name=milit size=4 type=float>
+
+
+   <tr>
+   <th> <font  color=0066CC>Tax Rate:
+   <th> <input name=tax  size=10 type=float>
+   <th> <font color=AAAA00> Savings:
+   <th> <input name=save size=10 type=float onChange=calc(this.form)> 
+
+
+   <tr>
+   <th> <font  color=AAAA00> Added Tax:
+   <th> <input name=vat  size=10 type=float onChange=calc(this.form)>
+   <th> <font  color=0066CC>Surplus:
+   <th> <input name=surplus size=10 type=float>
+
+
+   <tr>
+   <th> <font  color=0066CC>Budget:
+   <th> <input name=budget  size=10 type=float>
+   <th> <font  color=CC0000> Total RU:
+   <th> <input name=total size=10 type=float> 
+
+   <tr>
+   <th> <font color=AAAA00> Mil Maint:
+   <th> <input name=milMaint size=10 type=float onChange=calc(this.form)>
+   <th colspan=2> <font  color=0066CC>Relative Currency Value: 
+                  <input name=cr size=4> Cr
+
+   <tr>
+   <th> <font  color=AAAA00> Year <input name=year size=4>
+   <th colspan=3>
+        <font color=AAAA00>
+        Population:
+        <input type=text size=14 name=realPop type=float>
+        </font>
+        <input type=checkbox onClick="popul(this.form, 1)">+1 yr
+        <input type=checkbox onClick="popul(this.form, 4)">+4 yrs
+        <input type=checkbox onClick="popul(this.form, 16)">+16 yrs
+
+</table>
+</form>

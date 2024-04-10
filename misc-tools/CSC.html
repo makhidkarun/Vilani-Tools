@@ -1,0 +1,263 @@
+<html><title>CSC Worksheet</title>
+
+<head>
+
+<script>
+
+function bod( a, b )
+{
+}
+
+function zot( form )
+{
+}
+
+function zap( form )
+{
+}
+
+function calc( form )
+{
+}
+
+function validate( form )
+{
+}
+
+</script>
+</head>
+
+<body>
+
+<form>
+
+Rob's Central Supply Catalog Vehicle Design Worksheet
+
+<input type=checkbox onClick=zot(this.form)> Re-Calculate 
+<input type=checkbox onClick=zap(this.form)> Clear
+
+<table border>
+   
+   <tr>
+      <th>
+      <th>
+      <th>
+      <th> Disp
+      <th> Cost
+   </tr>
+
+   <tr>
+      <th> Displacement
+      <td> 
+         Disp (0.05 - 20.0 tons):<input name=disp size=5 type=float>
+      <td> 
+         Max G: <input name=maxG size=2 type=int>
+   </tr>
+
+   <tr>
+      <th> Body <br> Shape
+      <td width=200>
+         <select name=body>
+         <option value="2.0,0.3">Open Frame
+         <option value="1.3,0.7">Needle
+         <option value="1.3,0.8">Needle S
+ 	 <option value="1.3,1.2">Needle A
+ 	 <option value="1.5,0.5">Wedge
+ 	 <option value="1.5,0.7">Wedge S
+	 <option value="1.5,1.5">Wedge A
+	 <option value="1.1,0.6">Cylinder
+	 <option value="1.1,0.8">Cylinder S
+	 <option value="1.1,2.0">Cylinder A
+	 <option value="1.2,0.4">Box
+	 <option value="1.2,0.6">Box S
+	 <option value="1.0,0.8">Sphere
+	 <option value="1.0,1.0">Sphere S
+	 <option value="1.2,1.4">Disk
+	 <option value="1.2,1.6">Disk S
+	 <option value="1.2,1.2">Disk A
+	 <option value="1.4,0.3">Close S
+	 <option value="1.5,0.5">Slab
+	 <option value="1.5,0.7">Slab S
+	 <option value="1.5,1.5">Slab A
+	 </select>
+
+      <br> 
+         <input type=checkbox name=stealth> Stealth 
+   </tr>
+
+   <tr>
+      <th>Weapon
+      <td width=200>
+         <select name=w1>
+         <option value="0:0:0">None
+         <option value="0:0:0">AC, Light
+         <option value="0:0:0">AC, RF Lt
+         <option value="0:0:0">Bomb, Unguided
+         <option value="0:0:0">Cannon, Heavy
+         <option value="0:0:0">Cannon, Light
+         <option value="0:0:0">Laser, RF
+         <option value="0:0:0">Laser, PD
+         <option value="0:0:0">MG, Med
+         <option value="0:0:0">MG, RF Gausss
+         <option value="0:0:0">MG, VRF Med
+         <option value="0:0:0">Missile, Heavy
+         <option value="0:0:0">Missile, Light
+         <option value="0:0:0">PlCan, Hv Veh
+         <option value="0:0:0">PlCan, Lt Veh
+         </select>
+      <br>
+         Number: <input name=w1count size=2 type=int>
+      <td>  
+         TL
+         <select name=weaponTL>
+         <script>
+         for (i=4; i<16; i++)
+            document.writeln("   <option>"+i);
+         </script>
+         </select>
+   </tr>
+
+
+   <tr>
+      <th> Power <br> Plant
+      <td>
+         <select name=pow1>
+         <option value="0:0:0">Steam
+         <option value="0:0:0">Int. Combustion
+         <option value="0:0:0">Turbine, Steam
+         <option value="0:0:0">Imp. Int. Comb.
+         <option value="0:0:0">Turbine, GAS
+         <option value="0:0:0">Turbine, MHD
+         <option value="0:0:0">Fuel Cell
+         <option value="0:0:0">Photoelectric
+         <option value="0:0:0">Fusion
+         <option value="0:0:0">Fusion+
+         </select>
+      <br>
+         <input type=checkbox> Afterburner 
+      <td>
+         TL
+         <select name=powerTL>
+         <script>
+         for (i=4; i<17; i++)
+            document.writeln("   <option>"+i);
+         </script>
+         </select>
+   </tr>
+
+   <tr>
+      <th> Propulsion <br> System
+      <td>
+         <select name=prop>
+         <option value="0:0:0">None
+         <option value="0:0:0">Aircraft
+         <option value="0:0:0">HP Aircraft
+         <option value="0:0:0">Helicopter
+         <option value="0:0:0">Hoverskirt
+         <option value="0:0:0">Legs
+         <option value="0:0:0">Balloon
+         <option value="0:0:0">Prop (water)
+         <option value="0:0:0">HP water
+         <option value="0:0:0">Tracks
+         <option value="0:0:0">Wheels
+         <option value="0:0:0">Contragrav
+         </select>
+      <td>
+         TL
+         <select name=propTL>
+         <script>
+         for(i=4; i<13; i++)
+            document.writeln("   <option>"+i);
+         </script>
+         </select>
+   </tr>
+
+
+   <tr>
+      <th>Sensors
+      <td>
+         <select name=sens>
+         <option value="0:0:0">None
+         <option value="0:0:0">Subregional
+         <option value="0:0:0">Regional
+         <option value="0:0:0">Subcontinent
+         <option value="0:0:0">Continent
+         <option value="0:0:0">Orbital
+         <option value="0:0:0">Far Orbit
+         </select>
+      <td>
+         TL
+         <select name=commTL>
+         <option>5  <option>6  <option>7  <option>8
+         <option>10 <option>12 <option>14
+         </select>
+   </tr>
+
+   <tr>
+      <th>Comm <br> System
+      <td>
+         <select name=comm>
+         <option value="0:0:0">None
+         <option value="0:0:0">Subregional
+         <option value="0:0:0">Regional
+         <option value="0:0:0">Subcontinent
+         <option value="0:0:0">Continent
+         <option value="0:0:0">Orbital
+         <option value="0:0:0">Far Orbit
+         </select>
+      <br>
+         <input type=checkbox> Small Vehicle Comm
+      <td>
+         TL
+         <select name=commTL>
+         <option>5  <option>6  <option>7  <option>8
+         <option>10 <option>12 <option>14
+         </select>
+   </tr>
+
+   <tr>
+      <th>Life <br> Support
+      <td>
+         Workstations: <input name=stations size=4 type=int>
+      <br>
+         <input type=checkbox> Basic LS Only
+      <td>
+         TL
+         <select name=life>
+         <option>None
+         <option>8  <option>9  <option>10 <option>11
+         <option>12 <option>13 <option>14 <option>15
+         <option>16
+         </select>
+   </tr>
+
+   <tr>
+      <th> Storage <br> Banks
+      <td>
+      <td>
+         TL
+         <select name=storageTL>
+         <script>
+         document.writeln("   <option>None");
+         for(i=4; i<17; i++)
+            document.writeln("   <option>"+i);
+         </script>
+         </select>
+   </tr>
+
+   <tr>
+      <th>Grav <br> Comp
+      <td>
+      <td>
+         TL
+         <select name=grav>
+         <option>None
+         <option>10 <option>11 <option>12 <option>13
+         <option>14 <option>15 <option>16
+         </select>
+   </tr>
+
+
+</table>
+</form>
+

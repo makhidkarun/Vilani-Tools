@@ -1,0 +1,786 @@
+<html>
+
+   <title>Pasuuli's Vilani Tools</title>
+
+<head>
+   <script type="text/javascript" src="travel.js"></script>
+   <script type="text/javascript" src="UWP.js"></script>
+   <script type="text/javascript" src="languagetools.js"></script>
+   <script type="text/javascript" src="calendar.js"></script>
+   <script type="text/javascript" src="showhide.js"></script>
+   <script type="text/javascript" src="random_resource_gen.js"></script>
+   <!--script type="text/javascript" src="plotline.js"></script-->
+   <link rel="stylesheet" type="text/css" href="showhide.css" />
+</head>
+
+<body>
+
+<a href="../omni-maker/omni_vehicle_maker.html">Vehicle Maker</a> <br />
+<a href="../omni-maker/armormaker.html">Armor & Gun Maker</a> <br />
+<!--
+<a href="../cgi-bin/worldbuilder.pl">World-builder</a> <br />
+-->
+
+<div id="wpNav">
+   <ul>
+      <li><a href="#tab_one"    id="wpSelected" class="toggle">Words</a></li>
+      <li><a href="#tab_two"    id="unSelected" class="toggle">UWP</a></li>
+	  <li><a href="#tab_three"  id="unSelected" class="toggle">Vilanicize</a></li>
+      <li><a href="#tab_four"   id="unSelected" class="toggle">Calendrics</a></li>
+      <li><a href="#tab_five"   id="unSelected" class="toggle">Tasks</a></li>
+	  <li><a href="#tab_six"    id="unSelected" class="toggle">Randoms</a></li>
+   </ul>
+</div>
+
+<div id="tab_one" class="show">
+
+   <a name=top><h3>Word Generator 5.0</h3></a>
+   
+   <a href=#howto>How to use the generator</a><br>
+   
+   <form name=lang>
+   
+   <table border=0>
+     <tr><td width=150></td></tr>
+     <tr><td>Language</td>
+     	  <td><select name="language" onchange="setLanguage(this.options[this.selectedIndex].value)">
+     	    <option value="Ael Yael">Ael Yael</option>
+     	    <option value="Anglic">Anglic</option>
+            <option value="Amindii">Amindii (spoken on Regina)</option>
+            <option value="Khazad">"Aquilan" (extinct Yorbund colony)</option>
+     	    <option value="Aslan">Aslan</option>
+     	    <option value="Batrachian">Batrachian</option>
+     	    <option value="Bwap">Bwap</option>
+     	    <option value="Chamax">Chamaxi (extinct)</option>
+     	    <option value="Darmine">Darmine</option>
+     	    <option value="Darrian">Darrian</option>
+     	    <option value="Droyne">Droyne</option>
+            <option value="Guttural">Guttural (spoken on Yori)</option>
+     	    <option value="Gurvin">Gurvin</option>
+            <option value="Horn">Horn (Cetian)</option>
+     	    <option value="Ithklur">Ithklur</option>
+     	    <option value="Kalaan">Kalaan (ancestor of Vilani)</option>
+     	    <option value="K'Kree">K'Kree</option>
+            <option value="Kursae">Kursae</option>
+            <option value="Laowon">Laowon</option>
+            <option value="Llellewyloly">Llellewyloly</option>
+	    <option value="Yali">Nenlat (spoken on Deneb)</option>
+	    <option value="Sigka">Sikga (spoken on Askiigak)</option>
+	    <option value="Suerrat">Suerrat</option>
+     	    <option value="Sword Worlder">Sword Worlder</option>
+     	    <option value="Sylean">Sylean</option>
+     	    <option value="Aekhu">Vargr (Aekhu)</option>
+     	    <option value="Gvegh">Vargr (Gvegh)</option>
+            <option value="Logaksu">Vargr (Logaksu)</option>
+     	    <option value="Vuakedh">Vargr (Vuakedh)</option>
+	    <option value="Vegan">Vegan</option>
+     	    <option selected>Vilani</option>
+			<option value="Virushi">Virushi</option>
+     	    <option value="Yiirabarhi">Yiirabarhi (spoken on 567-908)</option>
+     	    <option value="Zhodani">Zhodani</option>
+     	    </select>
+     	  </td>
+     </tr>
+     <tr><td>Syllables</td><td><input name=numSyllables size=2></td></tr>
+     <tr><td>Phrase Count</td><td><input name=numWords size=2></td></tr>
+     <tr><td>Phrase Length</td><td><input name=phraseLength size=2</td></tr>
+     <tr><td>Consonant-only start and end</td><td><input type=checkbox name=consonantBound></td></tr>
+     <tr><td>Mark Syllables</td><td><input type=checkbox name=addSyllableMarker></td></tr>
+     <tr><td>Capitalize</td><td><input type=checkbox name=toUpperCase></td></tr>
+     <tr><td>Orthography</td><td><input type=checkbox name=alternateOrthography></td></tr>
+     <tr><td>Starting Letters</td>
+         <td><input name=startSequence size=10></td>
+         <td>Maximum Iterations</td>
+         <td><input name=maxIter size=10></td>
+         </tr>
+     <tr><td><input type=button value=Generate onClick=genWords() width="100%"></td>
+         <td><input type=button value=Clear    onClick=erase()>
+         <input type=button value="Clear & Generate"  onClick="erase();genWords()"></td>
+         <td></td>
+         <td><input readonly name=iter size=10></td>
+         </tr>
+     <tr><td colspan=4><textarea name=out cols=50 rows=20></textarea></td></tr>
+   </table>
+   
+   </form>
+   
+   <a name=howto><h2>How to use the generator</h2></a>
+   
+   <b>Syllables</b> : Enter the number of syllables that you wish each word to have in this box. Entering 0 (or less) will generate a random length that will be the same for all the words (not a random length for each individual word).
+   <br><br>
+   
+   <b>Phrase Count</b> : Enter the number of words or phrases you wish to generate. 
+   <br><br>
+   
+   <b>Phrase Length</b> : Enter the number of words per phrase.
+   <br><br>
+   
+   <b>Consonant-only start and end</b>: When selected, this will cause each generated word to start and end in consonants only, which is a property of most verb stems.
+   <br><br>
+   
+   <b>Capitalize</b> : When selected, this will cause each word to start with a capital letter, otherwise all the letters in the words will be lowercase.
+   <br><br>
+   
+   <b>Mark Syllables</b> : When selected, this will separate syllables with a period (".").
+   <br><br>
+   
+   <b>Orthography</b> : When selected, this will generate words using the single-character alternate orthography:
+   <pre>
+          sh -> �
+          kh -> h
+          aa -> �
+          ii -> �
+          uu -> �
+          ee -> � (for non-Vilani languages)
+   </pre>
+   <br><br>
+   
+   <b>Starting sequence</b> : Enter in here any characters which you wish all the results to start with. Note that the generator will still create other words, it just won't bother displaying them. The more common the starting sequence, then the quicker the desired number of words will be generated. E.g. a starting sequence of 'sh' will enable 10 words to be generated quite quickly, whereas a sequence 'pur' will take much longer to generate.
+   <br><br>
+   
+   <b>Maximum iterations</b> : This field has been included in attempt to limit the time that the computer will be 'locked up' for while generating words. If it wasn't included, then having a rare or impossible to generate starting sequence may cause the computer (or the browser at least) to enter an infinite loop while attempting to generate the required number of words. The default of 500 should be a reasonably short length of time. (Generating 100 3-syllable words with a start sequence of 'sh', and maximum iterations equal to 500 takes about 4.5 seconds on a P200 with IE4)
+   <br><br>
+   
+   <b>Generate</b> : Click on the generate button to start the process. Note that if other words have already been generated, then the new words will be added to the end of the list.
+   <br><br>
+   
+   <b>Clear</b> : Clicking this button will remove all the previously generated words from the text area.
+   <br><br>
+   
+   <a href=#top>Top</a>
+   
+   <hr>
+   
+   Page design, JavaScript and HTML Copyright �2005 Rob Eaglestone.<br>
+   Original design, Copyright �1998 Rob Day.<br>
+   Traveller is a registered trademark of Far Future Enterprises. Portions of this material are Copyright �1977-2005 Far Future Enterprises.<br>
+</div>
+
+<div id="tab_two" class="hide">
+
+   <form name=myForm>
+   <h3>UWP Tools</h3>
+   <!--input type=button value="Random Plotline" onClick="output.value = randomPlotline()" /> <br /-->
+   <pre>   
+   <b>Time, Distance, Acceleration Calculator:</b>
+   Time:         <input size=15 name=time>      (1 sec, 10 min, 2 hr, 5 day)
+   Distance:     <input size=15 name=dist>      (10 km or 3 au)
+   Acceleration: <input size=15 name=accel> G's  (1, 4.2, 5)
+   <input type=button 
+          name=Calculate 
+          value=Calculate 
+          onClick=calc(time.value,dist.value,accel.value,output)>
+   
+   <textarea readonly name=output rows=21 cols=60></textarea>
+   
+   <b>UWP Analyzer:</b> 
+   World Name:   <input size=15 name=worldname > 
+   UWP:          <input size=10 name=uwp onBlur=analyze(name.value,uwp.value,output)> 
+   <input type=button name=Analyze value=Analyze onClick=analyze(worldname.value,uwp.value,output)>
+   </pre>
+   
+   </form>	
+
+</div>
+
+<div id="tab_three" class="hide">
+
+	<font face="T5 Vilani Headline" size=+2>Your Name In Vilani</font>
+
+	<p>How to convolute your name into a Vilani name/alias:
+		<p>Step 1:
+		<br>&nbsp; Write your first name, followed by your last name backwards,
+		<br>&nbsp; followed by your middle [or first] name (forwards).
+		<p>Step 2:
+		<br>&nbsp; Truncate if you think there are waaaay too many letters.
+		<p>Step 3:
+		<br>&nbsp; Convert diphthongs:
+		<br>&nbsp;
+		<table COLS=6 WIDTH="400" cellpadding="4" border="1">
+		<tr>
+		<td>ae -> e</td>	
+		<td>ai -> ii</td>
+		<td>ao -> uu</td>
+		<td>au -> aa</td>
+		<td>ay -> e</td>
+		<td></td>
+		</tr>
+		<tr>
+		<td>ea -> i</td>
+		<td>ee -> ii</td>
+		<td>ei -> e</td>
+		<td>eo -> i</td>
+		<td>eu -> u</td>
+		<td>ey -> ii</td>
+		</tr>
+		<tr>
+		<td>ia -> a</td>
+		<td>ie -> e</td>
+		<td></td>
+		<td>io -> aa</td>
+		<td>iu -> u</td>
+		<td></td>
+		</tr>
+		<tr>
+		<td>oa -> ua</td>
+		<td>oe -> e</td>
+		<td>oi -> i</td>
+		<td>oo -> uu</td>
+		<td>ou -> uu</td>
+		<td>oy -> i</td>
+		</tr>
+		<tr>
+		<td>ua -> ua</td>
+		<td>ue -> u</td>
+		<td>ui -> ii</td>
+		<td>uo -> ua</td>
+		<td></td>
+		<td>uy -> ii</td>
+		</tr>
+		</table>
+		
+		<p>Step 4:
+		<br>&nbsp; Replace 'ch' with 'sh'.
+		<br>&nbsp; Replace 'c' with 'k'.
+		<br>&nbsp; Replace 'f' with 'b'.
+		<br>&nbsp; Replace 'h' with 'kh' (unless it's in an sh or gh)
+		<br>&nbsp; Replace 'j' with 'ii'.
+		<br>&nbsp; Replace 'l' with one of ('ag', 'ir', 'uk', 'aag', 'iir')
+		<br>&nbsp; Replace 'o' with 'aa'.
+		<br>&nbsp; Replace 'p' with 'm'.
+		<br>&nbsp; Replace 'q' with 'k'.
+		<br>&nbsp; Replace 's' with 'shir' or 'sir'.
+		<br>&nbsp; Replace 't' with 'r'
+		<br>&nbsp; Replace 'u', 'v', and 'w' with 'uu' or 'u'.
+		<br>&nbsp; Replace 'x' with 'kash'.
+		<br>&nbsp; Replace 'y' with 'ii'.
+		<p>Step 5:
+		<br>&nbsp; Replace any double consonant with ('ii', 'i', 'aa', or 'a')
+		+ consonant
+		<br>&nbsp; Separate consonants (except for kh, sh, and rk/rkh) with
+		<br>&nbsp; one of ( a, e, i, ii, uu, aa ).
+		<br>&nbsp; Reduce all diphthongs to one of (a, e, i, ii, uu, aa).
+		<p>Step 6:
+		<br>&nbsp; If you want, you can break up the word into a family + given name (or not).
+		<br>&nbsp;
+		<p>EXAMPLE: Walter "Piracy" Smith
+		<br>Step 1: walterhtimspiracy
+		<br>Step 2: walterhtimspiracy
+		<br>Step 3: walterhtimspiracy
+		<br>Step 4: uuairrkhrimshirmirakii
+		<br>Step 5: Uurikhaarimaashirimirakii
+		<br>Step 6: Uurikhaarimaash Irimirakii
+		<p>EXAMPLE: Colin "Downport" Michael
+		<br>Step 1: colinleahcimdownport
+		<br>Step 2: colinleahcimdownport
+		<br>Step 3: colinlihcimdownport
+		<br>Step 4: kaaaginagikhkimdaaunmaarr
+		<br>Step 5: kaaginagikhukimadunamaar
+		<br>Step 6: Kaaginagikhukima Dunamaar	
+</div>
+
+<div id="tab_four" class="hide">
+
+    <form name=dateConversionForm>
+		<h3>Date Approximations</h3>
+		Input an Imperial date here, in the short form DAY-YEAR: <input size=15 name="inputDate" />		
+		<input type=button name=Analyze value="Approximate!" onClick="setDate(inputDate.value,calendarOut)" />
+		<br />
+		<textarea readonly name="calendarOut" rows=20 cols=80></textarea>	
+		</form>
+		Alternately, input a Vilani date in the short form <font face=courier>LANI.DRANDIR</font><br />
+		Alternately, input a Zhodani date in the short form <font face=courier>OLYMPIAD:YEAR:SEASON:DAY</font><br />
+        <br />
+		Benchmarks: <br />
+		001-1105 is Zhodani 3467.2 Atrint/14. <br />
+		???-1120 is Vilani 3882.??? <br />
+		<br />
+</div>
+
+
+<div id="tab_five" class="hide">
+
+<h3>Task Roller</h3>
+
+<form name=taskRoller1><table>
+     <tr>
+	    <th />
+		<th><font color=red>d6</font></th>	
+		<th><font color=red>&lt;</font></th>	
+		<th><font color=red>TN</font></th>	
+		<th><font color=red>Dmg</font></th>	
+		<th>Attack</th>	
+		<th>Char</th><th>+ Skill</th>		
+		<th>Tgt Stance</th>		
+		<th>- Speed</th>		
+		<th>+ Size</th>		
+		<th>- Range</th>   	    
+		<th>+ Mods</th>
+	</tr>
+	<tr>
+	    <td>1.</td>
+		<td><input type=text name="difficulty" size='5'/></td>
+		<td>&lt;</td>
+		<td><input type=text name="target" size='12'/></td>
+		<td><input type=text name="damage" size='5'/></td>
+		<td>
+			<select name="attack">
+				<option value="+0" selected=true>Standard/Aimed Fire</option>
+				<option value="+2d">AutoFire</option>
+				<option value="+1d">SnapFire</option>
+			</select>
+		</td>
+        <td><input type=text name="char" size='5'/></td>
+		<td><input type=text name="skill" size='5'/></td>
+	    <td>
+			<select name='stance'>
+				<option value='-2'>Stealthy</option>
+				<option value='-1'>Evading</option>
+				<option value='0' selected=true>Normal</option>
+				<option value='1'>Unaware</option>
+				<option value='2'>Oblivious</option>
+			</select>
+		</td>
+		<td><input type=text name="speed" size='5'/>
+		</td>
+		
+		<td>
+		<!--input type=text name="size" size='5'/-->
+		   <select name='size'>
+		      <option value='0'>Needle</option>
+		      <option value='1'>Coin</option>
+		      <option value='2'>Eye</option>
+		      <option value='3'>Head</option>
+		      <option value='4'>Rifle</option>
+		      <option value='5' selected='true'>Person</option>
+		      <option value='6'>Vehicle</option>
+		      <option value='7'>ACS</option>
+		      <option value='8'>BCS</option>
+		      <option value='9'>Moonlet</option>
+		   </select>
+		</td>
+		<td>
+		   <select name='range'>
+		      <option value='0'>Contact</option>
+			  <option value='1'>&le; 5m</option>
+			  <option value='2' selected="true">&le; 50m</option>
+			  <option value='3'>&le; 150m</option>
+			  <option value='4'>&le; 500m</option>
+			  <option value='5'>&le; 1km</option>
+			  <option value='6'>&le; 5km</option>
+			  <option value='7'>&le; 50km</option>
+		   </select>
+		</td>
+		<td><input type=text name="mods" size='5' /></td>    </tr>	
+   </table></form>
+
+<form name=taskRoller2><table>
+	<tr>
+	    <td>2.</td>
+		<td><input type=text name="difficulty" size='5'/></td>
+		<td>&lt;</td>
+		<td><input type=text name="target" size='12'/></td>
+		<td><input type=text name="damage" size='5'/></td>
+		<td>
+			<select name="attack">
+				<option value="+0" selected=true>Standard/Aimed Fire</option>
+				<option value="+2d">AutoFire</option>
+				<option value="+1d">SnapFire</option>
+			</select>
+		</td>
+        <td><input type=text name="char" size='5'/></td>
+		<td><input type=text name="skill" size='5'/></td>
+	    <td>
+			<select name='stance'>
+				<option value='-2'>Stealthy</option>
+				<option value='-1'>Evading</option>
+				<option value='0' selected=true>Normal</option>
+				<option value='1'>Unaware</option>
+				<option value='2'>Oblivious</option>
+			</select>
+		</td>
+		<td><input type=text name="speed" size='5'/></td>
+		<td>
+		<!--input type=text name="size" size='5'/-->
+		   <select name='size'>
+		      <option value='0'>Needle</option>
+		      <option value='1'>Coin</option>
+		      <option value='2'>Eye</option>
+		      <option value='3'>Head</option>
+		      <option value='4'>Rifle</option>
+		      <option value='5' selected='true'>Person</option>
+		      <option value='6'>Vehicle</option>
+		      <option value='7'>ACS</option>
+		      <option value='8'>BCS</option>
+		      <option value='9'>Moonlet</option>
+		   </select>
+		</td>
+		<td>
+		   <select name='range'>
+		      <option value='0'>Contact</option>
+			  <option value='1'>&le; 5m</option>
+			  <option value='2' selected="true">&le; 50m</option>
+			  <option value='3'>&le; 150m</option>
+			  <option value='4'>&le; 500m</option>
+			  <option value='5'>&le; 1km</option>
+			  <option value='6'>&le; 5km</option>
+			  <option value='7'>&le; 50km</option>
+		   </select>
+		</td>
+		<td><input type=text name="mods" size='5' /></td>    </tr>	
+   </table></form>
+
+<form name=taskRoller3><table>
+	<tr>
+	    <td>3.</td>
+		<td><input type=text name="difficulty" size='5'/></td>
+		<td>&lt;</td>
+		<td><input type=text name="target" size='12'/></td>
+		<td><input type=text name="damage" size='5'/></td>
+		<td>
+			<select name="attack">
+				<option value="+0" selected=true>Standard/Aimed Fire</option>
+				<option value="+2d">AutoFire</option>
+				<option value="+1d">SnapFire</option>
+			</select>
+		</td>
+        <td><input type=text name="char" size='5'/></td>
+		<td><input type=text name="skill" size='5'/></td>
+	    <td>
+			<select name='stance'>
+				<option value='-2'>Stealthy</option>
+				<option value='-1'>Evading</option>
+				<option value='0' selected=true>Normal</option>
+				<option value='1'>Unaware</option>
+				<option value='2'>Oblivious</option>
+			</select>
+		</td>
+		<td><input type=text name="speed" size='5'/></td>
+		<td>
+		<!--input type=text name="size" size='5'/-->
+		   <select name='size'>
+		      <option value='0'>Needle</option>
+		      <option value='1'>Coin</option>
+		      <option value='2'>Eye</option>
+		      <option value='3'>Head</option>
+		      <option value='4'>Rifle</option>
+		      <option value='5' selected='true'>Person</option>
+		      <option value='6'>Vehicle</option>
+		      <option value='7'>ACS</option>
+		      <option value='8'>BCS</option>
+		      <option value='9'>Moonlet</option>
+		   </select>
+		</td>
+		<td>
+		   <select name='range'>
+		      <option value='0'>Contact</option>
+			  <option value='1'>&le; 5m</option>
+			  <option value='2' selected="true">&le; 50m</option>
+			  <option value='3'>&le; 150m</option>
+			  <option value='4'>&le; 500m</option>
+			  <option value='5'>&le; 1km</option>
+			  <option value='6'>&le; 5km</option>
+			  <option value='7'>&le; 50km</option>
+		   </select>
+		</td>
+		<td><input type=text name="mods" size='5' /></td>    </tr>	
+   </table></form>
+   
+<form name=taskRoller4><table>
+	<tr>
+	    <td>4.</td>
+		<td><input type=text name="difficulty" size='5'/></td>
+		<td>&lt;</td>
+		<td><input type=text name="target" size='12'/></td>
+		<td><input type=text name="damage" size='5'/></td>
+		<td>
+			<select name="attack">
+				<option value="+0" selected=true>Standard/Aimed Fire</option>
+				<option value="+2d">AutoFire</option>
+				<option value="+1d">SnapFire</option>
+			</select>
+		</td>
+        <td><input type=text name="char" size='5'/></td>
+		<td><input type=text name="skill" size='5'/></td>
+	    <td>
+			<select name='stance'>
+				<option value='-2'>Stealthy</option>
+				<option value='-1'>Evading</option>
+				<option value='0' selected=true>Normal</option>
+				<option value='1'>Unaware</option>
+				<option value='2'>Oblivious</option>
+			</select>
+		</td>
+		<td><input type=text name="speed" size='5'/></td>
+		<td>
+		<!--input type=text name="size" size='5'/-->
+		   <select name='size'>
+		      <option value='0'>Needle</option>
+		      <option value='1'>Coin</option>
+		      <option value='2'>Eye</option>
+		      <option value='3'>Head</option>
+		      <option value='4'>Rifle</option>
+		      <option value='5' selected='true'>Person</option>
+		      <option value='6'>Vehicle</option>
+		      <option value='7'>ACS</option>
+		      <option value='8'>BCS</option>
+		      <option value='9'>Moonlet</option>
+		   </select>
+		</td>
+		<td>
+		   <select name='range'>
+		      <option value='0'>Contact</option>
+			  <option value='1'>&le; 5m</option>
+			  <option value='2' selected="true">&le; 50m</option>
+			  <option value='3'>&le; 150m</option>
+			  <option value='4'>&le; 500m</option>
+			  <option value='5'>&le; 1km</option>
+			  <option value='6'>&le; 5km</option>
+			  <option value='7'>&le; 50km</option>
+		   </select>
+		</td>
+		<td><input type=text name="mods" size='5' /></td>    </tr>	
+   </table></form>
+   
+<form name=taskRoller5><table>
+	<tr>
+	    <td>5.</td>
+		<td><input type=text name="difficulty" size='5'/></td>
+		<td>&lt;</td>
+		<td><input type=text name="target" size='12'/></td>
+		<td><input type=text name="damage" size='5'/></td>
+		<td>
+			<select name="attack">
+				<option value="+0" selected=true>Standard/Aimed Fire</option>
+				<option value="+2d">AutoFire</option>
+				<option value="+1d">SnapFire</option>
+			</select>
+		</td>
+        <td><input type=text name="char" size='5'/></td>
+		<td><input type=text name="skill" size='5'/></td>
+	    <td>
+			<select name='stance'>
+				<option value='-2'>Stealthy</option>
+				<option value='-1'>Evading</option>
+				<option value='0' selected=true>Normal</option>
+				<option value='1'>Unaware</option>
+				<option value='2'>Oblivious</option>
+			</select>
+		</td>
+		<td><input type=text name="speed" size='5'/></td>
+		<td>
+		<!--input type=text name="size" size='5'/-->
+		   <select name='size'>
+		      <option value='0'>Needle</option>
+		      <option value='1'>Coin</option>
+		      <option value='2'>Eye</option>
+		      <option value='3'>Head</option>
+		      <option value='4'>Rifle</option>
+		      <option value='5' selected='true'>Person</option>
+		      <option value='6'>Vehicle</option>
+		      <option value='7'>ACS</option>
+		      <option value='8'>BCS</option>
+		      <option value='9'>Moonlet</option>
+		   </select>
+		</td>
+		<td>
+		   <select name='range'>
+		      <option value='0'>Contact</option>
+			  <option value='1'>&le; 5m</option>
+			  <option value='2' selected="true">&le; 50m</option>
+			  <option value='3'>&le; 150m</option>
+			  <option value='4'>&le; 500m</option>
+			  <option value='5'>&le; 1km</option>
+			  <option value='6'>&le; 5km</option>
+			  <option value='7'>&le; 50km</option>
+		   </select>
+		</td>
+		<td><input type=text name="mods" size='5' /></td>    </tr>	
+   </table></form>
+   
+<form name=taskRoller6><table>
+	<tr>
+	    <td>6.</td>
+		<td><input type=text name="difficulty" size='5'/></td>
+		<td>&lt;</td>
+		<td><input type=text name="target" size='12'/></td>
+		<td><input type=text name="damage" size='5'/></td>
+		<td>
+			<select name="attack">
+				<option value="+0" selected=true>Standard/Aimed Fire</option>
+				<option value="+2d">AutoFire</option>
+				<option value="+1d">SnapFire</option>
+			</select>
+		</td>
+        <td><input type=text name="char" size='5'/></td>
+		<td><input type=text name="skill" size='5'/></td>
+	    <td>
+			<select name='stance'>
+				<option value='-2'>Stealthy</option>
+				<option value='-1'>Evading</option>
+				<option value='0' selected=true>Normal</option>
+				<option value='1'>Unaware</option>
+				<option value='2'>Oblivious</option>
+			</select>
+		</td>
+		<td><input type=text name="speed" size='5'/></td>
+		<td>
+		<!--input type=text name="size" size='5'/-->
+		   <select name='size'>
+		      <option value='0'>Needle</option>
+		      <option value='1'>Coin</option>
+		      <option value='2'>Eye</option>
+		      <option value='3'>Head</option>
+		      <option value='4'>Rifle</option>
+		      <option value='5' selected='true'>Person</option>
+		      <option value='6'>Vehicle</option>
+		      <option value='7'>ACS</option>
+		      <option value='8'>BCS</option>
+		      <option value='9'>Moonlet</option>
+		   </select>
+		</td>
+		<td>
+		   <select name='range'>
+		      <option value='0'>Contact</option>
+			  <option value='1'>&le; 5m</option>
+			  <option value='2' selected="true">&le; 50m</option>
+			  <option value='3'>&le; 150m</option>
+			  <option value='4'>&le; 500m</option>
+			  <option value='5'>&le; 1km</option>
+			  <option value='6'>&le; 5km</option>
+			  <option value='7'>&le; 50km</option>
+		   </select>
+		</td>
+		<td><input type=text name="mods" size='5' /></td>    </tr>	
+   </table></form>
+   
+<form name=taskRoller7><table>
+	<tr>
+	    <td>7.</td>
+		<td><input type=text name="difficulty" size='5'/></td>
+		<td>&lt;</td>
+		<td><input type=text name="target" size='12'/></td>
+		<td><input type=text name="damage" size='5'/></td>
+		<td>
+			<select name="attack">
+				<option value="+0" selected=true>Standard/Aimed Fire</option>
+				<option value="+2d">AutoFire</option>
+				<option value="+1d">SnapFire</option>
+			</select>
+		</td>
+        <td><input type=text name="char" size='5'/></td>
+		<td><input type=text name="skill" size='5'/></td>
+	    <td>
+			<select name='stance'>
+				<option value='-2'>Stealthy</option>
+				<option value='-1'>Evading</option>
+				<option value='0' selected=true>Normal</option>
+				<option value='1'>Unaware</option>
+				<option value='2'>Oblivious</option>
+			</select>
+		</td>
+		<td><input type=text name="speed" size='5'/></td>
+		<td>
+		<!--input type=text name="size" size='5'/-->
+		   <select name='size'>
+		      <option value='0'>Needle</option>
+		      <option value='1'>Coin</option>
+		      <option value='2'>Eye</option>
+		      <option value='3'>Head</option>
+		      <option value='4'>Rifle</option>
+		      <option value='5' selected='true'>Person</option>
+		      <option value='6'>Vehicle</option>
+		      <option value='7'>ACS</option>
+		      <option value='8'>BCS</option>
+		      <option value='9'>Moonlet</option>
+		   </select>
+		</td>
+		<td>
+		   <select name='range'>
+		      <option value='0'>Contact</option>
+			  <option value='1'>&le; 5m</option>
+			  <option value='2' selected="true">&le; 50m</option>
+			  <option value='3'>&le; 150m</option>
+			  <option value='4'>&le; 500m</option>
+			  <option value='5'>&le; 1km</option>
+			  <option value='6'>&le; 5km</option>
+			  <option value='7'>&le; 50km</option>
+		   </select>
+		</td>
+		<td><input type=text name="mods" size='5' /></td>    </tr>	
+   </table></form>
+
+<br />
+   
+<input type=button value="Run" onClick="doTask()" />
+
+</div>
+
+<div id="tab_six" class="hide">
+
+	<h3>Rob's Random Traveller Resource Generator</h3>
+
+	<form>
+       <input type=button onClick=generate(this.form) value="Make random people">
+       <br>
+       <textarea name=detail rows=13 cols=75 wrap=physical></textarea>
+       <br>
+       <input type=button onClick=hookEm(this.form) value="Make random adventure hooks">
+       <br>
+       <textarea name=hook rows=6 cols=75 wrap=physical></textarea>
+       <br>
+       <input type=button onClick=lockEm(this.form) value="Make ship lockers">
+       <br>
+       <textarea name=locker1 rows=12 cols=24 wrap=physical></textarea>
+       <textarea name=locker2 rows=12 cols=24 wrap=physical></textarea>
+       <textarea name=locker3 rows=12 cols=24 wrap=physical></textarea>
+	</form>
+</div>
+
+
+<script type="text/javascript">
+   toggle_init();
+
+function doTask()
+{
+   doit( document.taskRoller1 );
+   doit( document.taskRoller2 );
+   doit( document.taskRoller3 );
+   doit( document.taskRoller4 );
+   doit( document.taskRoller5 );
+   doit( document.taskRoller6 );
+   doit( document.taskRoller7 );
+}
+
+function doit( form )
+{
+   form.speed.value |= 0;
+   form.mods.value  |= 0;
+
+   form.difficulty.value = 
+        parseInt(form.attack.value)
+		+ parseInt(form.range.value)
+		+ 'd6';
+   
+   form.target.value =
+		parseInt(form.char.value)
+		+ parseInt(form.skill.value)
+		- parseInt(form.speed.value)
+		+ parseInt(form.size.value)
+		- parseInt(form.range.value)
+		+ parseInt(form.mods.value)
+		+ parseInt(form.stance.value)
+		;		
+	
+	form.damage.value = form.attack.value;
+		
+	if ( form.range.value > form.size.value )
+		form.target.value = 'Too Far';
+}
+
+</script>
+
+<font size=-1>Generated using Perl.</font>
+
+</body>
+</html>
