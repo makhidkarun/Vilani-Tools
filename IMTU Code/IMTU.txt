@@ -1,0 +1,362 @@
+The IMTU Code
+
+VERSION 1.1, 15 APRIL 1998
+
+The IMTU Code is a rip-off of the "Geek Code".  Display it 
+on postings to the TML, so everyone knows where you're 
+coming from!
+
+-Rob  
+ IMTU tc+ t4+ ge-() 3i(+) jt a ls+ va- so- zh vi da+
+ Rob Eaglestone 0609 A588865-B S  va- so- zh vi da+   323
+
+
+So you think you are a Traveller geek (T-geek), eh?  The 
+first step is to admit to yourself your T-geekiness.  No 
+matter what anyone says, T-geeks are people too; T-geeks 
+have rights.  So take a deep breath and announce to the 
+world that you are a T-geek.  Your courage will give you 
+strength that will last you forever.
+
+How to tell the world you are a Traveller geek, you ask?  
+Use the universal IMTU ("In My Traveller Universe...") code.  
+By joining the T-geek organization, you have license to use 
+this special code that will allow you to let other 
+un-closeted T-geeks know who you are in a simple, codified 
+statement.
+
+The single best way to announce your T-geekhood is to add 
+your IMTU code to your signature file and announce it far 
+and wide.  But be careful, you may give other T-geeks the 
+courage to come out of the closet.  You might want to hang 
+on to your copy of the code in order to help them along.
+
+INSTRUCTIONS
+
+The IMTU code consists of several categories.  Each category 
+is labeled with letters and some qualifiers.  Go through 
+each category and determine which set of qualifiers best 
+describes your Traveller Universe Preferences in that 
+category.  By stringing all of these 'codes' together, you 
+are able to construct your overall IMTU code.  It is this 
+single line of code that will inform other T-geeks the world 
+over of what a great T-geek you actually are.
+
+Some of the qualifiers will very probably not match with 
+your universe exactly. Simply choose that qualifier that 
+MOST CLOSELY matches it.  Also, some activities described in 
+a specific qualifier you may not engage in, while you do 
+engage in others.  Each description of each qualifier 
+describes the wide range of activities that apply, so as 
+long as you match with one, you can probably use that 
+qualifier.
+
+Also, pay particular attention to case-sensitivity, there 
+may (in the future) be a big difference between a 'tc' and a 
+'TC'.
+
+VARIABLES
+
+Traveller Universes can seldom be quantified.  To facilitate 
+the fact that within any one category the T-geek may not be 
+able determine a specific rating, variables have been 
+designed to allow this range to be included.
+
+   @   for variable, said trait is not very rigid, may 
+       change with time or with individual interaction.  For 
+       example, Geeks who happen to believe that jump torps 
+       exist but dislike using them might list themselves as 
+       j+@.
+       
+   ()  for indicating "cross-overs" or ranges.  Geeks 
+       who go from tc+ to tc-- depending on the situation (i.e. 
+       mostly "tc+") could use tc+(--).  Another example might 
+       be an tc++(**).  This would be a person who mostly uses 
+       Classic Traveler, but also has an extensive collection of 
+       other types of works.
+       
+   >   for 'wannabe' ratings.  Indicating that while the 
+       geek is currently at one rating, they are striving to 
+       reach another. For example, ?t4>+
+       
+   $   Indicates that this particular category is done 
+       for a living.  For example, tg++$ indicates that the 
+       person utilizes GURPS Traveller and gets paid for it.  
+       Quite a lucky geek, for sure.
+
+   @ is different from () in that () has finite limits within 
+   the category, while @ ranges all over.
+
+Section I: Rules Sets
+
+CLASSIC TRAVELLER
+
+   tc++  Bring back the LBBs!
+   tc+   I appreciate this system and owe a lot to it.
+   tc    "It's a resource".
+   tc-   I just can't see any reason to use it.
+   tc--  I wouldn't let my ugliest, smelliest dog sit on 
+         these rules. It's a bane that would wreck Traveller 
+         forever if allowed to thrive.
+
+   ?tc   I don't know much about it.
+   !tc   I ignore these rules.
+
+Likewise for the remaining rule sets:
+   tm MegaTraveller
+   tn TNE
+   t4 T4
+   tg GURPS Traveller (for now, a mostly wannabe situation)
+   tt Traveller 2300
+   to Other rules set (CORPS, GW, etc)
+
+OVERALL RULES USE
+
+   ru++  The Traveller rules are the best.
+   ru+   The Traveller rules are great.
+   ru I use the Traveller rules, more or less.
+   ru-   I have modified significant portions of most of the Trav rules.
+   ru--  I use mostly other rules systems.
+
+GEARHEADEDNESS
+
+   ge++  Intricacy to the subatomic level, please!
+   ge+   Details === Color
+   ge Some detail gives me the flexibility I need for the game.
+   ge-   Too many rules and steps stifles me.
+   ge--  Ack!  Must we try to explain everything?
+
+Section II: Canonicity
+
+THE 3RD IMPERIUM 
+
+   3i++  The 3I is a massive juggernaut, with an amazing tax
+      base and thousands of SDBs in even minor systems.
+      Interplanetary trade is robust.
+      Many starports are huge city-sized affairs.
+   3i+   The 3I is a powerful force to reckon with, with good
+      control over most of its member worlds and the power
+      to back its authority.
+      Interplanetary trade is good on many worlds.
+      Starports are planetary trade centers.
+   3i The 3I is a stable confederation, held together by the
+      nobility of its population, but not all-powerful and
+      overall not wealthy.
+      Interplanetary trade is regular.
+      Starports are common.
+   3i-   The 3I is a loose, vulnerable sprawl of worlds, which
+      by the way is no worse off than the other interstellar
+      states.
+      Interplanetary trade exists on major worlds.
+      Starports are significant on major worlds but not so
+      massive.
+   3i--  The 3I is a picture of gross mismanagement over impossible
+      distances.  It's a wonder it held together so long.
+      Interplanetary trade exists on only the best worlds.
+      Starports are, on the whole, rather weak things.
+   !3i   IMTU, the 3I doesn't exist or is irrelevant.
+
+FTL DRIVES
+
+   c++   I have the technical specs on jump drives right here...
+   c+    Jump drives work sort of like this...
+   c       Well, we have jump drives, but I never had to explain them.
+   c-      FTL drive mechanics are a bit different out here.
+   c--   We ride the sky in real slow beasties.
+
+JUMP TONNAGE
+
+   jt++  Jump torpedoes are not only canonical, but absolutely
+         necessary for survival as we know it.
+   jt+   Jump boats are do-able, economical in many cases, and cool.
+   jt    Jumpships under 100t might exist in experimental form -- 
+         but there are various problems with the design.
+   jt-   Jumpships under 100t are too small, or they open too big 
+         a can of worms.
+   jt--  Small jumpships destroy Traveller.
+
+   jt?   What's a jump torpedo?
+   -jt+  Depends on my mood.
+
+STARSHIP AUTOMATION
+
+   au++  TL is sufficiently advanced that NO ONE need EVER crew
+         a starship, unless it's just on the off chance of someone
+         whacking the ship computers.
+   au+   Starship automation is commonplace.
+   au    Starship automation is in the trial phases, and has bugs
+         to work out, or is quite expensive.
+   au-   Starship automation doesn't work (for whatever reason).
+   au--  Terrible things happen when the referee allows it!
+
+EMPEROR STREPHON
+
+   st++  Two timelines is a brilliant idea!
+   st+   Two timelines will add flexibility to the game.
+   st    Two timelines doesn't affect the game's popularity.
+   st-   An extra timeline is a Bad Thing.
+   st--  This will doom Traveller.
+                (see code for GURPS Traveller)
+
+LIFE SUPPORT
+
+   ls++  Life support is very expensive and very difficult to work on!
+   ls+   Life support is expensive and difficult to work on.
+   ls    Life support can be do-it-yourself with off-the-shelf
+         components.
+   ls-   Life support is a fraction of the cost published.
+   ls--  Life support is absorbed in other misc expenses.
+
+PIRACY  
+
+   pi++  Piracy exists and is rampant.  Anyone may commit piracy.
+         Ship tracking and ID are uncommon.
+   pi+   Piracy exists.  Antipiracy is mostly political or economic, and
+         is inadequate.  Transponders may be changed or masked, or are
+         not widespread or sufficient.
+   pi    Piracy only exists in the vacuum of government or corporate 
+         morals.
+   pi-   Piracy is not sustainable.
+   pi--  Piracy is impossible.
+
+DROP TANKS AND TANKLESS SYSTEMS
+
+   ta++  Starships only really need fuel for maneuver.
+   ta+   "Tankless" systems are often used by large corporations.
+   ta    Drop tank-assisted jumps are usable at TL14+.
+   ta-   Drop tank-assisted jumps are expensive and dangerous.
+   ta--  Drop tank-assisted jumps should be banned.
+
+HERESY
+
+   he++  The technological devices, social structures, and related
+         background material IMTU require careful and detailed
+         analysis to prove any link with Traveller whatsoever.
+   he+   I'll diverge from canon when someone makes a convincing
+         argument, or where canon is clearly broken.
+   he    The material is fine as it is.
+   he-   Divergence from published background is just asking for
+         trouble.  There's no way a single GM can achieve the
+         scope and consistency of the canon background, and trying
+         to tweak "just one thing" inevitably leads to contradictions.
+   he--  Marc Miller said it, I believe it, and that settles it.
+
+Section III: Sapients
+
+K'KREE
+
+   kk++  I like K'Kree roasted over a spit with BBQ sauce.
+   kk+   I like K'Kree only if it the meat is mixed into a haggis.
+   kk    K'Kree have a funny aftertaste...
+   kk-   K'Kree smell funny.
+   kk--  All K'Kree should be catapulted into the sun.
+
+HIVERS
+
+   hi++  Hivers are the Puppeteers from _Tales of Known Space_.  Fun!
+   hi+   Hivers are convincingly alien.
+   hi    Hivers are okay.
+   hi-   I have some problems with Hivers.
+   hi--  All Hivers should be ground into haggis.
+
+You get the picture.  Follow the above model for:
+   as   Aslan
+   va   Vargr
+   dr   Droyne
+   ith  Ithklur
+   vr   Virushi
+   ne   Newt
+   etc.
+
+SOLOMANI
+
+   so++  The heirs of the galaxy.
+   so+   Basically a bunch of great guys.
+   so    You know how humans are...
+   so-   A bunch of bad eggs.  Rabble.  Trash.
+   so--  Should be targetted for termination.
+
+Likewise for:
+   zh Zhodani
+   vi Vilani
+   da Darrian
+   sy Sylean
+   etc.
+
+Summary Sheet
+
+[ Code | Rules                  | Code | Canonicity          | Code | Sapient     ]
+[ tc   | Classic Traveller      | 3i   | The 3rd Imp.        | kk   | K'Kree      ]
+[ tm   | MegaTraveller          | jt   | Jump Tonnage        | hi   | Hiver       ]
+[ tn   | Traveller, The New Era | au   | Starship Automation | as   | Aslan       ]
+[ t4   | Traveller 4.0          | st   | Emperor Strephon    | va   | Vargr       ]
+[ tg   | GURPS Traveller        | ls   | Life Support        | dr   | Droyne      ]
+[ tt   | Traveller 2300         | pi   | Piracy              | so   | Solomani    ]
+[ to   | Other rules set        |      |                     | zh   | Zhodani     ]
+[ ru   | Rules Usage            |      |                     | vi   | Vilani      ]
+[ ge   | Gearheadedness         |      |                     | da   | Darrian     ]
+[      |                        |      |                     | sy   | Sylean      ]
+
+IMTU Code v1.0
+
+IMTU Code as a UWP
+
+The IMTU Code can be adapted to look like an ordinary UWP.
+Let me show you how.
+
+IMTU-UWP TEMPLATE
+
+[UWP Segment | IMTU Translation                | IMTU Codes                  ]
+[World       | Your Name:                                                    ]
+[Location    | See "Subsector Position" below:                               ]
+[Starport    | Dominant Rule System  | A:t4 B:tn C:tm/tc D:tg E:tt X:to  ]
+[World Size  | Drop Tanks/Tankless Systems | 0=never; A=everywhere         ]
+[Atmosphere  | Life Support | 0=cheap and easy; A=expensive and difficult     ]
+[Hydrosphere | FTL Drives |  0=total divergence; A=total conformity.          ]
+[Population  | Emperor Strephon Lives! | 0=very bad; A=very good for Traveller]
+[Law Level   | 3I Control | 0=total chaos; A=iron fist                        ]
+[Government  | Starship Automation | 0=none; A=total & complete & common      ]
+[Tech Level  | Rules Usage | 0=low; F=total & complete                        ]
+[Bases       | 100-diameter limit | [none]=no opinion; S=star diameter too; N=tunable to a great degree ]
+[Trade Codes | IMTU:Sapient ratings go here.                                 ]
+[TAS Code    | Heresy | A=mild heresy; R=severe heresy                        ]
+[Pop Mult    | Gearheadedness | 0=low; 9=subatomic-level gearhead             ]
+[Belts       | Jump Tonnage | 0=no minimum; 3=100t minimum                    ]
+[Gas Giants  | Piracy | 0=impossible; 5=ubiquitous                            ]
+
+My IMTU-UWP would be:
+ Rob Eaglestone 0609 A588865-B S  va- so- zh vi da+   323
+
+Subsector Position
+
+Coordinates are measured as absolute "latitude" and absolute
+"longitude" from Normal, Illinois.  The following rule of thumb
+can help with your calculations:
+
+First Digits: 
+              04 if you're in IL
+              03 if you're in the midwest.
+              05 if you're in North America.
+                 (06 if your state has an ocean coast)
+              07 if you're not in North America.
+              02 if you're across an ocean.
+                 (01 if your province is landlocked)
+              08 if you're in a former state of the USSR.
+                 (09 if your province is landlocked)
+
+Second Digits:
+              01 if you're North-East of Normal, IL
+              02 if you're North-West of Normal, IL
+              04 if you're North of Normal, IL
+              05 if you're in Normal, IL
+              06 if you're South of Normal, IL
+              08 if you're South-East of Normal, IL
+              09 if you're South-West of Normal, IL
+
+[ Location              | Position               ]
+[ Normal, Illinois      | 0405                   ]
+[ Phoenix, Arizona      | 0509                   ]
+[ Dallas, Texas         | 0609                   ]
+[ Connecticut           | 0601                   ]
+[ Nagoya, Japan         | 0208                   ]
+[ Ireland               | 0201                   ]

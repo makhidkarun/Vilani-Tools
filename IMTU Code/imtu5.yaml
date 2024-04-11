@@ -1,0 +1,151 @@
+--- 
+title: IMTU 2005
+dictionary: 
+   Traveller: Copyright Far Future Enterprises.  All Rights Reserved.
+   IMTU: In My Traveller Universe.
+   UWP: Universal World Profile.
+body: 
+   - Introduction: >
+   
+       The IMTU5 code is meant to format the IMTU code as a Traveller UWP.
+       This theoretically makes it easy for Traveller players to parse it.
+       
+   - Format: |
+
+       <pre>
+       Name    Jump  Canon-Quotient  Char  Threads  Freq  Conviction-Quotient  Size  Rules Sets
+       </pre>
+       
+   - Field Descriptions:
+   
+      - Name: Your name
+      
+      - Jump: >
+
+           This field is composed of two 2-digit numbers.
+           
+           The first two digits represents the minimum size craft that can have jump drives.
+           The most common size codes are:
+
+           05  Torpedo-sized
+           06  1-9 tons
+           07  10-99 tons
+           08  100-999 tons
+           09  1000-9999 tons
+           
+           The last two digits represents the TL at which drop tanks or tankless systems
+           does away with the need for jump fuel aboard starships.  A code of '01' 
+           represents "never" or "unknown".
+      
+      -  Canon Quotient: |
+      
+          Format: 0-1234-5
+          
+          0: overall canonicity (A = canon TU, X = totally uncanonical)
+          
+          1: Big Imperium/Little Imperium (A = huge and busy, 0 = tiny and quiet)
+          2: 3i's power/control (A = all-pervasive, 0 = none)
+          3: sophonts (A = ubiquitous, 0 = none)
+          4: robotics (A = ubiquitous, 0 = none)
+          
+          5: piracy (A = ubiquitous, 0 = none)
+          
+      -  Char: |
+      
+          A one character code for preferred adventure type:
+          
+          S: scout/exploration
+          A: merchant
+          L: research
+          C: mercenary
+          P: pirate
+          T: wargame
+          Y: noble
+          
+      - Threads: |
+      
+          Codes that explain the dominant threads and races of your games:
+          
+          As - Aslan
+          Da - Darrian
+          Im - Imperial
+          So - Solomani
+          Va - Vargr
+          Vi - Vilani
+          Zh - Zhodani
+          
+          Cnsp - Conspiracies
+          Core - Core expeditions
+          Expn - Imperial expansion
+          Prvt - Privateering
+          Scam - Con games
+          Solo - Solomani Hypothesis
+          Sota - Secret of the Ancients
+          Xrch - Xeno-archaeology
+          1Con - First contact
+          Ziru - First Imperium
+          nFW  - nth Frontier War
+          RoM  - Rule of Man
+          Vir  - Virus
+          Expl - Exploration
+          Bord - Border wars
+          FFF  - Far Far Future
+          
+          
+      - Freq: |
+      
+          A one character code for the group size & frequency of play:
+          
+          blank - no information/solo play
+          A - occasionally or small group
+          R - regularly or large group
+          
+      - Conviction Quotient: |
+      
+          A three character code for your personal convictions about 
+          certain facets of the game:
+          
+          1: Gearheadedness (9 = high detail)
+          2: Storyline (9 = the story is all-important)
+          3: AI/starship automation (9 = total automation)
+          
+      - Allegiance: >
+      
+          This is a two character code for your own personal allegiance:
+          Im, Vi, Da, Fa, Na, etc...
+          
+      - Rules Sets: >
+      
+          This is a list of the rules sets you play and the weight you
+          give to its mechanics.
+          
+          Rules sets: T5 T20 GT T4 TNE MT CT etc
+          Magnitudes, from greatest to least: I II III IV V D
+          
+
+   - Examples: |
+          
+          <pre>
+          Eneri         0801 A-558A-5 A Im Va As Sota Core    585 Im T5 I
+          
+          Eneri plays using T5 as rules, in the canonical Traveller universe with mostly 
+          Imperials, Vargr and Aslan. The major thread is Secret of the Ancients, with a 
+          dab of Core Expedition. It's mostly Merchant.  Eneri has no gaming group info,
+          or plays solo.  Jump minimum is in the 100s of tons, and tankless systems are unknown.
+          Eneri is middle-of-the-road when it comes to the size and power of the Imperium
+          and the presence of pirates, but believes there are many sophont races, and robots 
+          are all-pervasive.  Eneri is also noncommittal about gearheadedness and AI,
+          but is a strong believer in a good storyline.
+                        
+          Pasuuli       0516 A-4488-6 A Im Da Vi Xrch Cnsp     386 Im T5 I MT II
+          
+          Pasuuli plays with T5 and MT in the canonical TU with mainly Imperials, 
+          Darrians, and Vilani.  The major threads are Xenoarchaeology and Conspiracies,
+          in primarily merchant campaigns.  Jump minimum is torpedo-sized, and TL16 is the
+          cutoff for tankless systems.  Pasuuli believes in a slightly small, less powerful
+          Imperium, with a corresponding proportion of piracy, and a preponderence of 
+          sophonts and robots.  Pasuuli isn't much of a gearhead, is a fan of story,
+          and tends toward preferring AI.
+          
+          </pre>                                                                                                                                                                                                                                         </pre>
+

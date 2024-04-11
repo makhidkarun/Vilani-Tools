@@ -1,0 +1,184 @@
+<html>
+<head>
+<title>IMTU 2005</title>
+<STYLE TYPE="text/css">
+<!--
+.rightalign {text-align:right}
+-->
+
+</STYLE>
+</head>
+<body>
+<p class="rightalign">
+   <font size=+3 color=red><i></i></font><br>
+   <font size=+2><i>IMTU 2005</i></font>
+</p>
+<hr color=lightgrey>
+<a name=toc><font size=+1>Table Of Contents</font></a>
+  <ol>
+  <li><a href='#Introduction'>Introduction</a></li>
+  <li><a href='#Format'>Format</a></li>
+  <li><a href='#Field Descriptions'>Field Descriptions</a></li>
+    <ol>
+    <li><a href='#Name'>Name</a></li>
+    <li><a href='#Jump'>Jump</a></li>
+    <li><a href='#Canon Quotient'>Canon Quotient</a></li>
+    <li><a href='#Char'>Char</a></li>
+    <li><a href='#Threads'>Threads</a></li>
+    <li><a href='#Freq'>Freq</a></li>
+    <li><a href='#Conviction Quotient'>Conviction Quotient</a></li>
+    <li><a href='#Allegiance'>Allegiance</a></li>
+    <li><a href='#Rules Sets'>Rules Sets</a></li>
+    </ol>
+  <li><a href='#Examples'>Examples</a></li>
+  </ol>
+<hr color=lightgrey>
+  <font size=-1><a href=#toc>[Table of Contents]</a></font><br>
+  <ul>
+  <div id="d0"><a name='Introduction'><h1>Introduction</h1></a></div>
+
+    <p class="p0"> The <acronym title="In My Traveller Universe.">IMTU</acronym>5 code is meant to format the <acronym title="In My Traveller Universe.">IMTU</acronym> code as a <acronym title="Copyright Far Future Enterprises.  All Rights Reserved.">Traveller</acronym> <acronym title="Universal World Profile.">UWP</acronym>.</p>
+    <p class="p1"> This theoretically makes it easy for <acronym title="Copyright Far Future Enterprises.  All Rights Reserved.">Traveller</acronym> players to parse it.</p>
+ 
+  <div id="d1"><a name='Format'><h1>Format</h1></a></div>
+
+     <pre>
+     Name    Jump  Canon-Quotient  Char  Threads  Freq  Conviction-Quotient  Size  Rules Sets
+     </pre>
+ 
+  <div id="d2"><a name='Field Descriptions'><h1>Field Descriptions</h1></a></div>
+    <font size=-1><a href=#toc>[Table of Contents]</a></font><br>
+    <ul>
+    <div id="d0"><a name='Name'><h2>Name</h2></a></div>
+      <p class="p0">Your name</p>
+    <div id="d1"><a name='Jump'><h2>Jump</h2></a></div>
+
+      <p class="p0">  This field is composed of two 2-digit numbers.</p>
+  
+      <p class="p1">  The first two digits represents the minimum size craft that can have jump drives.</p>
+      <p class="p2">  The most common size codes are:</p>
+
+      <p class="p3">  05  Torpedo-sized</p>
+      <p class="p4">  06  1-9 tons</p>
+      <p class="p5">  07  10-99 tons</p>
+      <p class="p6">  08  100-999 tons</p>
+      <p class="p7">  09  1000-9999 tons</p>
+  
+      <p class="p8">  The last two digits represents the TL at which drop tanks or tankless systems</p>
+      <p class="p9">  does away with the need for jump fuel aboard starships.  A code of '01' </p>
+      <p class="p10">  represents "never" or "unknown".</p>
+    <div id="d2"><a name='Canon Quotient'><h2>Canon Quotient</h2></a></div>
+
+      <p class="p0">Format: 0-1234-5</p>
+
+      <p class="p1">0: overall canonicity (A = canon TU, X = totally uncanonical)</p>
+
+      <p class="p2">1: Big Imperium/Little Imperium (A = huge and busy, 0 = tiny and quiet)</p>
+      <p class="p3">2: 3i's power/control (A = all-pervasive, 0 = none)</p>
+      <p class="p4">3: sophonts (A = ubiquitous, 0 = none)</p>
+      <p class="p5">4: robotics (A = ubiquitous, 0 = none)</p>
+
+      <p class="p6">5: piracy (A = ubiquitous, 0 = none)</p>
+    <div id="d3"><a name='Char'><h2>Char</h2></a></div>
+
+      <p class="p0">A one character code for preferred adventure type:</p>
+
+      <p class="p1">S: scout/exploration</p>
+      <p class="p2">A: merchant</p>
+      <p class="p3">L: research</p>
+      <p class="p4">C: mercenary</p>
+      <p class="p5">P: pirate</p>
+      <p class="p6">T: wargame</p>
+      <p class="p7">Y: noble</p>
+    <div id="d4"><a name='Threads'><h2>Threads</h2></a></div>
+
+      <p class="p0"> Codes that explain the dominant threads and races of your games:</p>
+ 
+      <p class="p1"> As - Aslan</p>
+      <p class="p2"> Da - Darrian</p>
+      <p class="p3"> Im - Imperial</p>
+      <p class="p4"> So - Solomani</p>
+      <p class="p5"> Va - Vargr</p>
+      <p class="p6"> Vi - Vilani</p>
+      <p class="p7"> Zh - Zhodani</p>
+ 
+      <p class="p8"> Cnsp - Conspiracies</p>
+      <p class="p9"> Core - Core expeditions</p>
+      <p class="p10"> Expn - Imperial expansion</p>
+      <p class="p11"> Prvt - Privateering</p>
+      <p class="p12"> Scam - Con games</p>
+      <p class="p13"> Solo - Solomani Hypothesis</p>
+      <p class="p14"> Sota - Secret of the Ancients</p>
+      <p class="p15"> Xrch - Xeno-archaeology</p>
+      <p class="p16"> 1Con - First contact</p>
+      <p class="p17"> Ziru - First Imperium</p>
+      <p class="p18"> nFW  - nth Frontier War</p>
+      <p class="p19"> RoM  - Rule of Man</p>
+      <p class="p20"> Vir  - Virus</p>
+      <p class="p21"> Expl - Exploration</p>
+      <p class="p22"> Bord - Border wars</p>
+      <p class="p23"> FFF  - Far Far Future</p>
+ 
+ 
+    <div id="d5"><a name='Freq'><h2>Freq</h2></a></div>
+
+      <p class="p0"> A one character code for the group size & frequency of play:</p>
+ 
+      <p class="p1"> blank - no information/solo play</p>
+      <p class="p2"> A - occasionally or small group</p>
+      <p class="p3"> R - regularly or large group</p>
+ 
+    <div id="d6"><a name='Conviction Quotient'><h2>Conviction Quotient</h2></a></div>
+
+      <p class="p0"> A three character code for your personal convictions about </p>
+      <p class="p1"> certain facets of the game:</p>
+ 
+      <p class="p2"> 1: Gearheadedness (9 = high detail)</p>
+      <p class="p3"> 2: Storyline (9 = the story is all-important)</p>
+      <p class="p4"> 3: AI/starship automation (9 = total automation)</p>
+ 
+    <div id="d7"><a name='Allegiance'><h2>Allegiance</h2></a></div>
+
+      <p class="p0"> This is a two character code for your own personal allegiance:</p>
+      <p class="p1"> Im, Vi, Da, Fa, Na, etc...</p>
+ 
+    <div id="d8"><a name='Rules Sets'><h2>Rules Sets</h2></a></div>
+
+      <p class="p0"> This is a list of the rules sets you play and the weight you</p>
+      <p class="p1"> give to its mechanics.</p>
+ 
+      <p class="p2"> Rules sets: T5 T20 GT T4 TNE MT CT etc</p>
+      <p class="p3"> Magnitudes, from greatest to least: I II III IV V D</p>
+ 
+    </ul>
+  <div id="d3"><a name='Examples'><h1>Examples</h1></a></div>
+    
+        <pre>
+        Eneri         0801 A-558A-5 A Im Va As Sota Core    585 Im T5 I
+        
+        Eneri plays using T5 as rules, in the canonical <acronym title="Copyright Far Future Enterprises.  All Rights Reserved.">Traveller</acronym> universe with mostly 
+        Imperials, Vargr and Aslan. The major thread is Secret of the Ancients, with a 
+        dab of Core Expedition. It's mostly Merchant.  Eneri has no gaming group info,
+        or plays solo.  Jump minimum is in the 100s of tons, and tankless systems are unknown.
+        Eneri is middle-of-the-road when it comes to the size and power of the Imperium
+        and the presence of pirates, but believes there are many sophont races, and robots 
+        are all-pervasive.  Eneri is also noncommittal about gearheadedness and AI,
+        but is a strong believer in a good storyline.
+                      
+        Pasuuli       0516 A-4488-6 A Im Da Vi Xrch Cnsp     386 Im T5 I MT II
+        
+        Pasuuli plays with T5 and MT in the canonical TU with mainly Imperials, 
+        Darrians, and Vilani.  The major threads are Xenoarchaeology and Conspiracies,
+        in primarily merchant campaigns.  Jump minimum is torpedo-sized, and TL16 is the
+        cutoff for tankless systems.  Pasuuli believes in a slightly small, less powerful
+        Imperium, with a corresponding proportion of piracy, and a preponderence of 
+        sophonts and robots.  Pasuuli isn't much of a gearhead, is a fan of story,
+        and tends toward preferring AI.
+        
+        </pre>                                                                                                                                                                                                                                         </pre>
+  </ul>
+<hr color=lightgrey>
+<p class="rightalign">
+  <font size=-1 color=grey><i>Tue Mar  1 14:26:27 2005 YAML::Yaml2Html v0.5</i></font>
+</p>
+</body>
