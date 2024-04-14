@@ -16,6 +16,13 @@ function gElem( cl, co, na, tl, rng, mass, b, h1, d1, h2, d2, d, x, cr )
    this.cr   = cr
 }
 
+function prettifyName( name_in )
+{
+   return name_in.replace( /None|.blank./g, '' )
+                 .replace( /^\s+/g, '' )
+                 .replace( /\s\s+/g, ' ' );
+}
+
 function g_recalc( form )
 {
    var d = g_descriptors[ form.descriptor.selectedIndex ];
@@ -59,15 +66,13 @@ function g_recalc( form )
    /*if ( z.na != 'Ship*' )*/ 
    name += ' ' + gname;
    shortname += ' ' + gname;
-   	  
-   code = code.replace( /None|.blank./g, '' );
-   name = name.replace( /None|.blank./g, '' );
-   name = name.replace( /^\s+/g, '' );
-   name = name.replace( /\s\s+/g, ' ' );
+
+   var taxonomical_name = gname + ' ' + d.na + ' ' + z.na + ' ' + b.na + ' ' + s.na;
    
-   shortname = shortname.replace( /None|.blank./g, '' )
-                        .replace( /^\s+/g, '' )
-                        .replace( /\s\s+/g, ' ' );
+   code = code.replace( /None|.blank./g, '' );
+   name = prettifyName( name );
+   shortname = prettifyName(shortname); 
+   taxonomical_name = prettifyName( taxonomical_name );
                         
    //
    //  Calculate range.
@@ -236,6 +241,7 @@ function g_recalc( form )
    
    code += '-' + tl;
    name += '-' + tl;
+   taxonomical_name += '-' + tl;
 
    name = name.replace( /Disintegrator Projector/, 'Disintegrator Wand' );
    name = name.replace( /Relativity Projector/, 'Relativity Wand' );
@@ -263,6 +269,7 @@ function g_recalc( form )
    					 
    // expanded format
    form.output.value += "\n\n"
+                     + "Taxonomy: " + taxonomical_name + "\n"
                      + "Code  : " + code + "\n"
                      + "Name  : " + name + "\n"
                      + "Range : " + rng  + "\n"
