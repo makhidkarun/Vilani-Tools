@@ -241,7 +241,7 @@ function g_recalc( form )
    
    code += '-' + tl;
    name += '-' + tl;
-   taxonomical_name += '-' + tl;
+   taxonomical_name += '-' + tl + ".yml.txt";
 
    name = name.replace( /Disintegrator Projector/, 'Disintegrator Wand' );
    name = name.replace( /Relativity Projector/, 'Relativity Wand' );
@@ -279,7 +279,7 @@ function g_recalc( form )
                      + "Mass  : " + mass + "\n"
                      + "Burden: " + qb   + "\n"
                      + "Cost  : " + displaycost + "\n"
-                     + "\n";
+                     + "--\n\n";
 					 
    // wide single-line format
    if ( tl < 5 )
