@@ -579,18 +579,18 @@ var g_stages = new Array
 //                   cl,           co,           na,    tl, rng, mass, b, h1, d1, h2, d2, d, x,   cr 
    new gElem(        'Stage',   'None',       '(blank)', 0, 0, 1.0, 0,    '*',     0,     '*', 0, 0,'x',   1.0),
    new gElem(        'Stage',      'A',           'Adv', 3, 0, 0.8,-2,    '*',     2,     '*', 0, 2,'x',   2.0),
-   new gElem(        'Stage',    'Alt',           'Alt', 1, 1, 1.1, 0,    '*',     2,     '*', 0, 2,'x',   1.1),
+   new gElem(        'Stage',    'Alt',           'Alt', 0, 1, 1.1, 0,    '*',     2,     '*', 0, 2,'x',   1.1),
    new gElem(        'Stage',      'B',         'Basic', 0, 0, 1.3, 0,    '*',     0,     '*', 0, 0,'x',   0.7),
    new gElem(        'Stage',      'E',         'Early',-1,-1, 1.7, 1,    '*',     0,     '*', 0, 0,'x',   1.2),
-   new gElem(        'Stage',      'X',          'Exp.',-2,-1,   2, 3,    '*',     0,     '*', 0, 0,'x',   4.0),
+   new gElem(        'Stage',      'X',          'Exp.',-3,-1,   2, 3,    '*',     0,     '*', 0, 0,'x',   4.0),
    new gElem(        'Stage',      'a',          'Arch',-2,-2,   2, 3,    '*',     0,     '*', 0, 0,'x',   1.1),  // Archaic
    new gElem(        'Stage',     'Im',          'Impv', 1, 0,   1, 0,    '*',     1,     '*', 0, 1,'x',   1.1),
    new gElem(        'Stage',    'Mod',           'Mod', 2, 0, 0.9, 0,    '*',     1,     '*', 0, 1,'x',   1.2),
    new gElem(        'Stage',     'Pr',          'Prec', 6, 3,   4, 2,    '*',     0,     '*', 0, 0,'x',   5.0),
-   new gElem(        'Stage',      'P',         'Proto',-1,-1, 1.9, 2,    '*',     0,     '*', 0, 0,'x',   3.0),
+   new gElem(        'Stage',      'P',         'Proto',-2,-1, 1.9, 2,    '*',     0,     '*', 0, 0,'x',   3.0),
    new gElem(        'Stage',      'R',        'Remote', 1, 0,   1, 0,    '*',     0,     '*', 0, 0,'x',   7.0),
    new gElem(        'Stage',     'Sn',        'Sniper', 1, 1, 1.1, 1,    '*',     0,     '*', 0, 0,'X',   2.0),
-   new gElem(        'Stage',     'St',           'Std', 1, 0,   1, 0,    '*',     1,     '*', 0, 1,'x',   1.0),
+   new gElem(        'Stage',     'St',           'Std', 0, 0,   1, 0,    '*',     1,     '*', 0, 1,'x',   1.0),
    new gElem(        'Stage',      'T',        'Target', 0, 0, 1.1, 1,    '*',     0,     '*', 0, 0,'x',   1.5),
    new gElem(        'Stage',     'Ul',           'Ult', 4, 0, 0.7,-2,    '*',     2,     '*', 0, 2,'x',   1.4)
 );
