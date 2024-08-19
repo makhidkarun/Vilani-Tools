@@ -265,7 +265,9 @@ function g_recalc( form )
    mass = mass.replace( /t kg/, 't' );
    
    // equipment list format, T5
-   var qb2 = qb? '-' : qb;
+   var qb2 = qb;
+   if (qb2 >  0) qb2 = '+' + qb2;
+   if (qb2 == 0) qb2 = '-';
 
    var CQ = g.cq? "Mod" + g.cq + " when used in close quarters." : '';
    if (g.cq == 'X') CQ = "Cannot be used in close quarters.";
