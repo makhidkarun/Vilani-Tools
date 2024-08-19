@@ -1413,6 +1413,44 @@ sylean.Ending.push( 214, 'p' )
 sylean.Ending.push( 216, 'z' )
 
 
+var syr_darya = new LanguageTable();
+
+syr_darya.Basic.push( 30, 'CVC' );
+syr_darya.Basic.push( 36, 'VC' );
+syr_darya.Alternate.push( 16, 'CV' );
+syr_darya.Alternate.push( 36, 'CVC');
+
+syr_darya.Initial.push( 9, 'b');
+syr_darya.Initial.push( 36, 'd');
+syr_darya.Initial.push( 45, 'f');
+syr_darya.Initial.push( 54, 'g');
+syr_darya.Initial.push( 72, 'k');
+syr_darya.Initial.push( 90, 'm');
+syr_darya.Initial.push( 108, 'n');
+syr_darya.Initial.push( 117, 'p');
+syr_darya.Initial.push( 126, 'r');
+syr_darya.Initial.push( 144, 's');
+syr_darya.Initial.push( 171, 't');
+syr_darya.Initial.push( 180, 'v');
+syr_darya.Initial.push( 207, 'y');
+syr_darya.Initial.push( 216, 'z');
+
+syr_darya.Vowel.push( 93, 'a' );
+syr_darya.Vowel.push( 109, 'e' );
+syr_darya.Vowel.push( 130, 'o' );
+syr_darya.Vowel.push( 146, 'u' );
+syr_darya.Vowel.push( 216, 'y' );
+
+syr_darya.Ending.push( 11, 'ch' );
+syr_darya.Ending.push( 22, 'd' );
+syr_darya.Ending.push( 44, 'l' );
+syr_darya.Ending.push( 119, 'n' );
+syr_darya.Ending.push( 172, 'r' );
+syr_darya.Ending.push( 194, 'rr' );
+syr_darya.Ending.push( 205, 's' );
+syr_darya.Ending.push( 216, 'w' );
+
+
 // aekhu vargr
 var aekhu = new LanguageTable();
 
@@ -2112,6 +2150,7 @@ function setLanguage( langsel )
    if ( langsel == 'Suerrat' )       arr = suerrat;
    if ( langsel == 'Sword Worlder' ) arr = swordy;
    if ( langsel == 'Sylean' )        arr = sylean;
+   if ( langsel == 'Syr Darya')      arr = syr_darya;
    if ( langsel == 'Gvegh' )         arr = vargr;
    if ( langsel == 'Vuakedh' )       arr = vuakedh;
    if ( langsel == 'Vilani' )        arr = vil;

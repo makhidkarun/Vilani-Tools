@@ -1,4 +1,4 @@
-function gElem( cl, co, na, tl, rng, mass, b, h1, d1, h2, d2, d, x, cr )
+function gElem( cl, co, na, tl, rng, mass, b, h1, d1, h2, d2, d, x, cr, CQ )
 {
    this.cl   = cl;
    this.co   = co
@@ -14,6 +14,7 @@ function gElem( cl, co, na, tl, rng, mass, b, h1, d1, h2, d2, d, x, cr )
    this.d    = d
    this.recoil = x
    this.cr   = cr
+   this.cq   = CQ
 }
 
 function prettifyName( name_in )
@@ -240,7 +241,7 @@ function g_recalc( form )
    }
    
    code += '-' + tl;
-   name += '-' + tl;
+   //name += '-' + tl;
    taxonomical_name += '-' + tl + ".yml.txt";
 
    name = name.replace( /Disintegrator Projector/, 'Disintegrator Wand' );
@@ -262,10 +263,17 @@ function g_recalc( form )
    mass = mass.replace( /t kg/, 't' );
    
    // equipment list format, T5
-   form.output.value = name + ", " + mass + ", R=" + rng + ", B=" + qb + ", " + hits + ", " + displaycost;
-                     + "\n" //   TL" + tl + ", B=" + qb + ", " + hits
-					 + "\n\n"
-					 ;
+   var qb2 = qb? '-' : qb;
+
+   var CQ = g.cq? "Mod" + g.cq + " when used in close quarters." : '';
+   if (g.cq == 'X') CQ = "Cannot be used in close quarters.";
+
+   var kg2 = Math.round( (kg * 100)/10 )/10;
+
+   form.output.value = 
+     "NAME, CODE, TL, DAMAGE, RANGE, KG, BURDEN, CREDITS, CLOSE_QUARTERS\n"
+    + name + "," + code + "," + tl + "," + hits + "," + rng + "," + kg2 + "," + qb2 + "," + cr + "," + CQ
+    + "\n";
    					 
    // expanded format
    form.output.value += "\n\n"
@@ -442,29 +450,26 @@ function g_printSpecificOptions( array )
 }
 
 var g_guns = new Array
-(           //     category,     code,           name, tl, R,  Kg, B, h1,     d1,     h2, d2, D, x,    cr )
-   new gElem(         'Gun',      'G',           'Gun', 6, 4,   9,-1,     '*', 2,     '*', 0, 2,'hi',  5000),
-   new gElem(         'Gun',     'Ga',       'Gatling', 7, 4,  40,-2,     '*', 3,     '*', 0, 2,'hi',  8000),
-   new gElem(         'Gun',      'C',        'Cannon', 6, 6, 200,-4,     '*', 4,     '*', 0, 2,'hi',  10000),
-   new gElem(         'Gun',     'aC',    'Autocannon', 8, 6, 300,-4,     '*', 5,     '*', 0, 3,'hi',  30000),
-   new gElem(       'Rifle',      'R',         'Rifle', 5, 5,   4, 0,'Bullet', 2,     '*', 0, 2,'x',   500),
-   new gElem(       'Rifle',      'C',       'Carbine', 5, 4,   3, 1,'Bullet', 1,     '*', 0, 1,'x',   400),
-   new gElem(      'Pistol',      'P',        'Pistol', 5, 2, 1.1, 0,'Bullet', 1,     '*', 0, 1,'x',   150),
-   new gElem(      'Pistol',      'R',      'Revolver', 4, 2,1.25, 0,'Bullet', 1,     '*', 0, 1,'x',   100),
+(           //     category,     code,           name, tl, R,  Kg, B, h1,     d1,     h2, d2, D, x,    cr    , CQ)
+   new gElem(         'Gun',      'G',           'Gun', 6, 4,   9,-1,     '*', 2,     '*', 0, 2,'hi',  5000,   '-3'),
+   new gElem(         'Gun',     'Ga',       'Gatling', 7, 4,  40,-2,     '*', 3,     '*', 0, 2,'hi',  8000,   '-3'),
+   new gElem(         'Gun',      'C',        'Cannon', 6, 6, 200,-4,     '*', 4,     '*', 0, 2,'hi',  10000,  '-3'),
+   new gElem(         'Gun',     'aC',    'Autocannon', 8, 6, 300,-4,     '*', 5,     '*', 0, 3,'hi',  30000,  '-3'),
+   new gElem(       'Rifle',      'R',         'Rifle', 5, 5,   4, 0,'Bullet', 2,     '*', 0, 2,'x',   500,    '-5'),
+   new gElem(       'Rifle',      'C',       'Carbine', 5, 4,   3, 1,'Bullet', 1,     '*', 0, 1,'x',   400,    '-1'),
+   new gElem(      'Pistol',      'P',        'Pistol', 5, 2, 1.1, 0,'Bullet', 1,     '*', 0, 1,'x',   150,    '+2'),
+   new gElem(      'Pistol',      'R',      'Revolver', 4, 2,1.25, 0,'Bullet', 1,     '*', 0, 1,'x',   100,    '+2'),
    new gElem(    'Matchlock',     'M',    'Matchlock*', 2, 1,   1, 1,'Bullet', 1,     '*', 0, 1,'x',   100),
    new gElem(    'Flintlock',     'F',    'Flintlock*', 3, 1,   1, 1,'Bullet', 1,     '*', 0, 1,'x',   100),
    new gElem(    'Percussion',    'P',   'Percussion*', 4, 1,   1, 1,'Bullet', 1,     '*', 0, 1,'x',   100),
-//   new gElem(      'Pistol',      'M',     'Miquelet*', 3, 1,   2, 0,'Bullet', 1,     '*', 0, 1,'x',   500),
-   new gElem(     'Shotgun',      'S',       'Shotgun', 4, 2,   4, 0,'Bullet', 2,     '*', 0, 2,'x',   300),
-   new gElem(  'Machinegun',     'Mg',    'Machinegun', 6, 5,   8,-1,'Bullet', 4,     '*', 0, 4,'x',  3000),
-   new gElem(  'Designator',     'Pj',     'Projector', 9, 0,   1, 0,     '*', 1,     '*', 0, 1,'x',   300),
-   new gElem(  'Designator',      'D',    'Designator', 7, 5,  10,-1,     '*', 1,     '*', 0, 1,'x',  2000),
-   new gElem(    'Launcher',      'L',      'Launcher', 6, 3,  10,-1,     '*', 1,     '*', 0, 0,'x',  1000), 
-   new gElem(    'Launcher',     'mL',   'MultiLaunch', 8, 5,   8,-1,     '*', 1,     '*', 0, 0,'x',  3000), 
-   new gElem(    'Launcher',     'PL',   '*Plasma Launcher', 16, 5, 8, 0,  'Burn', 2,     'Pen', 1, 3,'x',  2000),
-   new gElem(    'Launcher',     'uL',   '*Meson Launcher',  17, 5, 8, 0,  'Pen', 2,     '*', 0, 2,'x',  2000)
-//   new gElem(    'Launcher',      'L',      'Launcher', 6, 3,  10,-1,     '*', 2,     '*', 0, 0,'x',  1000), // modified
-//   new gElem(    'Launcher',     'mL',   'MultiLaunch', 8, 5,   8,-1,     '*', 3,     '*', 0, 0,'x',  3000)  // modified
+   new gElem(     'Shotgun',      'S',       'Shotgun', 4, 2,   4, 0,'Bullet', 2,     '*', 0, 2,'x',   300,    '-3'),
+   new gElem(  'Machinegun',     'Mg',    'Machinegun', 6, 5,   8,-1,'Bullet', 4,     '*', 0, 4,'x',  3000,    '-3'),
+   new gElem(  'Designator',     'Pj',     'Projector', 9, 0,   1, 0,     '*', 1,     '*', 0, 1,'x',   300,    'X'),
+   new gElem(  'Designator',      'D',    'Designator', 7, 5,  10,-1,     '*', 1,     '*', 0, 1,'x',  2000,    '-3'),
+   new gElem(    'Launcher',      'L',      'Launcher', 6, 3,  10,-1,     '*', 1,     '*', 0, 0,'x',  1000,    '-3'), 
+   new gElem(    'Launcher',     'mL',   'MultiLaunch', 8, 5,   8,-1,     '*', 1,     '*', 0, 0,'x',  3000,    '-3'), 
+   new gElem(    'Launcher',     'PL',   '*Plasma Launcher', 16, 5, 8, 0,  'Burn', 2, 'Pen', 1, 3,'x',2000,    '-3'),
+   new gElem(    'Launcher',     'uL',   '*Meson Launcher',  17, 5, 8, 0,  'Pen', 2,  '*', 0, 2,'x',  2000,    '-3')
 );
 
 //                  cl,           co,           na,    tl, rng, mass, b, h1, d1, h2, d2, d, x,   cr 
