@@ -170,7 +170,9 @@ function g_recalc( form )
    var cr   = parseInt(g.cr  * d.cr  * z.cr * b.cr  * s.cr) + '';
 
    cr = '' + cr;
-   
+
+   var crWithoutCommas = cr;
+
    cr = cr.replace( /(\d)(\d\d\d)$/, "$1,$2" );
    cr = cr.replace( /(\d)(\d\d\d)$/, "$1,$2" );
 
@@ -272,7 +274,7 @@ function g_recalc( form )
 
    form.output.value = 
      "NAME, CODE, TL, DAMAGE, RANGE, KG, BURDEN, CREDITS, CLOSE_QUARTERS\n"
-    + name + "," + code + "," + tl + "," + hits + "," + rng + "," + kg2 + "," + qb2 + "," + cr + "," + CQ
+    + name + "," + code + "," + tl + "," + hits + "," + rng + "," + kg2 + "," + qb2 + "," + crWithoutCommas + "," + CQ
     + "\n";
    					 
    // expanded format
