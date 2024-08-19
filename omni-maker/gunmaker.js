@@ -242,6 +242,7 @@ function g_recalc( form )
    	  }
    }
    
+   var codeWithoutTL = code;
    code += '-' + tl;
    //name += '-' + tl;
    taxonomical_name += '-' + tl + ".yml.txt";
@@ -269,16 +270,18 @@ function g_recalc( form )
    if (qb2 >  0) qb2 = '+' + qb2;
    if (qb2 == 0) qb2 = '-';
 
-   var CQ = g.cq? "Mod" + g.cq + " when used in close quarters." : '';
-   if (g.cq == 'X') CQ = "Cannot be used in close quarters.";
+   var CQ_TEXT = g.cq? "Mod" + g.cq + " when used in close quarters." : '';
+   if (g.cq == 'X') CQ_TEXT = "Cannot be used in close quarters.";
+
+   var CQ_MOD = g.cq;
 
    var kg2 = Math.round( (kg * 100)/10 )/10;
 
    form.output.value = 
-     "NAME, CODE, TL, DAMAGE, RANGE, KG, BURDEN, CREDITS, CLOSE_QUARTERS\n"
-    + name + "," + code + "," + tl + "," + hits + "," + rng + "," + kg2 + "," + qb2 + "," + crWithoutCommas + "," + CQ
+     "NAME, CODE, TL, DAMAGE, RANGE, KG, BURDEN, CREDITS, CLOSE_QUARTERS_TEXT, CQ_MOD\n"
+    + name + "," + codeWithoutTL + "," + tl + "," + hits + "," + rng + "," + kg2 + "," + qb2 + "," + crWithoutCommas + "," + CQ_TEXT + "," + CQ_MOD
     + "\n";
-   					 
+
    // expanded format
    form.output.value += "\n\n"
                      + "Taxonomy: " + taxonomical_name + "\n"
