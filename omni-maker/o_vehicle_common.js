@@ -87,30 +87,32 @@ function installation_recalc( form )
 
 var ground = new Array
 (
-   new VEL( new Array( 'C',   'Car'      ,  0,0, 2, 0, 1,   0, 0, 0, 0, 0, 0, 0, 0,   20 )),
-   new VEL( new Array( 'V',   'Van'      ,  0,0, 3, 0, 2,   0, 0, 0, 0, 0, 0, 0, 0,   30 )),
+   new VEL( new Array( 'GC',  'Ground Car',  0,0, 2, 0, 1,   0, 0, 0, 0, 0, 0, 0, 0,   20 )),
+   new VEL( new Array( 'U',   'Utility'  ,  0,0, 3, 0, 2,   0, 0, 0, 0, 0, 0, 0, 0,   30 )),
    new VEL( new Array( 'T',   'Truck'    ,  0,0, 4, 0, 3,   0, 0, 0, 0, 0, 0, 0, 0,   50 )),
-   new VEL( new Array( 'H',   'Vehicle'  ,  0,0, 5, 0, 3,   0, 0, 0, 0, 0, 0, 0, 0,   60 )),
+   new VEL( new Array( 'V',   'Vehicle'  ,  0,0, 5, 0, 3,   0, 0, 0, 0, 0, 0, 0, 0,   60 )),
    new VEL( new Array( 'M',   'Mover'    ,  0,0, 3, 0, 0,   0, 0, 0, 0, 0, 0, 0, 0,   50 )),
-   new VEL( new Array( 'R',   'Transport',  0,0, 5, 0, 4,   0, 0, 0, 0, 0, 0, 0, 0,   40 ))
+   new VEL( new Array( 'H',   'Hauler'   ,  0,0, 5, 0, 4,   0, 0, 0, 0, 0, 0, 0, 0,   40 )),
+   new VEL( new Array( 'R',   'Trailer'  ,  0,0, 5, 0, 4,   0, 0, 0, 0, 0, 0, 0, 0,   40 ))
 );
 
 var gr_mission = new Array
 (
-   new VEL( new Array( '(std)', '(std)',     0,0, 0, 0, 0,   0, 0, 0, 0, 0, 0, 0, 0,    0 )),
+   new VEL( new Array( 'RO',  'Road Only',    0,0, 0, 0, 0,   0, 0, 0, 0, 0, 0, 0, 0,    0 )),
    new VEL( new Array( 'P',   'Passenger ',  0,0, 0, 0, 0,   5, 0, 0, 0, 0, 0,12, 0,   10 )),
    new VEL( new Array( 'C',   'Cargo '    ,  0,0, 0, 0, 0,   5, 0, 0, 0, 0, 0, 6, 0,   10 )),
-   new VEL( new Array( 'U',   'Utility '  ,  0,0, 0, 0, 0,   5, 0, 0, 0, 0, 0, 6, 0,   10 )),
-   new VEL( new Array( 'E',   'Explorer ' ,  0,0, 0, 0, 0,  20,10,10,10,10, 0,20,20,  100 ))
+   new VEL( new Array( 'MP',  'Multi-Purpose '  ,  0,0, 0, 0, 0,   5, 0, 0, 0, 0, 0, 6, 0,   10 )),
+   new VEL( new Array( 'OR',  'Off Road ' ,  0,0, 0, 0, 0,  20,10,10,10,10, 0,20,20,  100 ))
 );
 
 var gr_motive = new Array
 (
-   new VEL( new Array( 'ACV', 'Air Cushion ',8,0,  2, 6, 0,  0, 0, 0, 0, 0, 0, 0, 0,  'x2.0' )),
+   new VEL( new Array( 'AC',  'Air Cushion ',8,0,  2, 6, 0,  0, 0, 0, 0, 0, 0, 0, 0,  'x2.0' )),
    new VEL( new Array( 'W',   'Wheeled '    ,6,0,  0, 5, 0,  0, 0, 0, 0, 0, 0, 0, 0,    0    )),
-   new VEL( new Array( 'L',   'Lift '       ,9,0,  1, 3, 0,  0, 0, 0, 0, 0, 0, 0, 0,  'x2.0' )),
+   new VEL( new Array( 'Z',   'Lifter '     ,9,0,  1, 3, 0,  0, 0, 0, 0, 0, 0, 0, 0,  'x2.0' )),
    new VEL( new Array( 'G',   'Grav '      ,10,0, -1, 5, 0,  0, 0, 0, 0, 0, 0, 0, 0,  'x3.0' )),
-   new VEL( new Array( 'T',   'Tracked '    ,7,0,  2, 4, 0,  0, 0, 0, 0, 0, 0, 0, 0,  'x2.0' ))
+   new VEL( new Array( 'T',   'Tracked '    ,7,0,  2, 4, 0,  0, 0, 0, 0, 0, 0, 0, 0,  'x2.0' )),
+   new VEL( new Array( 'L',   'Legged '    ,10,0,  1, 2, 0,  0, 0, 0, 0, 0, 0, 0, 0,  'x1.0' ))
 );
 
 function ground_printOptions()
@@ -155,14 +157,14 @@ function ground_recalc( form )
 
 var flyers = new Array
 (
-   new VEL( new Array( '(F)', 'Flyer',       0, 0,   0,   0,    0,    0, 0,  0, 0,  0, 0,  0, 0,    0 ) ),
-   new VEL( new Array( '(G)', 'Glider',      0, 0,   0,   0,    0,    0, 0,  0, 0,  0, 0,  0, 0,    0 ) ),
-   new VEL( new Array( '(B)', 'Balloon',     0, 0,   0,   0,    0,    0, 0,  0, 0,  0, 0,  0, 0,    0 ) )
+   new VEL( new Array( 'F', 'Flyer',       0, 0,   0,   0,    0,    0, 0,  0, 0,  0, 0,  0, 0,    0 ) ),
+   new VEL( new Array( 'G', 'Glider',      0, 0,   0,   0,    0,    0, 0,  0, 0,  0, 0,  0, 0,    0 ) ),
+   new VEL( new Array( 'B', 'Balloon',     0, 0,   0,   0,    0,    0, 0,  0, 0,  0, 0,  0, 0,    0 ) )
 );
 
 var f_mission = new Array
 (
-   new VEL( new Array( 'A', 'Combat ',       2, 0, 'x2.0', 1, 'x2.0', 20, 0, 20, 0, 20, 0, 10, 1, 'x3.0' )),
+   new VEL( new Array( 'A', 'Attack ',       2, 0, 'x2.0', 1, 'x2.0', 20, 0, 20, 0, 20, 0, 10, 1, 'x3.0' )),
    new VEL( new Array( 'B', 'Bomber ',       1, 0, 'x3.0', 0, 'x3.0', 10, 0, 20, 0, 20, 0, 10, 1, 'x2.0' )),
    new VEL( new Array( 'C', 'Cargo ',        0, 0, 'x4.0', 0, 'x2.0',  5, 0, 20, 0, 20, 0, 10, 1, 'x1.0' )),
    new VEL( new Array( 'P', 'Protector ',    1, 0, 'x2.0', 1, 'x1.0', 10, 0, 20, 0, 20, 0, 10, 1, 'x3.0' )),
@@ -224,13 +226,13 @@ function flyer_recalc( form )
 
 var watercraft = new Array
 (
-   new VEL( new Array( 'Sh', 'Ship',       5, 0, 1000, 4, 600,  10, 0, 0, 0, 0, 0, 0, 0,1000 ) ), 
-   new VEL( new Array( 'Sb', 'Sub',        6, 0, 100,  4,  60,  20, 0, 0, 0, 0, 0, 0,20,1000 ) ), 
-   new VEL( new Array( 'Bt', 'Boat',       5, 0, 10,   4,   6,   5, 0, 0, 0, 0, 0, 0, 0,100 ) ),
+   new VEL( new Array( 'S',  'Ship',       5, 0, 1000, 4, 600,  10, 0, 0, 0, 0, 0, 0, 0,1000 ) ), 
+   new VEL( new Array( 'U',  'Sub',        6, 0, 100,  4,  60,  20, 0, 0, 0, 0, 0, 0,20,1000 ) ), 
+   new VEL( new Array( 'Bt', 'Boat',       5, 0, 10,   4,   6,   5, 0, 0, 0, 0, 0, 0, 0,100 ) )
 
-   new VEL( new Array( 'GSh', 'Grav Ship',10, 0, 200,  4, 600,  10, 0, 0, 0, 0, 0, 0, 0,2000 ) ), 
-   new VEL( new Array( 'GSb', 'Grav Sub', 10, 0, 20,   4,  60,  20, 0, 0, 0, 0, 0, 0,20,2000 ) ), 
-   new VEL( new Array( 'GBt', 'Grav Boat',10, 0, 2,    4,   6,   5, 0, 0, 0, 0, 0, 0, 0,200 ) )
+//   new VEL( new Array( 'GSh', 'Grav Ship',10, 0, 200,  4, 600,  10, 0, 0, 0, 0, 0, 0, 0,2000 ) ), 
+//   new VEL( new Array( 'GSb', 'Grav Sub', 10, 0, 20,   4,  60,  20, 0, 0, 0, 0, 0, 0,20,2000 ) ), 
+//   new VEL( new Array( 'GBt', 'Grav Boat',10, 0, 2,    4,   6,   5, 0, 0, 0, 0, 0, 0, 0,200 ) )
 );
 
 var w_mission = new Array
@@ -243,9 +245,10 @@ var w_mission = new Array
 
 var w_motive = new Array
 (
-   new VEL( new Array( 'S', 'Standard',     0, 0, 0,    0, 0,     0, 0, 0, 0, 0, 0, 0, 0, 0 ) ),
-   new VEL( new Array( 'U', 'Unpowered',   -3, 0, 0,    0, 0,     0, 0, 0, 0, 0, 0, 0, 0, 'x0.5' ) ),
-   new VEL( new Array( 'H', 'Hovercraft',   6, 0, 'x2.0', "=5", 3,     0, 0, 0, 0, 0, 0, 0, 0, 200 ) )
+   new VEL( new Array( 'S', 'Standard',     0, 0, 0,    0, 0,      0, 0, 0, 0, 0, 0, 0, 0, 0 ) ),
+   new VEL( new Array( 'U', 'Unpowered',   -3, 0, 0,    0, 0,      0, 0, 0, 0, 0, 0, 0, 0, 'x0.5' ) ),
+   new VEL( new Array( 'H', 'Hovercraft',   6, 0, 'x2.0', "=5", 3, 0, 0, 0, 0, 0, 0, 0, 0, 200 ) ),
+   new VEL( new Array( 'G', 'Grav',        10, 0, 'x0.2', 4,0,     0, 0, 0, 0, 0, 0, 0, 0, 'x2.0' ) )
 );
 
 function watercraft_printOptions()
@@ -292,15 +295,16 @@ function watercraft_recalc( form )
 var military = new Array
 (
 //                    code   type               TL q    v spd ld AV  cafprpsppsinse        KCr
-   new VEL( new Array( 'T', 'Tank',              0,0,   5, 3, 0, 50, 10,10,10,20, 0,20,20, 700 )),
-   new VEL( new Array( 'C', 'Carrier',           0,0,   4, 4, 2, 40, 10,10,10,20, 0,20,20, 500 )),
-   new VEL( new Array( 'V', 'Vehicle',           0,0,   2, 5, 1, 30, 10,10,10,20, 0,20,20, 300 ))
+   new VEL( new Array( 'T', 'Tank',              0,0,   5,-1, 0, 50, 10,10,10,20, 0,20,20, 700 )),
+   new VEL( new Array( 'C', 'Carrier',           0,0,   4, 0, 2, 40, 10,10,10,20, 0,20,20, 500 )),
+   new VEL( new Array( 'V', 'Vehicle',           0,0,   2, 1, 1, 30, 10,10,10,20, 0,20,20, 300 )),
+   new VEL( new Array( 'R', 'Trailer',           0,0,   5, 0, 4, 30, 10,10,10,20, 0,20,20, 50  ))
 );
 
 var m_mission = new Array
 (
 //                    code   type               TL q    v spd ld AV  cafprpsppsinse        KCr
-   new VEL( new Array( '(S)',  '(Standard)',     0,0,   0, 0, 0,  0,  0, 0, 0, 0, 0, 0, 0,   0 )),
+//   new VEL( new Array( '(S)',  '(Standard)',     0,0,   0, 0, 0,  0,  0, 0, 0, 0, 0, 0, 0,   0 )),
    new VEL( new Array( 'W', 'Weapon ',           0,0,   2, 0, 0,  0,  0, 0, 0, 0, 0, 0, 0, 100 )),
    new VEL( new Array( 'T', 'Troop ',            0,0,   1, 0, 0,  0,  0, 0, 0, 0, 0, 0, 0,   0 )),
    new VEL( new Array( 'S', 'Supply ',           0,0,   3,-1, 1,-10,  0, 0, 0, 0, 0, 0, 0,   0 )),
@@ -443,7 +447,7 @@ function sc_recalc( form )
 var vehicle_bulk = new Array
 (
 //                     code        type     TL  q   vol    spd  ld      AV  cafprpsppsinse  KCr
-   new VEL( new Array( '(M)',  '(Medium) ',  0, 0,  'x1',   0,  0,       0  ,0,0,0,0,0,0,0, 0 ) ),
+   new VEL( new Array( 'M',    '(Medium) ',  0, 0,  'x1',   0,  0,       0  ,0,0,0,0,0,0,0, 0 ) ),
    new VEL( new Array( 'Vl',         'Vl ', -1, 0,  'x0.33',1, -2,  'x0.33' ,0,0,0,0,0,0,0, 'x0.33' ) ),
    new VEL( new Array( 'L',          'Lt ', -1, 0,  'x0.5', 1, -1,   'x0.5' ,0,0,0,0,0,0,0, 'x0.5' ) ),
    new VEL( new Array( 'H',          'Hv ',  1, 0,  'x2',  -1,  2,   'x2.0' ,0,0,0,0,0,0,0, 'x3.0' ) ),
@@ -453,7 +457,7 @@ var vehicle_bulk = new Array
 var vehicle_stage = new Array
 (
 //                     code        type        TL  q  vol    spd  ld    AV  cafprpsppsinse  KCr
-   new VEL( new Array( '(S)', '(Standard)',     0, 0,  0,      0,  0,    0,0,0,0,  0,0,0,0,  0 )),                
+   new VEL( new Array( 'Std', 'Standard',       0, 0,  0,      0,  0,    0,0,0,0,  0,0,0,0,  0 )),                
    new VEL( new Array( '(F)', 'Fossil ',       -2, 0,  2,      0,  0,  -10,0,0,0,-10,0,0,0,  0 )),
    new VEL( new Array( '(P)', 'PowerCell ',    -1, 0,  1,     -2, -2,   -5,0,0,0, -5,0,0,0,  10)),
    new VEL( new Array( '(R)', 'Renewable ',    -1, 0,  1,     -1, -1,    0,0,0,0,  0,0,0,0,  20)),      
