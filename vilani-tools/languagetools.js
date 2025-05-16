@@ -1450,6 +1450,40 @@ syr_darya.Ending.push( 194, 'rr' );
 syr_darya.Ending.push( 205, 's' );
 syr_darya.Ending.push( 216, 'w' );
 
+// Threep
+var threep = new LanguageTable();
+threep.Basic.push(  18, 'CV' );
+threep.Basic.push(  36, 'CVC' );
+threep.Alternate.push( 18, 'CV' );
+threep.Alternate.push( 36, 'CVC' );
+
+threep.Initial.push(  31, 'b' );
+threep.Initial.push(  46, 'd' );
+threep.Initial.push(  61, 'dr' );
+threep.Initial.push(  106, 'fl' );
+threep.Initial.push(  121, 'fr' );
+threep.Initial.push(  136, 'g' );
+threep.Initial.push(  151, 'm' );
+threep.Initial.push(  166, 'n' );
+threep.Initial.push(  181, 'thr' );
+threep.Initial.push(  216, 'tr' );
+
+threep.Vowel.push(  77, 'oo' );
+threep.Vowel.push(  92, 'o' );
+threep.Vowel.push( 138, 'ee' );
+threep.Vowel.push( 169, 'aa' );
+threep.Vowel.push( 174, 'i' );
+threep.Vowel.push( 189, 'ii' );
+threep.Vowel.push( 216, 'uu' );
+
+threep.Ending.push(  15, 'rn' );
+threep.Ending.push(  30, 'rk' );
+threep.Ending.push(  76, 'n' );
+threep.Ending.push(  91, 'm' );
+threep.Ending.push( 153, 'l' );
+threep.Ending.push( 184, 'nk' );
+threep.Ending.push( 200, 'rnd' );
+threep.Ending.push( 216, 'p' );
 
 // aekhu vargr
 var aekhu = new LanguageTable();
@@ -2163,6 +2197,7 @@ function setLanguage( langsel )
    if ( langsel == 'Sigka' )         arr = sigka;
    if ( langsel == 'Yali' )          arr = yali;
    if ( langsel == 'Vegan' )         arr = vegan;
+   if ( langsel == 'Threep')         arr = threep;
 }
 
 setLanguage( 'Vilani' );
